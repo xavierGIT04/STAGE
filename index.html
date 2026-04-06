@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KYA-FlexyControl | 1 Charge</title>
+  <style>
+    :root {
+      --primary:#0066ff;--primary-light:#4499ff;--primary-dark:#0052cc;
+      --kya:#206d5f;--secondary:#00d4aa;--danger:#ff4757;--warning:#ffa502;--success:#2ed573;
+      --bg-page:#0a192f;--bg-sidebar:#0d2137;--bg-card:#112240;--bg-metric:#0f1e35;
+      --bg-input:rgba(255,255,255,0.04);--border-color:#1e3a5f;--border-light:#2d4a6e;
+      --text-primary:#e2e8f0;--text-secondary:#a8c4e0;--text-muted:#4a6a8a;--text-faint:#3a5a7a;
+      --radius-sm:6px;--radius-md:10px;--radius-lg:14px;
+      --transition:all 0.25s cubic-bezier(0.4,0,0.2,1);
+      --stat-card-bg:rgba(255,255,255,0.04);--metric-bg:rgba(255,255,255,0.03);
+      --progress-bg:rgba(255,255,255,0.06);--input-bg:rgba(255,255,255,0.04);
+      --toast-bg:#112240;--card-bg:#112240;
+      --shadow-sm:0 2px 8px rgba(0,0,0,0.2);--shadow-md:0 4px 20px rgba(0,0,0,0.3);
+      --shadow-lg:0 10px 40px rgba(0,0,0,0.4);
+    }
+    body.light-theme {
+      --bg-page:#f0f4f8;--bg-sidebar:#ffffff;--bg-card:#ffffff;--bg-metric:#f7fafc;--bg-input:#ffffff;
+      --border-color:#d0dce8;--text-primary:#0f2240;--text-secondary:#2d5078;--text-muted:#6b8aaa;--text-faint:#8faabb;
+      --stat-card-bg:rgba(0,0,0,0.03);--metric-bg:rgba(0,102,255,0.04);--progress-bg:rgba(0,0,0,0.07);
+      --input-bg:#ffffff;--toast-bg:#ffffff;--card-bg:#ffffff;
+      --shadow-sm:0 2px 8px rgba(0,0,0,0.06);--shadow-md:0 4px 20px rgba(0,0,0,0.10);--shadow-lg:0 10px 40px rgba(0,0,0,0.14);
+    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    body{font-family:'Segoe UI',-apple-system,sans-serif;background:var(--bg-page);color:var(--text-primary);min-height:100vh;line-height:1.6;overflow-x:hidden;transition:background 0.3s,color 0.3s;}
+    .app-shell{display:flex;min-height:100vh;}
+
+    /* SIDEBAR */
+    .sidebar{width:230px;background:var(--bg-sidebar);border-right:1px solid var(--border-color);display:flex;flex-direction:column;flex-shrink:0;transition:width 0.25s ease;z-index:100;position:relative;}
+    .sidebar.collapsed{width:58px;}
+    .sb-header{display:flex;align-items:center;justify-content:space-between;padding:0 14px;height:60px;border-bottom:1px solid var(--border-color);overflow:hidden;}
+    .sb-brand{display:flex;align-items:center;gap:10px;overflow:hidden;}
+    .sb-brand-icon{width:42px;height:42px;background:none;border-radius:0;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+    .sb-brand-icon img{width:42px;height:42px;object-fit:contain;}
+    .sb-brand-name{font-size:13px;font-weight:600;color:var(--text-primary);white-space:nowrap;overflow:hidden;transition:opacity 0.2s,width 0.25s;}
+    .sidebar.collapsed .sb-brand-name{opacity:0;width:0;}
+    .sb-toggle{width:26px;height:26px;background:none;border:1px solid var(--border-color);border-radius:var(--radius-sm);cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:var(--transition);color:var(--text-muted);}
+    .sb-toggle:hover{border-color:var(--primary);color:var(--primary);}
+    .sb-toggle svg{width:14px;height:14px;fill:currentColor;transition:transform 0.25s;}
+    .sidebar.collapsed .sb-toggle svg{transform:rotate(180deg);}
+    .sb-nav{flex:1;padding:14px 8px;display:flex;flex-direction:column;gap:2px;overflow:hidden;}
+    .sb-section-title{font-size:10px;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.08em;padding:10px 10px 4px;white-space:nowrap;overflow:hidden;transition:opacity 0.2s;}
+    .sidebar.collapsed .sb-section-title{opacity:0;}
+    .nav-item{display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:var(--radius-md);cursor:pointer;transition:var(--transition);border:1px solid transparent;overflow:hidden;min-height:40px;}
+    .nav-item:hover{background:var(--bg-metric);}
+    .nav-item.active{background:rgba(0,102,255,0.10);border-color:rgba(0,102,255,0.25);}
+    .nav-item-icon{width:20px;height:20px;flex-shrink:0;display:flex;align-items:center;justify-content:center;}
+    .nav-item-icon svg{width:18px;height:18px;fill:var(--text-muted);transition:fill 0.2s;}
+    .nav-item.active .nav-item-icon svg{fill:var(--primary-light);}
+    .nav-item-label{font-size:13px;color:var(--text-secondary);white-space:nowrap;overflow:hidden;transition:opacity 0.2s,color 0.2s;}
+    .nav-item.active .nav-item-label{color:var(--primary-light);font-weight:500;}
+    .sidebar.collapsed .nav-item-label{opacity:0;width:0;}
+    .sb-footer{padding:12px 8px;border-top:1px solid var(--border-color);display:flex;flex-direction:column;gap:8px;}
+    .conn-status{display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:var(--radius-md);background:rgba(46,213,115,0.08);border:1px solid rgba(46,213,115,0.18);overflow:hidden;}
+    .conn-dot{width:8px;height:8px;border-radius:50%;background:var(--success);flex-shrink:0;animation:connPulse 2s infinite;}
+    @keyframes connPulse{0%,100%{opacity:1}50%{opacity:0.35}}
+    .conn-label{font-size:11px;color:var(--success);white-space:nowrap;overflow:hidden;transition:opacity 0.2s;}
+    .sidebar.collapsed .conn-label{opacity:0;}
+    .theme-btn{display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:var(--radius-md);background:none;border:1px solid var(--border-color);cursor:pointer;color:var(--text-muted);font-size:12px;transition:var(--transition);overflow:hidden;white-space:nowrap;}
+    .theme-btn:hover{border-color:var(--primary);color:var(--primary);}
+    .theme-btn svg{width:15px;height:15px;fill:currentColor;flex-shrink:0;}
+    .theme-btn-label{transition:opacity 0.2s;}
+    .sidebar.collapsed .theme-btn-label{opacity:0;width:0;overflow:hidden;}
+
+    /* MAIN */
+    .main-area{flex:1;display:flex;flex-direction:column;min-width:0;background:var(--bg-page);}
+
+    /* ── TOPBAR ── */
+    .topbar{display:flex;align-items:center;padding:0 20px;height:60px;border-bottom:1px solid var(--border-color);background:var(--bg-sidebar);flex-shrink:0;gap:10px;flex-wrap:nowrap;}
+    .topbar-left{display:flex;align-items:center;gap:10px;flex:1;min-width:0;overflow:hidden;}
+    .page-title{font-size:15px;font-weight:600;color:var(--text-primary);white-space:nowrap;}
+    .page-subtitle{font-size:12px;color:var(--text-muted);}
+    /* RTC chip */
+    .rtc-chip{display:flex;align-items:center;gap:6px;padding:5px 11px;border-radius:20px;font-size:12px;background:var(--bg-metric);border:1px solid var(--border-color);color:var(--text-secondary);white-space:nowrap;flex-shrink:0;}
+    .rtc-chip svg{width:12px;height:12px;fill:var(--primary-light);flex-shrink:0;}
+    .rtc-chip .rtc-val{font-family:monospace;font-size:12px;color:var(--text-primary);}
+    /* Régler RTC button */
+    .btn-rtc{display:flex;align-items:center;gap:5px;padding:5px 11px;border-radius:20px;font-size:12px;font-weight:500;background:rgba(0,102,255,0.10);border:1px solid rgba(0,102,255,0.25);color:var(--primary-light);cursor:pointer;transition:var(--transition);white-space:nowrap;flex-shrink:0;}
+    .btn-rtc:hover{background:rgba(0,102,255,0.20);}
+    .btn-rtc svg{width:12px;height:12px;fill:currentColor;}
+    /* Relay badge topbar */
+    .topbar-relay{display:flex;align-items:center;gap:6px;padding:5px 12px;border-radius:20px;font-size:12px;font-weight:600;border:1.5px solid;white-space:nowrap;flex-shrink:0;margin-left:auto;}
+    .topbar-relay-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
+    .topbar-relay.tr-on{background:rgba(46,213,115,0.10);border-color:rgba(46,213,115,0.30);color:var(--success);}
+    .topbar-relay.tr-on .topbar-relay-dot{background:var(--success);}
+    .topbar-relay.tr-off{background:rgba(255,71,87,0.10);border-color:rgba(255,71,87,0.30);color:var(--danger);}
+    .topbar-relay.tr-off .topbar-relay-dot{background:var(--danger);}
+    /* Hamburger */
+    .btn-hamburger{display:none;align-items:center;justify-content:center;width:34px;height:34px;background:var(--bg-metric);border:1px solid var(--border-color);border-radius:var(--radius-sm);cursor:pointer;color:var(--text-secondary);flex-shrink:0;}
+    .btn-hamburger svg{width:16px;height:16px;fill:currentColor;}
+
+    /* PAGE CONTENT */
+    .page-content{flex:1;padding:20px 24px;overflow-y:auto;}
+    .section-heading{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;color:var(--text-muted);margin-bottom:12px;display:flex;align-items:center;gap:10px;}
+    .section-heading::after{content:'';flex:1;height:1px;background:var(--border-color);}
+
+    /* 5 METRIC CARDS */
+    .metrics-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:20px;}
+    .metric-card{background:var(--bg-card);border:1px solid var(--border-color);border-radius:var(--radius-md);padding:14px;transition:var(--transition);border-top:3px solid var(--border-color);}
+    .metric-card:hover{border-color:var(--primary);border-top-color:var(--primary);}
+    .metric-card-top{display:flex;align-items:center;gap:6px;margin-bottom:10px;}
+    .metric-card-icon{width:22px;height:22px;border-radius:4px;background:rgba(0,212,170,0.10);display:flex;align-items:center;justify-content:center;}
+    .metric-card-icon svg{width:12px;height:12px;fill:var(--secondary);}
+    .metric-card-lbl{font-size:10px;text-transform:uppercase;letter-spacing:0.05em;color:var(--text-muted);}
+    .metric-card-val{font-size:22px;font-weight:600;color:var(--text-primary);font-variant-numeric:tabular-nums;line-height:1;}
+    .metric-card-unit{font-size:12px;color:var(--text-muted);margin-top:4px;}
+
+    /* BOTTOM ROW — 2 energy cards only, full width */
+    .bottom-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:20px;}
+    .energy-card{background:var(--bg-card);border:1px solid var(--border-color);border-radius:var(--radius-lg);padding:18px 20px;transition:var(--transition);}
+    .energy-card:hover{border-color:var(--primary-light);}
+    .energy-card-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px;}
+    .energy-card-title{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:600;color:var(--text-primary);}
+    .energy-card-title svg{width:15px;height:15px;fill:var(--primary-light);}
+    .energy-sub{font-size:11px;color:var(--text-muted);margin-bottom:12px;}
+    .progress-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;}
+    .progress-label{font-size:12px;font-weight:500;color:var(--text-secondary);}
+    .progress-value{font-size:12px;font-weight:600;color:var(--secondary);}
+    .progress-bar-container{height:14px;background:var(--progress-bg);border-radius:7px;overflow:hidden;margin-bottom:6px;}
+    .progress-fill{height:100%;border-radius:7px;transition:width 0.8s cubic-bezier(0.34,1.56,0.64,1),background-color 0.4s;}
+    .progress-ends{display:flex;justify-content:space-between;font-size:11px;color:var(--text-faint);}
+
+    /* CARDS GRID */
+    .cards-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(350px,1fr));gap:20px;margin-bottom:30px;}
+    .pzem-card{background:var(--bg-card);border-radius:var(--radius-lg);padding:20px;border:1px solid var(--border-color);position:relative;overflow:hidden;transition:var(--transition);box-shadow:var(--shadow-sm);}
+    .pzem-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--primary),var(--secondary));}
+    .pzem-card:hover{transform:translateY(-3px);box-shadow:var(--shadow-md);border-color:rgba(0,102,255,0.35);}
+    .card-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;padding-bottom:10px;border-bottom:1px solid var(--border-color);}
+    .card-title{display:flex;align-items:center;gap:12px;}
+    .card-icon{width:42px;height:42px;background:rgba(0,102,255,0.10);border-radius:var(--radius-md);display:flex;align-items:center;justify-content:center;color:var(--primary-light);border:1px solid rgba(0,102,255,0.18);}
+    .card-icon svg{width:20px;height:20px;fill:currentColor;}
+    .card-text h3{font-size:1.05rem;font-weight:600;margin-bottom:3px;color:var(--text-primary);}
+    .card-text p{color:var(--text-muted);font-size:0.78rem;}
+    .status-indicator{padding:5px 12px;border-radius:20px;font-size:0.72rem;font-weight:600;letter-spacing:0.5px;text-transform:uppercase;display:flex;align-items:center;gap:5px;}
+    .status-indicator::before{content:'';width:6px;height:6px;border-radius:50%;}
+    .status-on{background:rgba(46,213,115,0.12);color:var(--success);border:1px solid rgba(46,213,115,0.25);}
+    .status-on::before{background:var(--success);}
+    .status-off{background:rgba(255,71,87,0.12);color:var(--danger);border:1px solid rgba(255,71,87,0.25);}
+    .status-off::before{background:var(--danger);}
+    .limits-config{margin:14px 0;padding:14px;background:rgba(0,102,255,0.04);border-radius:var(--radius-md);border:1px solid rgba(0,102,255,0.10);}
+    .limits-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;padding-bottom:10px;border-bottom:1px solid rgba(0,102,255,0.15);}
+    .limits-title{display:flex;align-items:center;gap:8px;font-size:0.92rem;font-weight:600;color:var(--text-primary);}
+    .limits-title svg{width:15px;height:15px;fill:var(--primary);}
+    .limits-form{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-bottom:14px;}
+    .limit-group{display:flex;flex-direction:column;gap:7px;}
+    .limit-label{display:flex;align-items:center;gap:6px;font-size:0.78rem;font-weight:500;color:var(--text-primary);}
+    .limit-label svg{width:13px;height:13px;fill:var(--primary);}
+    .limit-input-container{position:relative;}
+    .limit-input{width:100%;padding:9px 14px;padding-right:38px;background:var(--bg-input);border:1px solid var(--border-color);border-radius:var(--radius-sm);color:var(--text-primary);font-size:0.88rem;font-weight:500;outline:none;transition:var(--transition);}
+    .limit-input:focus{border-color:var(--primary);box-shadow:0 0 0 2px rgba(0,102,255,0.12);}
+    .limit-input::placeholder{color:var(--text-muted);}
+    .limit-unit{position:absolute;right:10px;top:50%;transform:translateY(-50%);font-size:0.78rem;color:var(--text-muted);font-weight:500;}
+    .limit-actions{display:flex;gap:10px;}
+    .current-limits{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:14px;padding-top:14px;border-top:1px solid rgba(0,102,255,0.10);}
+    .current-limit-item{padding:9px;background:var(--metric-bg);border-radius:var(--radius-sm);border:1px solid var(--border-color);text-align:center;}
+    .current-limit-label{font-size:0.72rem;color:var(--text-muted);margin-bottom:3px;}
+    .current-limit-value{font-size:0.98rem;font-weight:700;color:var(--primary);font-variant-numeric:tabular-nums;}
+    .last-save-info{font-size:0.72rem;color:var(--text-muted);font-style:italic;}
+    .save-timestamp{font-size:0.68rem;color:var(--primary);font-family:monospace;}
+    .retry-delay-control{background:var(--stat-card-bg);border-radius:var(--radius-md);padding:14px;margin:0 0 14px;border:1px solid var(--border-color);}
+    .retry-delay-header{display:flex;align-items:center;gap:10px;margin-bottom:12px;padding-bottom:10px;border-bottom:1px solid var(--border-color);}
+    .retry-delay-header h4{font-size:0.92rem;font-weight:600;color:var(--text-primary);}
+    .retry-delay-form{display:grid;grid-template-columns:1fr auto;align-items:end;gap:14px;}
+    .retry-delay-group{display:flex;flex-direction:column;gap:7px;}
+    .retry-delay-label{font-size:0.78rem;font-weight:500;color:var(--text-primary);}
+    .retry-delay-input{padding:9px 13px;background:var(--bg-input);border:1px solid var(--border-color);border-radius:var(--radius-sm);color:var(--text-primary);font-size:0.88rem;font-weight:500;outline:none;transition:var(--transition);}
+    .retry-delay-input:focus{border-color:var(--secondary);box-shadow:0 0 0 2px rgba(0,212,170,0.10);}
+    .btn{flex:1;padding:9px;border:none;border-radius:var(--radius-sm);font-size:0.83rem;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;transition:var(--transition);}
+    .btn-primary{background:var(--primary);color:white;}
+    .btn-primary:hover{background:var(--primary-dark);transform:translateY(-1px);}
+    .btn-secondary{background:rgba(0,212,170,0.08);color:var(--secondary);border:1px solid rgba(0,212,170,0.20);}
+    .btn-secondary:hover{background:rgba(0,212,170,0.16);transform:translateY(-1px);}
+    .btn svg{width:13px;height:13px;fill:currentColor;}
+    .btn-small{padding:7px 14px;font-size:0.82rem;}
+    .header{display:none;}
+    /* FOOTER */
+    .footer{padding:12px 24px;border-top:1px solid var(--border-color);margin-top:16px;}
+    .footer-inner{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:6px;}
+    .footer-logo{display:flex;align-items:center;gap:6px;color:var(--text-muted);font-size:0.82rem;font-weight:600;}
+    .footer-logo svg{width:13px;height:13px;fill:var(--secondary);}
+    .footer-copy{color:var(--text-faint);font-size:0.72rem;}
+    /* MODALS */
+    .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.65);backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center;z-index:2000;opacity:0;visibility:hidden;transition:var(--transition);}
+    .modal-overlay.active{opacity:1;visibility:visible;}
+    .modal-content{background:var(--bg-card);border-radius:var(--radius-lg);padding:28px;width:90%;max-width:500px;border:1px solid var(--border-color);box-shadow:var(--shadow-lg);transform:translateY(18px);transition:transform 0.3s ease;}
+    .modal-overlay.active .modal-content{transform:translateY(0);}
+    .modal-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;padding-bottom:14px;border-bottom:1px solid var(--border-color);}
+    .modal-title{font-size:1.1rem;font-weight:600;color:var(--text-primary);}
+    .modal-close{background:none;border:none;color:var(--text-muted);cursor:pointer;font-size:1.4rem;width:30px;height:30px;display:flex;align-items:center;justify-content:center;transition:var(--transition);border-radius:4px;}
+    .modal-close:hover{color:var(--danger);background:rgba(255,71,87,0.10);}
+    .rtc-form{display:flex;flex-direction:column;gap:18px;}
+    .rtc-group{display:flex;flex-direction:column;gap:7px;}
+    .rtc-label{font-size:0.88rem;font-weight:500;color:var(--text-primary);display:flex;align-items:center;gap:8px;}
+    .rtc-label svg{width:15px;height:15px;fill:var(--primary);}
+    .rtc-input{padding:11px 15px;background:var(--bg-input);border:1px solid var(--border-color);border-radius:var(--radius-sm);color:var(--text-primary);font-size:0.95rem;font-family:monospace;outline:none;transition:var(--transition);}
+    .rtc-input:focus{border-color:var(--primary);box-shadow:0 0 0 2px rgba(0,102,255,0.12);}
+    .rtc-actions{display:flex;gap:8px;flex-wrap:wrap;}
+    .current-time{font-family:monospace;font-size:1.05rem;color:var(--secondary);background:rgba(0,212,170,0.08);padding:9px;border-radius:var(--radius-sm);text-align:center;border:1px solid rgba(0,212,170,0.18);}
+    .toast-container{position:fixed;bottom:28px;right:28px;z-index:1000;}
+    .toast{background:var(--toast-bg);border-left:4px solid var(--primary);border-radius:var(--radius-md);padding:15px 20px;margin-top:12px;display:flex;align-items:center;gap:10px;box-shadow:var(--shadow-lg);animation:toastIn 0.3s ease-out;max-width:340px;border:1px solid var(--border-color);}
+    .toast.success{border-left-color:var(--success);}
+    .toast.error{border-left-color:var(--danger);}
+    .toast.warning{border-left-color:var(--warning);}
+    .toast svg{width:18px;height:18px;flex-shrink:0;}
+    .toast.success svg{fill:var(--success);}
+    .toast.error svg{fill:var(--danger);}
+    .toast.warning svg{fill:var(--warning);}
+    .toast-message{flex:1;font-size:0.92rem;font-weight:500;color:var(--text-primary);}
+    @keyframes toastIn{from{opacity:0;transform:translateX(100%)}to{opacity:1;transform:translateX(0)}}
+    /* RESPONSIVE */
+    @media(max-width:1100px){.metrics-grid{grid-template-columns:repeat(3,1fr)!important;}}
+    @media(max-width:900px){
+      .sidebar{position:fixed;top:0;left:0;height:100vh;z-index:300;transform:translateX(-100%);transition:transform 0.25s ease;width:230px!important;}
+      .sidebar.mobile-open{transform:translateX(0);}
+      .sidebar-backdrop{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:299;}
+      .sidebar-backdrop.active{display:block;}
+      .btn-hamburger{display:flex!important;}
+      .metrics-grid{grid-template-columns:repeat(2,1fr)!important;}
+      .bottom-row{grid-template-columns:1fr!important;}
+    }
+    @media(max-width:600px){
+      .page-content{padding:12px;}
+      .topbar{padding:6px 12px;height:auto;min-height:56px;flex-wrap:wrap;gap:6px;}
+      .rtc-chip .rtc-val{display:none;}
+      .metrics-grid{grid-template-columns:repeat(2,1fr)!important;}
+      .bottom-row{grid-template-columns:1fr!important;}
+      .limits-form{grid-template-columns:1fr!important;}
+      .current-limits{grid-template-columns:1fr!important;}
+      .retry-delay-form{grid-template-columns:1fr!important;}
+      .cards-grid{grid-template-columns:1fr!important;}
+      .footer-inner{flex-direction:column;align-items:flex-start;}
+    }
+  </style>
+</head>
+<body>
+
+<div class="sidebar-backdrop" id="sidebarBackdrop" onclick="closeMobileSidebar()"></div>
+
+<div class="app-shell">
+  <aside class="sidebar" id="appSidebar">
+    <div class="sb-header">
+      <div class="sb-brand">
+        <div class="sb-brand-icon"><img src="./kya_logo_light.png" alt="Logo KYA"/></div>
+        <span class="sb-brand-name">KYA-Limiter</span>
+      </div>
+      <button class="sb-toggle" onclick="document.getElementById('appSidebar').classList.toggle('collapsed')">
+        <svg viewBox="0 0 14 14"><path d="M9 2L4 7l5 5" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+    </div>
+    <nav class="sb-nav">
+      <div class="sb-section-title">Navigation</div>
+      <div class="nav-item active" id="navDashboard" onclick="setActivePage('dashboard')">
+        <div class="nav-item-icon"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg></div>
+        <span class="nav-item-label">Dashboard</span>
+      </div>
+      <div class="nav-item" id="navConfig" onclick="setActivePage('config')">
+        <div class="nav-item-icon"><svg viewBox="0 0 24 24"><path d="M19.14 12.94c.04-.3.06-.61.06-.94s-.02-.64-.07-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 9.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/></svg></div>
+        <span class="nav-item-label">Configuration</span>
+      </div>
+    </nav>
+    <div class="sb-footer">
+      <div class="conn-status"><div class="conn-dot"></div><span class="conn-label" id="connectionText">Connecté à l'ESP32</span></div>
+      <button class="theme-btn" onclick="toggleTheme()">
+        <svg id="themeIcon" viewBox="0 0 24 24"><path d="M21.64 13a1 1 0 0 0-1.05-.14 8.05 8.05 0 0 1-3.37.73 8.15 8.15 0 0 1-8.14-8.1 8.59 8.59 0 0 1 .25-2A1 1 0 0 0 8 2.36 10.14 10.14 0 1 0 22 14.05 1 1 0 0 0 21.64 13Z"/></svg>
+        <span class="theme-btn-label" id="themeBtnLabel">Thème clair</span>
+      </button>
+    </div>
+  </aside>
+
+  <div class="main-area">
+    <!-- TOPBAR -->
+    <div class="topbar">
+      <div class="topbar-left">
+        <button class="btn-hamburger" style="display:none" onclick="openMobileSidebar()">
+          <svg viewBox="0 0 24 24"><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
+        </button>
+        <div>
+          <div class="page-title" id="pageTitle">Dashboard</div>
+          <div class="page-subtitle">KYA-Limiter</div>
+        </div>
+        <div class="rtc-chip">
+          <svg viewBox="0 0 24 24"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/></svg>
+          <span class="rtc-val" id="currentTime">--/--/---- - --:--:--</span>
+        </div>
+        <button class="btn-rtc" onclick="openRTCModal()">
+          <svg viewBox="0 0 24 24"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zm4.2 14.2L11 13V7h1.5v5.2l4.5 2.7-.8 1.3z"/></svg>
+          Régler RTC
+        </button>
+      </div>
+      <div class="topbar-relay tr-on" id="topbarRelay">
+        <div class="topbar-relay-dot"></div>
+        <span id="topbarRelayLabel">Relais ON</span>
+      </div>
+    </div>
+
+    <div class="page-content">
+      <div class="container">
+
+        <!-- DASHBOARD -->
+        <div id="view-dashboard">
+          <div class="section-heading">Mesures électriques</div>
+          <div class="metrics-grid" style="grid-template-columns:repeat(5,1fr)">
+            <div class="metric-card" style="border-top-color:#4499ff;"><div class="metric-card-top"><div class="metric-card-icon"><svg viewBox="0 0 24 24"><path d="M11 15H6l7-14v8h5l-7 14v-8z"/></svg></div><span class="metric-card-lbl">Tension</span></div><div class="metric-card-val"><span id="v1">--</span></div><div class="metric-card-unit">V</div></div>
+            <div class="metric-card" style="border-top-color:#00d4aa;"><div class="metric-card-top"><div class="metric-card-icon" style="background:rgba(0,212,170,0.10)"><svg viewBox="0 0 24 24" style="fill:var(--secondary)"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm.5 13H11v-6h1.5v5.2l4.5 2.7-.8 1.3L12.5 15z"/></svg></div><span class="metric-card-lbl">Courant</span></div><div class="metric-card-val"><span id="i1">--</span></div><div class="metric-card-unit">A</div></div>
+            <div class="metric-card" style="border-top-color:#ffa502;"><div class="metric-card-top"><div class="metric-card-icon" style="background:rgba(255,165,2,0.10)"><svg viewBox="0 0 24 24" style="fill:#ffa502"><path d="M3.5 18.49l6-6.01 4 4L22 6.92l-1.41-1.41-7.09 7.97-4-4L2 16.99z"/></svg></div><span class="metric-card-lbl">Puissance</span></div><div class="metric-card-val"><span id="p1">--</span></div><div class="metric-card-unit">W</div></div>
+            <div class="metric-card" style="border-top-color:#2ed573;"><div class="metric-card-top"><div class="metric-card-icon" style="background:rgba(46,213,115,0.10)"><svg viewBox="0 0 24 24" style="fill:#2ed573"><path d="M12 5c-3.87 0-7 3.13-7 7h2c0-2.76 2.24-5 5-5s5 2.24 5 5h2c0-3.87-3.13-7-7-7zm1 9.29c.88-.39 1.5-1.26 1.5-2.29 0-1.38-1.12-2.5-2.5-2.5S9.5 10.62 9.5 12c0 1.02.62 1.9 1.5 2.29v3.3L7.59 21 9 22.41l3-3 3 3L16.41 21 13 17.59v-3.3z"/></svg></div><span class="metric-card-lbl">Fréquence</span></div><div class="metric-card-val"><span id="f1">--</span></div><div class="metric-card-unit">Hz</div></div>
+            <div class="metric-card" style="border-top-color:#7b9cc4;"><div class="metric-card-top"><div class="metric-card-icon" style="background:rgba(123,156,196,0.10)"><svg viewBox="0 0 24 24" style="fill:#7b9cc4"><path d="M13 3h-2v10h2V3zm4.83 2.17l-1.42 1.42C17.99 7.86 19 9.81 19 12c0 3.87-3.13 7-7 7s-7-3.13-7-7c0-2.19 1.01-4.14 2.58-5.42L6.17 5.17C4.23 6.82 3 9.26 3 12c0 4.97 4.03 9 9 9s9-4.03 9-9c0-2.74-1.23-5.18-3.17-6.83z"/></svg></div><span class="metric-card-lbl">Facteur P.</span></div><div class="metric-card-val"><span id="pf1">--</span></div><div class="metric-card-unit">phi</div></div>
+          </div>
+
+          <div class="section-heading">Énergie &amp; puissance</div>
+          <div class="bottom-row">
+            <!-- Carte Énergie journalière -->
+            <div class="energy-card">
+              <div class="energy-card-header">
+                <div class="energy-card-title">
+                  <svg viewBox="0 0 24 24"><path d="M5 9.2h3V19H5zM10.6 5h2.8v14h-2.8zm5.6 8H19v6h-2.8z"/></svg>
+                  Énergie journalière
+                </div>
+              </div>
+              <div class="energy-sub">Consommation du jour en cours</div>
+              <div class="progress-header">
+                <span class="progress-label">Utilisation journalière</span>
+                <span class="progress-value"><span id="progressPercent1">0</span>%</span>
+              </div>
+              <div class="progress-bar-container">
+                <div class="progress-fill" id="progressBar1" style="width:0%;background:var(--primary)"></div>
+              </div>
+              <div class="progress-ends">
+                <span id="energyConsumed1">0 kWh</span>
+                <span id="energyText1">0 / <span id="energyLimitDisp1">5</span> kWh</span>
+              </div>
+            </div>
+            <!-- Carte Puissance journalière -->
+            <div class="energy-card">
+              <div class="energy-card-header">
+                <div class="energy-card-title">
+                  <svg viewBox="0 0 24 24"><path d="M13 3h-2v10h2V3zm4.83 2.17l-1.42 1.42C17.99 7.86 19 9.81 19 12c0 3.87-3.13 7-7 7s-7-3.13-7-7c0-2.19 1.01-4.14 2.58-5.42L6.17 5.17C4.23 6.82 3 9.26 3 12c0 4.97 4.03 9 9 9s9-4.03 9-9c0-2.74-1.23-5.18-3.17-6.83z"/></svg>
+                  Puissance journalière
+                </div>
+              </div>
+              <div class="energy-sub">Consommation du jour en cours</div>
+              <div class="progress-header">
+                <span class="progress-label">Utilisation journalière</span>
+                <span class="progress-value"><span id="progressPercent2">0</span>%</span>
+              </div>
+              <div class="progress-bar-container">
+                <div class="progress-fill" id="progressBar2" style="width:0%;background:var(--primary)"></div>
+              </div>
+              <div class="progress-ends">
+                <span id="powerConsumed1">0 W</span>
+                <span id="powerText1">0 / <span id="powerLimitDisp1">1000</span> W</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- CONFIG -->
+        <div id="view-config" style="display:none;">
+          <div class="section-heading">Configuration des seuils</div>
+          <div class="cards-grid" id="pzemsGrid"></div>
+        </div>
+
+        <!-- FOOTER minimal -->
+        <footer class="footer">
+          <div class="footer-inner">
+            <div class="footer-logo">
+              <svg viewBox="0 0 24 24"><path d="M11 15H6l7-14v8h5l-7 14v-8z"/></svg>
+              KYA-Limiter
+            </div>
+            <div class="footer-copy">&copy; KYA-FlexyControl &middot; Contrôle Intelligent</div>
+          </div>
+        </footer>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal RTC -->
+<div class="modal-overlay" id="rtcModal">
+  <div class="modal-content">
+    <div class="modal-header"><h3 class="modal-title">Régler l&apos;heure RTC</h3><button class="modal-close" onclick="closeRTCModal()">&times;</button></div>
+    <div class="rtc-form">
+      <div class="rtc-group"><label class="rtc-label"><svg viewBox="0 0 24 24"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10z"/></svg>Date et heure actuelle</label><div class="current-time" id="currentRTCDateTime">--</div></div>
+      <div class="rtc-group"><label class="rtc-label" for="newDateTime"><svg viewBox="0 0 24 24"><path d="M9 11H7v2h2v-2zm4 0h-2v2h2v-2zm4 0h-2v2h2v-2zm2-7h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V9h14v11z"/></svg>Nouvelle date et heure</label><input type="datetime-local" id="newDateTime" class="rtc-input"></div>
+      <div class="rtc-group"><div style="font-size:0.82rem;color:var(--text-muted)">Format YYYY-MM-DD HH:MM:SS &middot; Heure 24h</div></div>
+      <div class="rtc-actions">
+        <button class="btn btn-primary btn-small" onclick="setRTC()"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>Appliquer</button>
+        <button class="btn btn-secondary btn-small" onclick="setNow()">Maintenant</button>
+        <button class="btn btn-secondary btn-small" onclick="getCurrentRTC()">Lire RTC</button>
+        <button class="btn btn-secondary btn-small" onclick="closeRTCModal()">Annuler</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal RTC Rapide -->
+<div class="modal-overlay" id="rtcQuickModal">
+  <div class="modal-content" style="max-width:400px;">
+    <div class="modal-header"><h3 class="modal-title">Contrôle RTC Rapide</h3><button class="modal-close" onclick="closeRTCQuickModal()">&times;</button></div>
+    <div class="rtc-form">
+      <div class="rtc-group"><label class="rtc-label">Date et heure</label><input type="datetime-local" id="rtcQuickDateTime" class="rtc-input"></div>
+      <div class="rtc-actions">
+        <button class="btn btn-primary btn-small" onclick="setRTCQuick()">Définir</button>
+        <button class="btn btn-secondary btn-small" onclick="setNowQuick()">Maintenant</button>
+        <button class="btn btn-secondary btn-small" onclick="getRTCQuick()">Lire</button>
+      </div>
+      <div id="rtcQuickStatusModal" style="margin-top:14px;"></div>
+    </div>
+  </div>
+</div>
+
+<div class="toast-container" id="toastContainer"></div>
+
+<script>
+const NB_PZEMS=1;
+let refreshInterval=null,autoRefresh=true,isRefreshing=false;
+let lastSaveTimestamps=Array(NB_PZEMS).fill(null);
+const DEFAULT_POWER_LIMIT=1000,DEFAULT_ENERGY_LIMIT=5;
+let limits={power:[DEFAULT_POWER_LIMIT],energy:[DEFAULT_ENERGY_LIMIT]};
+
+const ICONES={
+  bolt:'<svg viewBox="0 0 24 24"><path d="M11 15H6l7-14v8h5l-7 14v-8z"/></svg>',
+  tachometer:'<svg viewBox="0 0 24 24"><path d="M11.5 2C6.81 2 3 5.81 3 10.5S6.81 19 11.5 19h.5v3c4.86-2.34 8-7 8-11.5C20 5.81 16.19 2 11.5 2z"/></svg>',
+  chart:'<svg viewBox="0 0 24 24"><path d="M3.5 18.49l6-6.01 4 4L22 6.92l-1.41-1.41-7.09 7.97-4-4L2 16.99z"/></svg>',
+  bar:'<svg viewBox="0 0 24 24"><path d="M5 9.2h3V19H5zM10.6 5h2.8v14h-2.8zm5.6 8H19v6h-2.8z"/></svg>',
+  wave:'<svg viewBox="0 0 24 24"><path d="M12 5c-3.87 0-7 3.13-7 7h2c0-2.76 2.24-5 5-5s5 2.24 5 5h2c0-3.87-3.13-7-7-7z"/></svg>',
+  power:'<svg viewBox="0 0 24 24"><path d="M13 3h-2v10h2V3zm4.83 2.17l-1.42 1.42C17.99 7.86 19 9.81 19 12c0 3.87-3.13 7-7 7s-7-3.13-7-7c0-2.19 1.01-4.14 2.58-5.42L6.17 5.17C4.23 6.82 3 9.26 3 12c0 4.97 4.03 9 9 9s9-4.03 9-9c0-2.74-1.23-5.18-3.17-6.83z"/></svg>',
+  limit:'<svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zM4 12c0-4.42 3.58-8 8-8 1.85 0 3.55.63 4.9 1.69L5.69 16.9C4.63 15.55 4 13.85 4 12zm8 8c-1.85 0-3.55-.63-4.9-1.69L18.31 7.1C19.37 8.45 20 10.15 20 12c0 4.42-3.58 8-8 8z"/></svg>',
+  checkCircle:'<svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>',
+  warning:'<svg viewBox="0 0 24 24"><path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"/></svg>',
+  error:'<svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>',
+  info:'<svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>',
+  save:'<svg viewBox="0 0 24 24"><path d="M17 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V7l-4-4zm-5 16c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3zm3-10H5V5h10v4z"/></svg>',
+  reset:'<svg viewBox="0 0 24 24"><path d="M17.65 6.35C16.2 4.9 14.21 4 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.04 4-5.65 4-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/></svg>'
+};
+const pzemNames=['Charge'],pzemIcons=['bolt'];
+
+function openMobileSidebar(){document.getElementById('appSidebar').classList.add('mobile-open');document.getElementById('sidebarBackdrop').classList.add('active');}
+function closeMobileSidebar(){document.getElementById('appSidebar').classList.remove('mobile-open');document.getElementById('sidebarBackdrop').classList.remove('active');}
+
+function setActivePage(p){
+  ['dashboard','config'].forEach(x=>{document.getElementById('view-'+x).style.display=x===p?'':'none';document.getElementById('nav'+x.charAt(0).toUpperCase()+x.slice(1)).classList.toggle('active',x===p);});
+  document.getElementById('pageTitle').textContent={dashboard:'Dashboard',config:'Configuration'}[p]||p;
+  closeMobileSidebar();
+}
+
+function initTheme(){const s=localStorage.getItem('theme')||'dark';if(s==='light'){document.body.classList.add('light-theme');updateThemeUI(true);}}
+function toggleTheme(){const l=document.body.classList.toggle('light-theme');localStorage.setItem('theme',l?'light':'dark');updateThemeUI(l);showToast(l?'Thème clair activé':'Thème sombre activé','success');}
+function updateThemeUI(l){
+  const ic=document.getElementById('themeIcon'),lb=document.getElementById('themeBtnLabel');
+  if(l){ic.innerHTML='<path d="M12 7c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5zM2 13h2c.55 0 1-.45 1-1s-.45-1-1-1H2c-.55 0-1 .45-1 1s.45 1 1 1zm18 0h2c.55 0 1-.45 1-1s-.45-1-1-1h-2c-.55 0-1 .45-1 1s.45 1 1 1zM11 2v2c0 .55.45 1 1 1s1-.45 1-1V2c0-.55-.45-1-1-1s-1 .45-1 1zm0 18v2c0 .55.45 1 1 1s1-.45 1-1v-2c0-.55-.45-1-1-1s-1 .45-1 1z"/>';lb.textContent='Thème sombre';}
+  else{ic.innerHTML='<path d="M21.64 13a1 1 0 0 0-1.05-.14 8.05 8.05 0 0 1-3.37.73 8.15 8.15 0 0 1-8.14-8.1 8.59 8.59 0 0 1 .25-2A1 1 0 0 0 8 2.36 10.14 10.14 0 1 0 22 14.05 1 1 0 0 0 21.64 13Z"/>';lb.textContent='Thème clair';}
+}
+
+function updateSystemTime(){const now=new Date();const el=document.getElementById('currentTime');if(el)el.textContent=now.toLocaleDateString('fr-FR')+' - '+now.toLocaleTimeString('fr-FR');}
+
+/* Bar color: <50% blue, 50-80% yellow, >80% red */
+function barColor(pct){if(pct>=80)return'var(--danger)';if(pct>=50)return'var(--warning)';return'var(--primary)';}
+
+/* Sync limit denominators in dashboard */
+function syncLimitDisplays(){
+  for(let i=1;i<=NB_PZEMS;i++){
+    const e=document.getElementById('energyLimitDisp'+i);if(e)e.textContent=limits.energy[i-1];
+    const p=document.getElementById('powerLimitDisp'+i);if(p)p.textContent=limits.power[i-1];
+  }
+}
+
+/* Live update on input change in config */
+function updateLimitDisplay(n,type,val){
+  const v=parseFloat(val);if(isNaN(v)||v<=0)return;
+  if(type==='power'){
+    limits.power[n-1]=v;
+    const cp=document.getElementById('currentPowerLimit'+n);if(cp)cp.textContent=v+' W';
+    const pld=document.getElementById('powerLimitDisp'+n);if(pld)pld.textContent=v;
+    const pb=document.getElementById('progressBar2');
+    if(pb){const cur=parseFloat(pb.dataset.consumed||0);const pct=Math.min((cur/v)*100,100);pb.style.width=pct+'%';pb.style.background=barColor(pct);const pp=document.getElementById('progressPercent2');if(pp)pp.textContent=pct.toFixed(1);}
+  }else{
+    limits.energy[n-1]=v;
+    const ce=document.getElementById('currentEnergyLimit'+n);if(ce)ce.textContent=v+' kWh';
+    const eld=document.getElementById('energyLimitDisp'+n);if(eld)eld.textContent=v;
+    const pb=document.getElementById('progressBar1');
+    if(pb){const cur=parseFloat(pb.dataset.consumed||0);const pct=Math.min((cur/v)*100,100);pb.style.width=pct+'%';pb.style.background=barColor(pct);const pp=document.getElementById('progressPercent1');if(pp)pp.textContent=pct.toFixed(1);}
+  }
+}
+
+function createPZEMCards(){
+  const g=document.getElementById('pzemsGrid');if(!g)return;g.innerHTML='';
+  for(let i=1;i<=NB_PZEMS;i++){
+    const c=document.createElement('div');c.className='pzem-card';c.id='pzemCardC'+i;
+    c.innerHTML=`
+      <div class="card-header">
+        <div class="card-title"><div class="card-icon">${ICONES[pzemIcons[i-1]]}</div><div class="card-text"><h3>${pzemNames[i-1]}</h3><p>Relais ${i} &middot; Configuration</p></div></div>
+        <div class="status-indicator status-off" id="statusC${i}"><span>Lecture...</span></div>
+      </div>
+      <div class="limits-config">
+        <div class="limits-header">
+          <div class="limits-title">${ICONES.limit}<span>Configuration des seuils</span></div>
+          <div class="last-save-info">Sauvegarde&nbsp;: <span id="lastSave${i}" class="save-timestamp">--</span></div>
+        </div>
+        <div class="limits-form">
+          <div class="limit-group">
+            <label class="limit-label" for="powerLimitInput${i}">${ICONES.power}<span>Limite de puissance</span></label>
+            <div class="limit-input-container">
+              <input type="number" step="10" min="10" max="10000" id="powerLimitInput${i}" class="limit-input" value="${limits.power[i-1]}" placeholder="W" oninput="updateLimitDisplay(${i},'power',this.value)">
+              <span class="limit-unit">W</span>
+            </div>
+          </div>
+          <div class="limit-group">
+            <label class="limit-label" for="energyLimitInput${i}">${ICONES.bar}<span>Limite d&apos;énergie</span></label>
+            <div class="limit-input-container">
+              <input type="number" step="0.1" min="0.1" max="100" id="energyLimitInput${i}" class="limit-input" value="${limits.energy[i-1]}" placeholder="kWh" oninput="updateLimitDisplay(${i},'energy',this.value)">
+              <span class="limit-unit">kWh</span>
+            </div>
+          </div>
+        </div>
+        <div class="current-limits">
+          <div class="current-limit-item"><div class="current-limit-label">Limite puissance actuelle</div><div class="current-limit-value" id="currentPowerLimit${i}">${limits.power[i-1]} W</div></div>
+          <div class="current-limit-item"><div class="current-limit-label">Limite énergie actuelle</div><div class="current-limit-value" id="currentEnergyLimit${i}">${limits.energy[i-1]} kWh</div></div>
+        </div>
+        <div class="limit-actions" style="margin-top:12px;">
+          <button class="btn btn-primary" onclick="saveLimits(${i})">${ICONES.save}Sauvegarder</button>
+          <button class="btn btn-secondary" onclick="resetLimits(${i})">${ICONES.reset}Réinitialiser</button>
+        </div>
+        <div style="margin-top:14px;border-top:1px solid var(--border-color);padding-top:14px;">
+          <div class="section-heading" style="margin-bottom:10px;">Protection puissance</div>
+          <div class="retry-delay-control">
+            <div class="retry-delay-header"><svg viewBox="0 0 24 24" width="20" height="20" style="fill:var(--secondary)"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/></svg><h4>Temporisation après dépassement</h4></div>
+            <div class="retry-delay-form"><div class="retry-delay-group"><label class="retry-delay-label" for="retryDelayInput">Délai avant réactivation (secondes)</label><input type="number" id="retryDelayInput" min="10" max="3600" value="300" step="5" class="retry-delay-input"></div><div><button class="btn btn-primary" onclick="setRetryDelay()">Appliquer</button></div></div>
+          </div>
+          <div class="retry-delay-control">
+            <div class="retry-delay-header"><svg viewBox="0 0 24 24" width="20" height="20" style="fill:var(--secondary)"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/></svg><h4>Temporisation avant ré-enclenchement</h4></div>
+            <div class="retry-delay-form"><div class="retry-delay-group"><label class="retry-delay-label" for="retryDelayInput2">Délai avant réactivation (secondes)</label><input type="number" id="retryDelayInput2" min="10" max="3600" value="300" step="5" class="retry-delay-input"></div><div><button class="btn btn-primary" onclick="setRetryDelay2()">Appliquer</button></div></div>
+          </div>
+        </div>
+        <div style="margin-top:16px;padding-top:14px;border-top:1px solid rgba(0,102,255,0.12);">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:8px;">
+            <div style="display:flex;align-items:center;gap:8px;font-size:13px;font-weight:600;color:var(--text-primary);"><svg width="15" height="15" viewBox="0 0 24 24" style="fill:var(--secondary)"><path d="M13 3h-2v10h2V3zm4.83 2.17l-1.42 1.42C17.99 7.86 19 9.81 19 12c0 3.87-3.13 7-7 7s-7-3.13-7-7c0-2.19 1.01-4.14 2.58-5.42L6.17 5.17C4.23 6.82 3 9.26 3 12c0 4.97 4.03 9 9 9s9-4.03 9-9c0-2.74-1.23-5.18-3.17-6.83z"/></svg>Programmation horaire</div>
+            <div style="display:flex;background:var(--bg-metric);border:1px solid var(--border-color);border-radius:8px;overflow:hidden;">
+              <button id="btnDesactiver${i}" onclick="setMode(${i},'desactiver')" style="padding:6px 16px;font-size:12px;font-weight:600;border:none;cursor:pointer;background:#0066ff;color:white;">Désactiver</button>
+              <button id="btnActiver${i}" onclick="setMode(${i},'activer')" style="padding:6px 16px;font-size:12px;font-weight:600;border:none;cursor:pointer;background:transparent;color:var(--text-muted);">Activer</button>
+            </div>
+          </div>
+          <div id="scheduleSection${i}" style="opacity:0.35;pointer-events:none;transition:opacity 0.25s;">
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+              <div style="display:flex;flex-direction:column;gap:6px;"><label style="font-size:11px;color:var(--text-muted)">Heure de début</label><input type="time" id="scheduleStart${i}" value="06:00" style="width:100%;padding:9px 12px;background:var(--bg-input);border:1px solid var(--border-color);border-radius:var(--radius-sm);color:var(--text-primary);font-size:14px;font-family:monospace;outline:none;"></div>
+              <div style="display:flex;flex-direction:column;gap:6px;"><label style="font-size:11px;color:var(--text-muted)">Heure de fin</label><input type="time" id="scheduleEnd${i}" value="22:00" style="width:100%;padding:9px 12px;background:var(--bg-input);border:1px solid var(--border-color);border-radius:var(--radius-sm);color:var(--text-primary);font-size:14px;font-family:monospace;outline:none;"></div>
+            </div>
+            <div style="margin-top:10px;"><button class="btn btn-primary" onclick="saveSchedule(${i})" style="flex:1;">${ICONES.save}Enregistrer la plage</button></div>
+          </div>
+        </div>
+      </div>`;
+    g.appendChild(c);
+  }
+}
+
+function saveLimits(n){
+  const pw=parseFloat(document.getElementById('powerLimitInput'+n).value);
+  const en=parseFloat(document.getElementById('energyLimitInput'+n).value);
+  if(!pw||pw<10||pw>10000){showToast('Puissance invalide (10-10000W)','warning');return;}
+  if(!en||en<0.1||en>100){showToast('Energie invalide (0.1-100kWh)','warning');return;}
+  limits.power[n-1]=pw;limits.energy[n-1]=en;
+  document.getElementById('currentPowerLimit'+n).textContent=pw+' W';
+  document.getElementById('currentEnergyLimit'+n).textContent=en+' kWh';
+  syncLimitDisplays();lastSaveTimestamps[n-1]=new Date();updateSaveTimestamp(n);
+  sendLimitsToESP32(n,pw,en);showToast('Seuils sauvegardés ('+pw+'W, '+en+'kWh)','success');
+}
+function updateSaveTimestamp(n){const ts=lastSaveTimestamps[n-1];const el=document.getElementById('lastSave'+n);if(el)el.textContent=ts?ts.toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit',second:'2-digit'}):'--';}
+function resetLimits(n){if(confirm('Réinitialiser aux valeurs par défaut ?')){document.getElementById('powerLimitInput'+n).value=DEFAULT_POWER_LIMIT;document.getElementById('energyLimitInput'+n).value=DEFAULT_ENERGY_LIMIT;saveLimits(n);}}
+
+const pzemModes=Array(NB_PZEMS).fill('desactiver');
+function setMode(n,mode){
+  pzemModes[n-1]=mode;
+  const bD=document.getElementById('btnDesactiver'+n),bA=document.getElementById('btnActiver'+n),sc=document.getElementById('scheduleSection'+n);
+  if(mode==='activer'){bA.style.background='#0066ff';bA.style.color='white';bD.style.background='transparent';bD.style.color='var(--text-muted)';sc.style.opacity='1';sc.style.pointerEvents='all';showToast('Programmation activée','success');}
+  else{bD.style.background='#0066ff';bD.style.color='white';bA.style.background='transparent';bA.style.color='var(--text-muted)';sc.style.opacity='0.35';sc.style.pointerEvents='none';showToast('Programmation désactivée','info');}
+}
+function saveSchedule(n){const s=document.getElementById('scheduleStart'+n)?.value,e=document.getElementById('scheduleEnd'+n)?.value;if(!s||!e){showToast('Définir les deux horaires','warning');return;}if(s>=e){showToast('Fin doit être après le début','warning');return;}fetch('/api/set-schedule',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({pzem:n-1,start:s,end:e})}).then(r=>r.json()).then(d=>{if(d.status==='success')showToast('Plage : '+s+' → '+e,'success');else showToast('Erreur : '+(d.error||'?'),'error');}).catch(()=>showToast('Erreur ESP32','error'));}
+function saveAllSettings(){if(confirm('Sauvegarder tous les paramètres ?')){for(let i=1;i<=NB_PZEMS;i++)saveLimits(i);localStorage.setItem('pzem_limits',JSON.stringify(limits));showToast('Paramètres sauvegardés','success');}}
+function loadSettings(){const s=localStorage.getItem('pzem_limits');if(s){try{limits=JSON.parse(s);}catch(e){}}}
+function sendLimitsToESP32(n,pw,en){fetch('/api/set-limits',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({pzem:n-1,powerLimit:pw,energyLimit:en})}).then(r=>r.json()).then(()=>{lastSaveTimestamps[n-1]=new Date();updateSaveTimestamp(n);}).catch(()=>showToast('Erreur ESP32','error'));}
+function loadLimitsFromESP32(){fetch('/api/get-limits').then(r=>r.json()).then(d=>{if(d&&Array.isArray(d.power)&&Array.isArray(d.energy)){limits.power=d.power;limits.energy=d.energy;for(let i=1;i<=NB_PZEMS;i++){const pi=document.getElementById('powerLimitInput'+i);const ei=document.getElementById('energyLimitInput'+i);const cp=document.getElementById('currentPowerLimit'+i);const ce=document.getElementById('currentEnergyLimit'+i);if(pi)pi.value=limits.power[i-1];if(ei)ei.value=limits.energy[i-1];if(cp)cp.textContent=limits.power[i-1]+' W';if(ce)ce.textContent=limits.energy[i-1]+' kWh';lastSaveTimestamps[i-1]=new Date();updateSaveTimestamp(i);}syncLimitDisplays();localStorage.setItem('pzem_limits',JSON.stringify(limits));showToast("Paramètres chargés depuis l'ESP32",'success');}}).catch(()=>{});}
+function forceSaveToESP32(){if(confirm("Forcer la sauvegarde sur l'ESP32 ?")){fetch('/api/force-save',{method:'POST'}).then(r=>r.json()).then(()=>{showToast("Sauvegarde forcée",'success');const now=new Date();for(let i=1;i<=NB_PZEMS;i++){lastSaveTimestamps[i-1]=now;updateSaveTimestamp(i);}}).catch(()=>showToast('Erreur','error'));}}
+function startAutoRefresh(){if(refreshInterval)clearInterval(refreshInterval);refreshInterval=setInterval(refreshData,2000);}
+function toggleAutoRefresh(){autoRefresh=!autoRefresh;if(autoRefresh){startAutoRefresh();showToast('Auto-refresh activé','success');}else{clearInterval(refreshInterval);refreshInterval=null;showToast('Auto-refresh désactivé','warning');}}
+
+async function refreshData(){
+  if(isRefreshing)return;isRefreshing=true;
+  try{
+    const r=await fetch('/data');if(!r.ok)throw new Error('HTTP '+r.status);
+    const data=await r.json();
+    if(Array.isArray(data)){
+      data.forEach((pzem,idx)=>{
+        const i=idx+1;
+        updateMetric('v'+i,pzem.voltage,'V',1);updateMetric('i'+i,pzem.current,'A',3);
+        updateMetric('p'+i,pzem.power,'W',2);updateMetric('f'+i,pzem.frequency,'Hz',1);updateMetric('pf'+i,pzem.pf,null,2);
+        // Energy bar
+        if(pzem.energy!=null){
+          const ep=Math.min((pzem.energy/limits.energy[i-1])*100,100);
+          const pb1=document.getElementById('progressBar1');
+          if(pb1){pb1.style.width=ep+'%';pb1.style.background=barColor(ep);pb1.dataset.consumed=pzem.energy;}
+          const pp1=document.getElementById('progressPercent1');if(pp1)pp1.textContent=ep.toFixed(1);
+          const ec1=document.getElementById('energyConsumed'+i);if(ec1)ec1.textContent=pzem.energy.toFixed(2)+' kWh';
+          const et1=document.getElementById('energyText'+i);if(et1)et1.innerHTML=pzem.energy.toFixed(2)+' / <span id="energyLimitDisp'+i+'">'+limits.energy[i-1]+'</span> kWh';
+        }
+        // Power bar
+        if(pzem.power!=null){
+          const pp=Math.min((pzem.power/limits.power[i-1])*100,100);
+          const pb2=document.getElementById('progressBar2');
+          if(pb2){pb2.style.width=pp+'%';pb2.style.background=barColor(pp);pb2.dataset.consumed=pzem.power;}
+          const pp2=document.getElementById('progressPercent2');if(pp2)pp2.textContent=pp.toFixed(1);
+          const pc1=document.getElementById('powerConsumed'+i);if(pc1)pc1.textContent=pzem.power.toFixed(1)+' W';
+          const pt1=document.getElementById('powerText'+i);if(pt1)pt1.innerHTML=pzem.power.toFixed(1)+' / <span id="powerLimitDisp'+i+'">'+limits.power[i-1]+'</span> W';
+        }
+        // Relay topbar
+        const tr=document.getElementById('topbarRelay');const trl=document.getElementById('topbarRelayLabel');
+        if(tr&&trl){tr.className='topbar-relay '+(pzem.relay?'tr-on':'tr-off');trl.textContent='Relais '+(pzem.relay?'ON':'OFF');}
+        // Status in config card
+        const st=document.getElementById('statusC'+i);if(st){st.className='status-indicator '+(pzem.voltage>0?'status-on':'status-off');st.innerHTML='<span>'+(pzem.voltage>0?'Actif':'Erreur')+'</span>';}
+      });
+    }
+    const ct=document.getElementById('connectionText');if(ct)ct.textContent="Connecté à l'ESP32";
+  }catch(e){
+    const ct=document.getElementById('connectionText');if(ct)ct.textContent='Déconnecté';
+    showToast("Connexion ESP32 perdue",'error');
+  }finally{isRefreshing=false;}
+}
+
+function updateMetric(id,val,unit,dec){const el=document.getElementById(id);if(!el)return;if(val!=null&&!isNaN(val)&&val>0){el.textContent=val.toFixed(dec);if(unit){const u=el.parentElement.querySelector('.metric-unit');if(u)u.textContent=unit;}}else{el.textContent='--';}}
+function manualRefresh(){showToast('Actualisation...','info');refreshData();}
+
+function showToast(msg,type='info'){
+  const c=document.getElementById('toastContainer');const t=document.createElement('div');t.className='toast '+type;
+  const ic={success:ICONES.checkCircle,error:ICONES.error,warning:ICONES.warning,info:ICONES.info};
+  t.innerHTML='<div>'+(ic[type]||ic.info)+'</div><div class="toast-message">'+msg+'</div>';
+  c.appendChild(t);if(c.children.length>5)c.children[0].remove();
+  setTimeout(()=>{t.style.opacity='0';t.style.transform='translateX(100%)';setTimeout(()=>t.remove(),300);},4000);
+}
+
+function openRTCModal(){document.getElementById('rtcModal').classList.add('active');document.body.style.overflow='hidden';updateCurrentRTCDisplay();setNow();}
+function closeRTCModal(){document.getElementById('rtcModal').classList.remove('active');document.body.style.overflow='';}
+function updateCurrentRTCDisplay(){fetch('/api/system').then(r=>r.json()).then(d=>{const el=document.getElementById('currentRTCDateTime');if(d.rtc_datetime&&d.rtc_datetime!=='N/A'){el.textContent=d.rtc_datetime;el.style.color='var(--success)';}else{el.textContent='RTC non disponible';el.style.color='var(--danger)';}}).catch(()=>{const el=document.getElementById('currentRTCDateTime');if(el)el.textContent='Erreur de connexion';});}
+function fmt(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')+' '+String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0')+':'+String(d.getSeconds()).padStart(2,'0');}
+async function setRTC(){const dt=document.getElementById('newDateTime').value;if(!dt){showToast('Choisir une date','warning');return;}fetch('/api/set-rtc',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({datetime:fmt(new Date(dt))})}).then(r=>r.json()).then(d=>{if(d.status==='success'){showToast('RTC mis à jour','success');updateCurrentRTCDisplay();closeRTCModal();setTimeout(refreshData,1000);}else throw new Error(d.error||'Erreur');}).catch(e=>showToast('Erreur: '+e.message,'error'));}
+function setNow(){const now=new Date();document.getElementById('newDateTime').value=new Date(now.getTime()-now.getTimezoneOffset()*60000).toISOString().slice(0,16);}
+async function getCurrentRTC(){try{const r=await fetch('/api/get-rtc');if(!r.ok)throw new Error();const d=await r.json();document.getElementById('newDateTime').value=d.datetime.replace(' ','T').slice(0,16);showToast('RTC lu: '+d.datetime,'success');}catch{showToast('Erreur lecture RTC','error');}}
+function openRTCQuickModal(){document.getElementById('rtcQuickModal').classList.add('active');document.body.style.overflow='hidden';setNowQuick();}
+function closeRTCQuickModal(){document.getElementById('rtcQuickModal').classList.remove('active');document.body.style.overflow='';}
+function setNowQuick(){const now=new Date();const el=document.getElementById('rtcQuickDateTime');if(el)el.value=new Date(now.getTime()-now.getTimezoneOffset()*60000).toISOString().slice(0,16);}
+async function getRTCQuick(){try{const r=await fetch('/api/get-rtc');if(!r.ok)throw new Error();const d=await r.json();if(d.datetime){document.getElementById('rtcQuickDateTime').value=d.datetime.replace(' ','T').slice(0,16);document.getElementById('rtcQuickStatusModal').innerHTML='<div class="current-time" style="color:var(--success);">'+d.datetime+'</div>';}}catch{document.getElementById('rtcQuickStatusModal').innerHTML='<div class="current-time" style="color:var(--danger);">Erreur lecture</div>';}}
+async function setRTCQuick(){const dt=document.getElementById('rtcQuickDateTime').value;if(!dt){document.getElementById('rtcQuickStatusModal').innerHTML='<div class="current-time" style="color:var(--warning);">Choisir une date</div>';return;}try{const r=await fetch('/api/set-rtc',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({datetime:fmt(new Date(dt))})});const data=await r.json();if(r.ok&&data.status==='success'){document.getElementById('rtcQuickStatusModal').innerHTML='<div class="current-time" style="color:var(--success);">'+data.datetime+'</div>';setTimeout(closeRTCQuickModal,2000);showToast('RTC mis à jour','success');setTimeout(refreshData,1000);}else{document.getElementById('rtcQuickStatusModal').innerHTML='<div class="current-time" style="color:var(--danger);">'+(data.error||'Erreur')+'</div>';}}catch{document.getElementById('rtcQuickStatusModal').innerHTML='<div class="current-time" style="color:var(--danger);">Erreur connexion</div>';}}
+function loadRetryDelay(){fetch('/api/get-retry-delay').then(r=>r.json()).then(d=>{const el=document.getElementById('retryDelayInput');if(el)el.value=d.delay;}).catch(()=>{});}
+function setRetryDelay(){const delay=parseInt(document.getElementById('retryDelayInput').value);if(delay<10||delay>3600){showToast('Délai invalide (10-3600s)','warning');return;}fetch('/api/set-retry-delay',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({delay})}).then(r=>r.json()).then(d=>{if(d.status==='success')showToast('Délai mis à jour','success');else showToast('Erreur: '+d.error,'error');}).catch(()=>showToast('Erreur communication','error'));}
+function setRetryDelay2(){const delay=parseInt(document.getElementById('retryDelayInput2').value);if(delay<10||delay>3600){showToast('Délai invalide (10-3600s)','warning');return;}fetch('/api/set-retry-delay2',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({delay})}).then(r=>r.json()).then(d=>{if(d.status==='success')showToast('Délai 2 mis à jour','success');else showToast('Erreur: '+d.error,'error');}).catch(()=>showToast('Erreur communication','error'));}
+
+function init(){
+  initTheme();createPZEMCards();loadSettings();loadRetryDelay();syncLimitDisplays();
+  if(autoRefresh)startAutoRefresh();
+  refreshData();setInterval(updateSystemTime,1000);loadLimitsFromESP32();
+  document.addEventListener('keydown',e=>{
+    if(e.ctrlKey&&e.key==='r'){e.preventDefault();manualRefresh();}
+    if(e.ctrlKey&&e.key==='a'){e.preventDefault();toggleAutoRefresh();}
+    if(e.ctrlKey&&e.key==='t'){e.preventDefault();toggleTheme();}
+    if(e.ctrlKey&&e.key==='s'){e.preventDefault();saveAllSettings();}
+    if(e.ctrlKey&&e.key==='f'){e.preventDefault();forceSaveToESP32();}
+    if(e.ctrlKey&&e.key==='h'){e.preventDefault();openRTCModal();}
+    if(e.ctrlKey&&e.key==='q'){e.preventDefault();openRTCQuickModal();}
+  });
+  window.addEventListener('online',()=>{showToast('Connexion rétablie','success');refreshData();});
+  window.addEventListener('offline',()=>showToast('Mode hors ligne','warning'));
+  setInterval(()=>{if(document.getElementById('rtcModal').classList.contains('active'))updateCurrentRTCDisplay();},30000);
+}
+document.addEventListener('DOMContentLoaded',init);
+</script>
+</body>
+</html>

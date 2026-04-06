@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>KYA — Surveillance Énergétique</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="manifest" href="manifest.json" />
+</head>
+<body>
+<div id="app">
+
+    <header class="topbar">
+        <div class="topbar-brand">
+            <div class="sb-brand-icon">
+                <img src="./kya_logo_light.png" alt="Logo KYA" />
+            </div>
+            <div>
+                <div class="brand-text-title">Surveillance Énergétique</div>
+                <div class="brand-text-sub">Système triphasé · KYA-Energy</div>
+            </div>
+        </div>
+        <div class="topbar-right">
+            <span class="live-badge">
+                <span class="dot-live"></span> Temps réel
+            </span>
+            <button class="theme-toggle" id="themeToggle">Thème sombre</button>
+        </div>
+    </header>
+
+    <section class="phases-row" id="phasesRow"></section>
+
+    <div class="controls-bar">
+        <span class="ctrl-section-label">Facteur</span>
+        <div class="btn-group" id="factorGroup">
+            <button class="factor-btn active" data-key="energie"   data-unit="kWh">Énergie</button>
+            <button class="factor-btn"        data-key="courant"   data-unit="A"  >Courant</button>
+            <button class="factor-btn"        data-key="puissance" data-unit="kW" >Puissance</button>
+            <button class="factor-btn"        data-key="tension"   data-unit="V"  >Tension</button>
+        </div>
+
+        <span class="ctrl-section-label">Phase</span>
+        <div class="btn-group" id="phaseGroup">
+            <button class="phase-btn active" data-phase="L1">L1</button>
+            <button class="phase-btn"        data-phase="L2">L2</button>
+            <button class="phase-btn"        data-phase="L3">L3</button>
+        </div>
+
+        <div class="date-wrap">
+            <span class="date-label">Période</span>
+            <div class="datetime-group">
+                <input type="date" id="dateInput" />
+            </div>
+            <div class="datetime-group">
+                <input type="time" id="timeStart" step="3600" placeholder="Début" />
+                <span class="date-separator">→</span>
+                <input type="time" id="timeEnd" step="3600" placeholder="Fin" />
+            </div>
+            <button class="reset-time-btn" id="resetTime">✕ Plage</button>
+        </div>
+    </div>
+
+    <div class="chart-section">
+        <div class="chart-header">
+            <div>
+                <div class="chart-title" id="chartTitle">Énergie</div>
+                <div class="chart-subtitle" id="chartSubtitle">Évolution sur 24h · Phase L1</div>
+            </div>
+        </div>
+        <div class="chart-card">
+            <div class="chart-wrap">
+                <div class="chart-loader hidden" id="chartLoader">Chargement...</div>
+                <canvas id="mainChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script src="js/config.js"></script>
+<script src="js/api.js"></script>
+<script src="js/chart.js"></script>
+<script src="js/dashboard.js"></script>
+</body>
+</html>

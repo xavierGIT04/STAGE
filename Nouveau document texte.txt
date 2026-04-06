@@ -1,0 +1,5 @@
+l'objectif n'est pas de reproduire une plateforme pour le KYA-SOP. mais de faire une plateforme flexible pour gérer les business modèles; l'entreprise de fait que vendre les KYA-SOP. il y a et il y aura des produits dans le future ou meme d'autre projet qui demanderons un business modèle et c'est la que notre application interviendrai; je ne sais pas si tu comprends un peu.
+
+donc tu t'es uniquement focaliser sur produit KYA-SOP qui se trouve  dans le fichier excel ce qui ne devrait pas etre le cas. mon idée derrière en te donnant le fichier excel c'était pour que tu puisse débuter en ayant qlq chose à la main. 
+
+merci de prendre cela en considération

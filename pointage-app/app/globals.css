@@ -1,0 +1,84 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* ── Palette KYA-Energy ── */
+  --kya-green:        #1ca18c;
+
+  --kya-green-light:  #e8f5ee;
+  --kya-green-mid:    #c8e6d4;
+  --kya-green-border: #a3d4b8;
+
+  --kya-orange:       #E8761A;
+  --kya-orange-light: #fef3e8;
+  --kya-orange-border:#f5c99a;
+
+  --kya-red:          #c0392b;
+  --kya-red-light:    #fdf0ee;
+  --kya-red-border:   #e8b4ae;
+
+  /* ── Neutres ── */
+  --bg:               #f4f6f4;
+  --surface:          #ffffff;
+  --border:           #dde5e0;
+  --border-soft:      #edf2ef;
+  --text-primary:     #0a1a12;
+  --text-sec:         #2d4a38;
+  --text-muted:       #7a9a87;
+
+  /* ── Shadows ── */
+  --shadow-sm:        0 1px 4px rgba(13,92,61,0.06);
+  --shadow-md:        0 4px 20px rgba(13,92,61,0.10);
+
+  /* ── Aliases pour compatibilité composants ── */
+  --green:            var(--kya-green);
+  --green-light:      var(--kya-green-light);
+  --green-mid:        var(--kya-green-mid);
+  --green-border:     var(--kya-green-border);
+  --red:              var(--kya-red);
+  --red-light:        var(--kya-red-light);
+  --red-border:       var(--kya-red-border);
+  --amber:            var(--kya-orange);
+  --amber-light:      var(--kya-orange-light);
+  --amber-border:     var(--kya-orange-border);
+  --indigo:           #1a4d6e;
+  --indigo-light:     #e8f0f5;
+  --indigo-border:    #a3c4d8;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  background: var(--bg);
+  color: var(--text-primary);
+  font-family: 'Outfit', sans-serif;
+  font-size: 14px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+::-webkit-scrollbar { width: 4px; height: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--kya-green-border); border-radius: 2px; }
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes slideIn {
+  from { opacity: 0; transform: translateX(-8px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+@keyframes pulseGreen {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(13,92,61,0.3); }
+  50%       { box-shadow: 0 0 0 6px rgba(13,92,61,0); }
+}
+
+.fade-up  { animation: fadeUp  0.35s ease both; }
+.slide-in { animation: slideIn 0.3s  ease both; }
