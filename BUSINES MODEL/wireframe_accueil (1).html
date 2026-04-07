@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Wireframe — Page d'accueil | KYA Business Model Studio</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+      background: #F3F4F6;
+      min-height: 100vh;
+      padding: 32px 24px;
+      color: #111827;
+    }
+
+    /* ── Meta label ── */
+    .meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 10px;
+      max-width: 960px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .meta-left  { font-size: 12px; font-weight: 600; color: #6B7280; text-transform: uppercase; letter-spacing: 0.08em; }
+    .meta-right { font-size: 12px; color: #6B7280; }
+
+    /* ── Frame ── */
+    .frame {
+      max-width: 960px;
+      margin: 0 auto;
+      border: 1px solid #D1D5DB;
+      border-radius: 12px;
+      overflow: hidden;
+      background: #fff;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+    }
+
+    /* ── Navbar ── */
+    .navbar {
+      background: #0D2B55;
+      padding: 12px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .navbar-left  { display: flex; align-items: center; gap: 12px; }
+    .navbar-right { display: flex; align-items: center; gap: 16px; }
+    .logo {
+      width: 30px; height: 30px; border-radius: 6px;
+      background: #F0A02B;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 11px; font-weight: 700; color: #fff;
+    }
+    .app-name  { font-size: 14px; font-weight: 600; color: #fff; }
+    .nav-label { font-size: 12px; color: #9FB4CC; }
+    .avatar {
+      width: 30px; height: 30px; border-radius: 50%;
+      background: #169B86;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 11px; font-weight: 600; color: #fff;
+    }
+
+    /* ── Main ── */
+    .main { background: #fff; padding: 28px 24px; }
+
+    /* ── Top bar ── */
+    .topbar {
+      display: flex; align-items: center;
+      justify-content: space-between;
+      margin-bottom: 22px;
+    }
+    .page-title { font-size: 20px; font-weight: 600; color: #111827; margin-bottom: 3px; }
+    .page-sub   { font-size: 13px; color: #6B7280; }
+    .btn-new {
+      background: #F0A02B; border: none; color: #fff;
+      font-size: 13px; font-weight: 600;
+      padding: 9px 18px; border-radius: 8px; cursor: pointer;
+    }
+
+    /* ── Filters ── */
+    .filters {
+      display: flex; gap: 10px; margin-bottom: 22px; align-items: center;
+    }
+    .filters input, .filters select {
+      font-size: 13px; padding: 7px 10px;
+      border: 1px solid #D1D5DB; border-radius: 8px;
+      color: #374151; background: #fff; outline: none;
+    }
+    .filters input { flex: 1; }
+    .filters select { width: 160px; }
+    .filters input:focus, .filters select:focus { border-color: #169B86; }
+
+    /* ── Cards grid ── */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-bottom: 22px;
+    }
+
+    /* ── Project card ── */
+    .card {
+      border: 1px solid #E5E7EB;
+      border-radius: 12px; padding: 18px;
+      cursor: pointer; transition: box-shadow 0.15s;
+      background: #fff;
+    }
+    .card:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.10); }
+
+    .card-header {
+      display: flex; align-items: flex-start;
+      justify-content: space-between; margin-bottom: 10px;
+    }
+    .card-meta { display: flex; flex-direction: column; gap: 5px; }
+
+    .badge {
+      font-size: 10px; font-weight: 600;
+      padding: 2px 9px; border-radius: 12px;
+      width: fit-content;
+    }
+    .badge-green  { background: #D1FAE5; color: #065F46; }
+    .badge-amber  { background: #FEF3C7; color: #92400E; }
+    .badge-teal   { background: #CCFBF1; color: #0F766E; }
+
+    .card-title { font-size: 14px; font-weight: 600; color: #111827; }
+    .card-icon  { font-size: 20px; }
+    .card-desc  { font-size: 12px; color: #6B7280; line-height: 1.55; margin-bottom: 14px; }
+
+    .card-footer { border-top: 1px solid #F3F4F6; padding-top: 12px; }
+    .completion-row {
+      display: flex; justify-content: space-between;
+      font-size: 11px; color: #9CA3AF; margin-bottom: 6px;
+    }
+    .completion-count { font-weight: 600; color: #374151; }
+    .progress-bar {
+      height: 5px; background: #F3F4F6;
+      border-radius: 3px; margin-bottom: 10px;
+    }
+    .progress-fill { height: 5px; border-radius: 3px; }
+    .progress-green { background: #169B86; }
+    .progress-amber { background: #F0A02B; }
+
+    .card-actions {
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .card-date  { font-size: 11px; color: #9CA3AF; }
+    .card-open  { font-size: 11px; color: #0D2B55; font-weight: 600; cursor: pointer; }
+
+    /* ── New card (dashed) ── */
+    .card-new {
+      border: 1.5px dashed #D1D5DB;
+      border-radius: 12px; padding: 18px;
+      cursor: pointer; background: #F9FAFB;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      min-height: 200px; gap: 10px;
+      transition: background 0.15s;
+    }
+    .card-new:hover { background: #F3F4F6; }
+    .card-new-icon {
+      width: 40px; height: 40px; border-radius: 50%;
+      border: 2px dashed #D1D5DB;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .card-new-plus { font-size: 22px; color: #9CA3AF; line-height: 1; }
+    .card-new-label { font-size: 13px; color: #6B7280; text-align: center; line-height: 1.5; }
+
+    /* ── Stats bar ── */
+    .stats-bar {
+      background: #F9FAFB; border: 1px solid #E5E7EB;
+      border-radius: 10px; padding: 14px 20px;
+      display: flex; align-items: center;
+      justify-content: space-between;
+    }
+    .stats-group { display: flex; gap: 28px; }
+    .stat { text-align: center; }
+    .stat-value { font-size: 20px; font-weight: 600; color: #111827; margin-bottom: 2px; }
+    .stat-value-green  { color: #169B86; }
+    .stat-value-amber  { color: #F0A02B; }
+    .stat-label { font-size: 11px; color: #6B7280; }
+    .last-login { font-size: 12px; color: #9CA3AF; }
+
+    /* ── Responsive ── */
+    @media (max-width: 700px) {
+      .grid { grid-template-columns: 1fr; }
+      .filters { flex-wrap: wrap; }
+      .filters select { width: 100%; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="meta">
+    <span class="meta-left">Écran 1 / 3</span>
+    <span class="meta-right">Page d'accueil — Liste des projets</span>
+  </div>
+
+  <div class="frame">
+
+    <!-- Navbar -->
+    <div class="navbar">
+      <div class="navbar-left">
+        <div class="logo">BM</div>
+        <span class="app-name">KYA Business Model Studio</span>
+      </div>
+      <div class="navbar-right">
+        <span class="nav-label">Plateforme interne</span>
+        <div class="avatar">GW</div>
+      </div>
+    </div>
+
+    <!-- Main -->
+    <div class="main">
+
+      <!-- Top bar -->
+      <div class="topbar">
+        <div>
+          <p class="page-title">Mes projets</p>
+          <p class="page-sub">3 Business Models actifs</p>
+        </div>
+        <button class="btn-new">+ Nouveau projet</button>
+      </div>
+
+      <!-- Filters -->
+      <div class="filters">
+        <input type="text" placeholder="Rechercher un projet..." />
+        <select>
+          <option>Tous les statuts</option>
+          <option>En cours</option>
+          <option>Finalisé</option>
+          <option>Archivé</option>
+        </select>
+        <select>
+          <option>Tous les secteurs</option>
+          <option>Énergie</option>
+          <option>Agriculture</option>
+          <option>BTP</option>
+        </select>
+      </div>
+
+      <!-- Cards -->
+      <div class="grid">
+
+        <!-- Card 1 — En cours -->
+        <div class="card">
+          <div class="card-header">
+            <div class="card-meta">
+              <span class="badge badge-green">En cours</span>
+              <span class="card-title">KYA-SoP Institutions</span>
+            </div>
+            <span class="card-icon" style="color:#F0A02B;">&#9788;</span>
+          </div>
+          <p class="card-desc">Vente de systèmes solaires aux institutions publiques et privées via la SIAB.</p>
+          <div class="card-footer">
+            <div class="completion-row">
+              <span>Complétion des blocs</span>
+              <span class="completion-count">5 / 7</span>
+            </div>
+            <div class="progress-bar">
+              <div class="progress-fill progress-green" style="width: 71%;"></div>
+            </div>
+            <div class="card-actions">
+              <span class="card-date">Modifié il y a 2 jours</span>
+              <span class="card-open">Ouvrir →</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 2 — Draft -->
+        <div class="card">
+          <div class="card-header">
+            <div class="card-meta">
+              <span class="badge badge-amber">Draft</span>
+              <span class="card-title">Pompes solaires agricoles</span>
+            </div>
+            <span class="card-icon" style="color:#169B86;">&#9790;</span>
+          </div>
+          <p class="card-desc">Système d'irrigation solaire pour les coopératives agricoles au Togo.</p>
+          <div class="card-footer">
+            <div class="completion-row">
+              <span>Complétion des blocs</span>
+              <span class="completion-count">2 / 7</span>
+            </div>
+            <div class="progress-bar">
+              <div class="progress-fill progress-amber" style="width: 28%;"></div>
+            </div>
+            <div class="card-actions">
+              <span class="card-date">Créé il y a 5 jours</span>
+              <span class="card-open">Ouvrir →</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 3 — New -->
+        <div class="card-new">
+          <div class="card-new-icon">
+            <span class="card-new-plus">+</span>
+          </div>
+          <p class="card-new-label">Créer un nouveau<br>Business Model</p>
+        </div>
+
+      </div>
+
+      <!-- Stats bar -->
+      <div class="stats-bar">
+        <div class="stats-group">
+          <div class="stat">
+            <p class="stat-value">2</p>
+            <p class="stat-label">Projets actifs</p>
+          </div>
+          <div class="stat">
+            <p class="stat-value stat-value-green">1</p>
+            <p class="stat-label">Finalisé</p>
+          </div>
+          <div class="stat">
+            <p class="stat-value stat-value-amber">1</p>
+            <p class="stat-label">Draft</p>
+          </div>
+        </div>
+        <span class="last-login">Dernière connexion : aujourd'hui à 09h14</span>
+      </div>
+
+    </div>
+  </div>
+
+</body>
+</html>
