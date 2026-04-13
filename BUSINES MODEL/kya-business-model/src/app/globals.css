@@ -1,0 +1,32 @@
+@import "tailwindcss";
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+    font-family: Inter, system-ui, sans-serif;
+    background: #F9FAFB;
+    color: #111827;
+}
+
+:root {
+    --navy:  #0D2B55;
+    --orange:#F0A02B;
+    --teal:  #169B86;
+}
+
+
+.sb-brand-icon {
+    width: 45px;
+    height: 45px;
+    background: white;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+.sb-brand-icon img {
+    width: 42px;
+    height: 42px;
+    object-fit: contain;
+}
