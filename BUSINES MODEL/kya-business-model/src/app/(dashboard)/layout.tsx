@@ -1,10 +1,12 @@
 'use client'
-import '@/app/globals.css'
+
 
 import { LogOut } from 'lucide-react';
 
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/superbase/client'
+import Logo from "@/components/ui/Logo";
+import Link from "next/link";
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
     const router   = useRouter()
@@ -20,25 +22,25 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
             {/* Navbar */}
             <nav style={{
-                height: '56px', backgroundColor: '#0D2B55',
+                height: '56px', backgroundColor: '#1ca18c',
                 display: 'flex', alignItems: 'center',
                 justifyContent: 'space-between', padding: '0 32px',
                 position: 'sticky', top: 0, zIndex: 100
             }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                    <div style={{
-                        width: '32px', height: '32px', borderRadius: '8px',
-                        backgroundColor: '#F0A02B',
-                        display: 'flex', alignItems: 'center', justifyContent: 'center'
-                    }}>
-                        <div className="sb-brand-icon">
-                            <img src="./kya_logo_light.png" alt="Logo KYA"/>
+                <Link href={"/"}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                        <div style={{
+                            width: '32px', height: '32px', borderRadius: '8px',
+                            backgroundColor: '#F0A02B',
+                            display: 'flex', alignItems: 'center', justifyContent: 'center'
+                        }}>
+                            <Logo/>
                         </div>
+                        <span style={{color: '#fff', fontWeight: 600, fontSize: '14px'}}>
+                            KYA Business Model
+                        </span>
                     </div>
-                    <span style={{color: '#fff', fontWeight: 600, fontSize: '14px'}}>
-            KYA Business Model
-          </span>
-                </div>
+                </Link>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
                     {['#fff', '#F0A02B', '#169B86'].map((c, i) => (
                         <div key={i} style={{ width: '6px', height: '6px', borderRadius: '50%', backgroundColor: c, opacity: c === '#fff' ? 0.4 : 1 }} />
@@ -59,7 +61,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                         Sign out
                     </button>
                 </div>
-          </nav>
+            </nav>
 
             <main style={{ maxWidth: '1200px', margin: '0 auto', padding: '32px 24px' }}>
                 {children}

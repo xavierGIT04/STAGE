@@ -154,7 +154,7 @@ export default function HomePage() {
                             onClick={() => router.push('/projets/nouveau')}
                             style={{
                                 padding: '10px 20px', fontSize: '13px', fontWeight: 600,
-                                color: '#fff', backgroundColor: '#0D2B55',
+                                color: '#fff', backgroundColor: '#F0A02B',
                                 border: 'none', borderRadius: '10px', cursor: 'pointer',
                                 fontFamily: 'inherit'
                             }}
@@ -185,25 +185,18 @@ export default function HomePage() {
                                 {/* Header carte */}
                                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
                                     <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-                    <span style={{
-                        fontSize: '11px', fontWeight: 600, padding: '2px 10px',
-                        borderRadius: '20px', width: 'fit-content',
-                        backgroundColor: statut.bg, color: statut.color
-                    }}>
-                      {statut.label}
-                    </span>
+                                        <span style={{
+                                            fontSize: '11px', fontWeight: 600, padding: '2px 10px',
+                                            borderRadius: '20px', width: 'fit-content',
+                                            backgroundColor: statut.bg, color: statut.color
+                                        }}>
+                                          {statut.label}
+                                        </span>
                                         <h3 style={{ fontSize: '14px', fontWeight: 600, color: '#111827', margin: 0 }}>
                                             {projet.nom}
                                         </h3>
                                     </div>
-                                    <div style={{
-                                        width: '34px', height: '34px', borderRadius: '8px',
-                                        backgroundColor: '#FFF3DC', flexShrink: 0,
-                                        display: 'flex', alignItems: 'center', justifyContent: 'center',
-                                        fontSize: '16px'
-                                    }}>
-                                        ⚡
-                                    </div>
+
                                 </div>
 
                                 {/* Description */}
@@ -227,16 +220,16 @@ export default function HomePage() {
                                             fontSize: '11px', padding: '2px 8px',
                                             backgroundColor: '#F3F4F6', color: '#4B5563', borderRadius: '6px'
                                         }}>
-                      {projet.secteur}
-                    </span>
+                                            {projet.secteur}
+                                        </span>
                                     )}
                                     {projet.annee_demarrage && (
                                         <span style={{
                                             fontSize: '11px', padding: '2px 8px',
                                             backgroundColor: '#F3F4F6', color: '#4B5563', borderRadius: '6px'
                                         }}>
-                      {projet.annee_demarrage}
-                    </span>
+                                            {projet.annee_demarrage}
+                                        </span>
                                     )}
                                 </div>
 
@@ -245,12 +238,12 @@ export default function HomePage() {
                                     display: 'flex', justifyContent: 'space-between', alignItems: 'center',
                                     paddingTop: '10px', borderTop: '1px solid #F3F4F6', marginTop: 'auto'
                                 }}>
-                  <span style={{ fontSize: '11px', color: '#9CA3AF' }}>
-                    Modifié {dateRelative(projet.updated_at)}
-                  </span>
-                                    <span style={{ fontSize: '12px', fontWeight: 600, color: '#0D2B55' }}>
-                    Ouvrir →
-                  </span>
+                                  <span style={{ fontSize: '11px', color: '#9CA3AF' }}>
+                                    Modifié {dateRelative(projet.updated_at)}
+                                  </span>
+                                   <span style={{ fontSize: '12px', fontWeight: 600, color: '#0D2B55' }}>
+                                        Ouvrir →
+                                    </span>
                                 </div>
                             </div>
                         )

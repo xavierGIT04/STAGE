@@ -3,9 +3,8 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/superbase/client'
-import '@/app/globals.css'
-import Image from "next/image";
-import kyaLogo from '../../../../public/kya_logo_light.png';
+import Logo from "@/components/ui/Logo";
+
 
 export default function LoginPage() {
     const [email, setEmail]       = useState('')
@@ -40,15 +39,7 @@ export default function LoginPage() {
                         margin: '0 auto 16px',
                         display: 'flex', alignItems: 'center', justifyContent: 'center'
                     }}>
-                        <div className="sb-brand-icon">
-                            <Image
-                                src={kyaLogo}
-                                width={42}
-                                height={42}
-                                alt="Logo KYA"
-                                priority
-                            />
-                        </div>
+                        <Logo/>
                     </div>
                     <h1 style={{ fontSize: '20px', fontWeight: 700, color: '#111827' }}>
                         KYA Business Model
