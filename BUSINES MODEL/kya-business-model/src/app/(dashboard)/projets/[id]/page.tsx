@@ -13,6 +13,9 @@ import SectionHypotheses  from '@/components/sections/SectionHypotheses'
 import SectionCouts      from '@/components/sections/SectionCouts'
 import SectionRevenus    from '@/components/sections/SectionRevenus'
 import SectionPartenaires from '@/components/sections/SectionPartenaires'
+import SectionConcurrents from '@/components/sections/SectionConcurrents'
+import SectionPrevisions  from '@/components/sections/SectionPrevisions'
+import SectionDashboard   from '@/components/sections/SectionDashboard'
 
 const SECTIONS = [
     { id: 1,  label: 'Qui sommes-nous ?'      },
@@ -83,6 +86,9 @@ export default function ProjetPage() {
             case 5: return <SectionCouts      projetId={id} onSave={() => markSectionOk(5)} />
             case 6: return <SectionRevenus    projetId={id} onSave={() => markSectionOk(6)} />
             case 7: return <SectionPartenaires projetId={id} onSave={() => markSectionOk(7)} />
+            case 8:  return <SectionConcurrents projetId={id} onSave={() => markSectionOk(8)} />
+            case 9:  return <SectionPrevisions  projetId={id} onSave={() => markSectionOk(9)} />
+            case 10: return <SectionDashboard   projetId={id} />
             default: return (
                 <div style={{ textAlign: 'center', padding: '60px 0', color: '#9CA3AF' }}>
                     <p style={{ fontSize: '14px' }}>Section en cours de développement...</p>
