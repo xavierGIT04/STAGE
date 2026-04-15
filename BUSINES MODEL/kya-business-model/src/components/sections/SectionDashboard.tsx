@@ -81,6 +81,27 @@ export default function SectionDashboard({ projetId }: Props) {
         Résultat:  Math.round(r.resultat_net / 1_000_000),
     }))
 
+    const handleExport = async (type: 'word' | 'pptx') => {
+        setExportLoading(type)
+        try {
+            const url  = `/api/export/${type}?projetId=${projetId}`
+            const resp = await fetch(url)
+            if (!resp.ok) throw new Error('Erreur export')
+            const blob = await resp.blob()
+            const link = document.createElement('a')
+            link.href  = URL.createObjectURL(blob)
+            link.download = type === 'word'
+                ? `BusinessModel_${projetId}_${new Date().toISOString().split('T')[0]}.docx`
+                : `Synthese_${projetId}_${new Date().toISOString().split('T')[0]}.pptx`
+            link.click()
+            URL.revokeObjectURL(link.href)
+        } catch (e) {
+            console.error('Export error:', e)
+        }
+        setExportLoading(null)
+    }
+
+
     if (loading) {
         return (
             <div style={{ textAlign: 'center', padding: '80px', color: '#9CA3AF', fontSize: '14px' }}>
@@ -126,28 +147,32 @@ export default function SectionDashboard({ projetId }: Props) {
                 {/* Exports */}
                 <div style={{ display: 'flex', gap: '10px' }}>
                     <button
-                        onClick={() => setExportLoading('word')}
+                        onClick={() => handleExport('word')}
                         disabled={exportLoading !== null}
                         style={{
                             padding: '8px 18px', fontSize: '13px', fontWeight: 500,
                             color: '#185FA5', backgroundColor: '#E6F1FB',
                             border: '1px solid #185FA5', borderRadius: '10px',
-                            cursor: 'pointer', fontFamily: 'inherit',
-                            display: 'flex', alignItems: 'center', gap: '6px'
+                            cursor: exportLoading ? 'not-allowed' : 'pointer',
+                            fontFamily: 'inherit',
+                            display: 'flex', alignItems: 'center', gap: '6px',
+                            opacity: exportLoading ? 0.6 : 1
                         }}>
-                        📄 Générer Word
+                        {exportLoading === 'word' ? ' Génération...' : ' Générer Word'}
                     </button>
                     <button
-                        onClick={() => setExportLoading('pptx')}
+                        onClick={() => handleExport('pptx')}
                         disabled={exportLoading !== null}
                         style={{
                             padding: '8px 18px', fontSize: '13px', fontWeight: 500,
                             color: '#854F0B', backgroundColor: '#FFF3DC',
                             border: '1px solid #F0A02B', borderRadius: '10px',
-                            cursor: 'pointer', fontFamily: 'inherit',
-                            display: 'flex', alignItems: 'center', gap: '6px'
+                            cursor: exportLoading ? 'not-allowed' : 'pointer',
+                            fontFamily: 'inherit',
+                            display: 'flex', alignItems: 'center', gap: '6px',
+                            opacity: exportLoading ? 0.6 : 1
                         }}>
-                        📊 Générer PowerPoint
+                        {exportLoading === 'pptx' ? ' Génération...' : ' Générer PowerPoint'}
                     </button>
                 </div>
             </div>
@@ -217,15 +242,6 @@ export default function SectionDashboard({ projetId }: Props) {
                         </tbody>
                     </table>
                 </div>
-            </div>
-
-            {/* Note exports */}
-            <div style={{
-                backgroundColor: '#FFF3DC', borderRadius: '10px',
-                padding: '12px 16px', fontSize: '12px', color: '#854F0B',
-                border: '1px solid #F0A02B'
-            }}>
-                💡 Les exports Word et PowerPoint seront disponibles dans la prochaine version. Les données sont prêtes.
             </div>
         </div>
     )
