@@ -1,5 +1,0 @@
-{
-  "buildCommand": "cd business-model/kya-business-model && npm run build",
-  "outputDirectory": "business-model/kya-business-model/.next",
-  "installCommand": "cd business-model/kya-business-model && npm install"
-}
