@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useCallback } from 'react'
 import { useRouter, useParams } from 'next/navigation'
 import { createClient } from '@/lib/superbase/client'
 import { Projet } from '@/lib/superbase/types'
@@ -42,6 +42,8 @@ export default function ProjetPage() {
     const [sectionActive, setSection]   = useState(1)
     const [sectionsOk, setSectionsOk]   = useState<number[]>([])
     const [loading, setLoading]         = useState(true)
+    // ← NOUVEAU : version incrémentée à chaque sauvegarde pour forcer le rechargement du dashboard
+    const [dashboardVersion, setDashboardVersion] = useState(0)
     const router   = useRouter()
     const params   = useParams()
     const supabase = createClient()
@@ -61,9 +63,11 @@ export default function ProjetPage() {
         setLoading(false)
     }
 
-    const markSectionOk = (sectionId: number) => {
+    const markSectionOk = useCallback((sectionId: number) => {
         setSectionsOk(prev => prev.includes(sectionId) ? prev : [...prev, sectionId])
-    }
+        // ← Incrémenter la version du dashboard à chaque sauvegarde d'une section
+        setDashboardVersion(v => v + 1)
+    }, [])
 
     if (loading) {
         return (
@@ -88,7 +92,8 @@ export default function ProjetPage() {
             case 7: return <SectionPartenaires projetId={id} onSave={() => markSectionOk(7)} />
             case 8:  return <SectionConcurrents projetId={id} onSave={() => markSectionOk(8)} />
             case 9:  return <SectionPrevisions  projetId={id} onSave={() => markSectionOk(9)} />
-            case 10: return <SectionDashboard   projetId={id} />
+            // ← key={dashboardVersion} force React à re-monter le composant et recharger ses données
+            case 10: return <SectionDashboard key={dashboardVersion} projetId={id} />
             default: return (
                 <div style={{ textAlign: 'center', padding: '60px 0', color: '#9CA3AF' }}>
                     <p style={{ fontSize: '14px' }}>Section en cours de développement...</p>
@@ -216,24 +221,6 @@ export default function ProjetPage() {
                         }}>
                             {statut.label}
                         </span>
-                    </div>
-                    <div style={{ display: 'flex', gap: '10px' }}>
-                        <button style={{
-                            padding: '6px 16px', fontSize: '12px', fontWeight: 500,
-                            color: '#fff', backgroundColor: 'transparent',
-                            border: '1px solid #4B6584', borderRadius: '8px',
-                            cursor: 'pointer', fontFamily: 'inherit'
-                        }}>
-                            Aperçu
-                        </button>
-                        <button style={{
-                            padding: '6px 16px', fontSize: '12px', fontWeight: 500,
-                            color: '#fff', backgroundColor: '#F0A02B',
-                            border: 'none', borderRadius: '8px',
-                            cursor: 'pointer', fontFamily: 'inherit'
-                        }}>
-                            Exporter
-                        </button>
                     </div>
                 </div>
 

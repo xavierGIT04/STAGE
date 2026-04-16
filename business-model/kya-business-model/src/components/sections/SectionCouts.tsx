@@ -212,7 +212,7 @@ export default function SectionCouts({ projetId, onSave }: Props) {
                         {[
                             { label: 'Total charges fixes/an', value: formatNum(totalOpexFixe) + ' FCFA', color: '#0D2B55' },
                             { label: 'Charges en % du CA', value: opex.filter(o => o.type_calcul === 'pourcentage').length + ' postes', color: '#F0A02B' },
-                            { label: 'Nombre de postes', value: opex.length.toString(), color: '#169B86' },
+                            { label: 'charges fixes', value: opex.length.toString(), color: '#169B86' },
                         ].map(s => (
                             <div key={s.label} style={{ backgroundColor: '#F9FAFB', borderRadius: '10px', padding: '14px 16px', border: '1px solid #E5E7EB' }}>
                                 <p style={{ fontSize: '11px', color: '#9CA3AF', margin: '0 0 4px' }}>{s.label}</p>
