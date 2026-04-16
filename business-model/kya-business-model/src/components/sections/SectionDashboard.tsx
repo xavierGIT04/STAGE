@@ -37,12 +37,19 @@ export default function SectionDashboard({ projetId }: Props) {
             supabase.from('resultats_financiers').select('*').eq('projet_id', projetId).order('annee'),
             supabase.from('hypotheses').select('*').eq('projet_id', projetId),
         ])
-        if (ress)    setResultats(ress)
+
+        if (ress){
+            const unique = new Map<number, typeof ress[0]>()
+            ;(ress || []).forEach(r => unique.set(r.annee, r))
+            setResultats(Array.from(unique.values()).sort((a, b) => a.annee - b.annee))
+        }
         if (hypData) {
             const map: Record<string, number> = {}
             hypData.forEach(h => { map[h.cle] = h.valeur })
             setHyps(map)
         }
+
+
         setLoading(false)
     }
 

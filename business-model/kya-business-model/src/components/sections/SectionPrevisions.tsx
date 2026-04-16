@@ -135,21 +135,27 @@ export default function SectionPrevisions({ projetId, onSave }: Props) {
 
         setResultats(resultatsCalc)
 
-        // Sauvegarder dans la base
-        await supabase.from('resultats_financiers').delete().eq('projet_id', projetId)
-        await supabase.from('resultats_financiers').insert(
-            resultatsCalc.map(r => ({
-                projet_id:     projetId,
-                annee:         r.annee,
-                ca_total:      r.ca,
-                cout_revient:  r.cout_revient,
-                marge_brute:   r.marge_brute,
-                ebitda:        r.ebitda,
-                ebit:          r.ebit,
-                resultat_net:  r.resultat_net,
-                tresorerie:    r.tresorerie,
-            }))
-        )
+        // Supprimer d'abord et attendre confirmation
+        const { error: deleteError } = await supabase
+            .from('resultats_financiers')
+            .delete()
+            .eq('projet_id', projetId)
+
+        if (!deleteError) {
+            await supabase.from('resultats_financiers').insert(
+                resultatsCalc.map(r => ({
+                    projet_id:    projetId,
+                    annee:        r.annee,
+                    ca_total:     r.ca,
+                    cout_revient: r.cout_revient,
+                    marge_brute:  r.marge_brute,
+                    ebitda:       r.ebitda,
+                    ebit:         r.ebit,
+                    resultat_net: r.resultat_net,
+                    tresorerie:   r.tresorerie,
+                }))
+            )
+        }
 
         setLoading(false)
     }
