@@ -310,7 +310,7 @@ export default function SectionHypotheses({ projetId, onSave }: Props) {
                 </h2>
             </div>
             <p style={{ fontSize: '13px', color: '#6B7280', marginBottom: '16px', paddingLeft: '44px' }}>
-                Saisissez les pourcentages directement en % (ex : tapez <strong>27</strong> pour 27%, pas 0.27).
+                Saisissez les pourcentages directement en % (ex : tapez <strong>27</strong> pour 27%).
             </p>
 
             {/* Bandeau d'aide */}
@@ -319,7 +319,7 @@ export default function SectionHypotheses({ projetId, onSave }: Props) {
                 borderRadius: '10px', padding: '10px 16px', marginBottom: '20px',
                 fontSize: '13px', color: '#185FA5', display: 'flex', gap: '8px', alignItems: 'flex-start'
             }}>
-                <span style={{ fontSize: '16px', flexShrink: 0 }}>ℹ️</span>
+
                 <span>
                     Les champs en <strong>%</strong> acceptent des valeurs entre 0 et 100 (ou plus pour les marges).
                     Le système convertit automatiquement pour les calculs. Exemple : <strong>27</strong> → 27% d'IS.
@@ -333,7 +333,7 @@ export default function SectionHypotheses({ projetId, onSave }: Props) {
                     borderRadius: '10px', padding: '10px 16px', marginBottom: '20px',
                     fontSize: '13px', color: '#E24B4A'
                 }}>
-                    ⚠ Fonds propres ({fp}%) + Emprunt ({emp}%) = {somme}% — la somme doit être égale à 100%
+                     Fonds propres ({fp}%) + Emprunt ({emp}%) = {somme}% — la somme doit être égale à 100%
                 </div>
             )}
 

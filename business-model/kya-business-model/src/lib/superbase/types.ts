@@ -2,6 +2,8 @@ export type Statut = 'draft' | 'en_cours' | 'finalise' | 'archive'
 export type TypeCalcul = 'fixe' | 'pourcentage'
 export type TypeFinancement = 'emprunt' | 'fonds_propres' | 'subvention' | 'autre'
 export type TypeConcurrent = 'direct' | 'indirect' | 'substitut'
+export type Probabilite = 'faible' | 'moyenne' | 'elevee'
+export type NiveauRisque = 'faible' | 'modere' | 'eleve' | 'critique'
 
 export interface Projet {
     id: string
@@ -110,6 +112,39 @@ export interface Concurrent {
     forces?: string
     faiblesses?: string
     notre_differenciation?: string
+}
+
+export interface PartenaireTechnique {
+    id: string
+    projet_id: string
+    nom: string
+    type?: string
+    role?: string
+    apport?: string
+    contact?: string
+}
+
+export interface ImpactProjet {
+    id: string
+    projet_id: string
+    categorie?: string
+    indicateur: string
+    valeur?: string
+    unite?: string
+    description?: string
+    odd?: string
+}
+
+export interface RisqueProjet {
+    id: string
+    projet_id: string
+    categorie?: string
+    description: string
+    probabilite?: Probabilite
+    impact?: string
+    niveau_risque?: NiveauRisque
+    mesure_mitigation?: string
+    responsable?: string
 }
 
 export interface ResultatFinancier {

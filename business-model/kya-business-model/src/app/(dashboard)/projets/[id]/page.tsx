@@ -16,19 +16,26 @@ import SectionPartenaires from '@/components/sections/SectionPartenaires'
 import SectionConcurrents from '@/components/sections/SectionConcurrents'
 import SectionPrevisions  from '@/components/sections/SectionPrevisions'
 import SectionDashboard   from '@/components/sections/SectionDashboard'
+import SectionPartenairesTechniques from '@/components/sections/SectionPartenairesTechniques'
+import SectionImpacts from '@/components/sections/SectionImpacts'
+import SectionRisques from '@/components/sections/SectionRisques'
 
 const SECTIONS = [
-    { id: 1,  label: 'Qui sommes-nous ?'      },
-    { id: 2,  label: 'Informations'           },
-    { id: 3,  label: 'Produits & Services'    },
-    { id: 4,  label: 'Hypothèses'             },
-    { id: 5,  label: 'Coûts & Composants'     },
-    { id: 6,  label: 'Revenus'                },
-    { id: 7,  label: 'Partenaires financiers' },
-    { id: 8,  label: 'Concurrents'            },
-    { id: 9,  label: 'Prévisions financières' },
-    { id: 10, label: 'KPIs & Dashboard'       },
+    { id: 1,  label: 'Qui sommes-nous ?'        },
+    { id: 2,  label: 'Informations'             },
+    { id: 3,  label: 'Produits & Services'      },
+    { id: 4,  label: 'Hypothèses'               },
+    { id: 5,  label: 'Coûts & Composants'       },
+    { id: 6,  label: 'Revenus'                  },
+    { id: 7,  label: 'Partenaires financiers'   },
+    { id: 8,  label: 'Concurrents'              },
+    { id: 9,  label: 'Partenaires techniques'   },
+    { id: 10, label: 'Impacts du projet'        },
+    { id: 11, label: 'Risques'                  },
+    { id: 12, label: 'Prévisions financières'   },
+    { id: 13, label: 'KPIs & Dashboard'         },
 ]
+
 
 const statutConfig: Record<string, { label: string; bg: string; color: string }> = {
     draft:    { label: 'Draft',    bg: '#FFF3DC', color: '#854F0B' },
@@ -83,17 +90,19 @@ export default function ProjetPage() {
 
     const renderSection = () => {
         switch (sectionActive) {
-            case 1: return <SectionQuiSommesNous projetId={id} onSave={() => markSectionOk(1)} />
-            case 2: return <SectionInformations projet={projet} onSave={(p) => { setProjet(p); markSectionOk(2) }} />
-            case 3: return <SectionProduits projetId={id} onSave={() => markSectionOk(3)} />
-            case 4: return <SectionHypotheses projetId={id} onSave={() => markSectionOk(4)} />
-            case 5: return <SectionCouts      projetId={id} onSave={() => markSectionOk(5)} />
-            case 6: return <SectionRevenus    projetId={id} onSave={() => markSectionOk(6)} />
-            case 7: return <SectionPartenaires projetId={id} onSave={() => markSectionOk(7)} />
-            case 8:  return <SectionConcurrents projetId={id} onSave={() => markSectionOk(8)} />
-            case 9:  return <SectionPrevisions  projetId={id} onSave={() => markSectionOk(9)} />
-            // ← key={dashboardVersion} force React à re-monter le composant et recharger ses données
-            case 10: return <SectionDashboard key={dashboardVersion} projetId={id} />
+            case 1:  return <SectionQuiSommesNous      projetId={id} onSave={() => markSectionOk(1)}  />
+            case 2:  return <SectionInformations        projet={projet} onSave={(p) => { setProjet(p); markSectionOk(2) }} />
+            case 3:  return <SectionProduits           projetId={id} onSave={() => markSectionOk(3)}  />
+            case 4:  return <SectionHypotheses         projetId={id} onSave={() => markSectionOk(4)}  />
+            case 5:  return <SectionCouts              projetId={id} onSave={() => markSectionOk(5)}  />
+            case 6:  return <SectionRevenus            projetId={id} onSave={() => markSectionOk(6)}  />
+            case 7:  return <SectionPartenaires        projetId={id} onSave={() => markSectionOk(7)}  />
+            case 8:  return <SectionConcurrents        projetId={id} onSave={() => markSectionOk(8)}  />
+            case 9:  return <SectionPartenairesTechniques projetId={id} onSave={() => markSectionOk(9)}  />
+            case 10: return <SectionImpacts            projetId={id} onSave={() => markSectionOk(10)} />
+            case 11: return <SectionRisques            projetId={id} onSave={() => markSectionOk(11)} />
+            case 12: return <SectionPrevisions         projetId={id} onSave={() => markSectionOk(12)} />
+            case 13: return <SectionDashboard          key={dashboardVersion} projetId={id} />
             default: return (
                 <div style={{ textAlign: 'center', padding: '60px 0', color: '#9CA3AF' }}>
                     <p style={{ fontSize: '14px' }}>Section en cours de développement...</p>

@@ -253,17 +253,19 @@ export default function SectionProduits({ projetId, onSave }: Props) {
                                 <div>
                                     <label style={labelStyle}>Marge de sécurité (%)</label>
                                     <input
-                                        type="number" step="0.01" min={0} max={1}
-                                        value={produitActifData.marge_securite}
+                                        type="number" step="1" min={0} max={100}
+                                        value={Math.round((produitActifData.marge_securite || 0) * 100)}
                                         onChange={async e => {
-                                            const val = parseFloat(e.target.value)
-                                            setProduits(prev => prev.map(p => p.id === produitActifData.id ? { ...p, marge_securite: val } : p))
+                                            const val = parseFloat(e.target.value) / 100
+                                            setProduits(prev => prev.map(p =>
+                                                p.id === produitActifData.id ? { ...p, marge_securite: val } : p
+                                            ))
                                             await supabase.from('produits').update({ marge_securite: val }).eq('id', produitActifData.id)
                                         }}
                                         style={inputStyle}
                                     />
                                     <p style={{ fontSize: '11px', color: '#9CA3AF', marginTop: '4px' }}>
-                                        Ex : 0.1 = 10%
+                                        Ex : 10%
                                     </p>
                                 </div>
                             </div>

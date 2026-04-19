@@ -265,8 +265,8 @@ export default function SectionCouts({ projetId, onSave }: Props) {
                                                    onChange={e => updateOpex(o.id, 'valeur', parseFloat(e.target.value))}
                                                    style={{ ...inputStyle, padding: '5px 8px', fontSize: '12px', width: '120px', textAlign: 'right' }} />
                                             <span style={{ fontSize: '12px', color: '#9CA3AF', flexShrink: 0 }}>
-                          {o.type_calcul === 'fixe' ? 'FCFA' : '%'}
-                        </span>
+                                                {o.type_calcul === 'fixe' ? 'FCFA' : '%'}
+                                            </span>
                                         </div>
                                     </td>
                                     <td style={{ padding: '8px 14px', textAlign: 'center' }}>

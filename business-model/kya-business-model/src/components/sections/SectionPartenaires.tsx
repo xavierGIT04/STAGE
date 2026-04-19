@@ -169,14 +169,21 @@ export default function SectionPartenaires({ projetId, onSave }: Props) {
                             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '12px', marginBottom: '12px' }}>
                                 <div>
                                     <label style={{ fontSize: '12px', fontWeight: 500, color: '#374151', display: 'block', marginBottom: '5px' }}>
-                                        Taux d&apos;intérêt
+                                        Taux d&apos;intérêt (%)
                                     </label>
                                     <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                                        <input type="number" value={p.taux_interet} min={0} max={1} step={0.01}
-                                               onChange={e => update(p.id, 'taux_interet', parseFloat(e.target.value))}
-                                               style={inputStyle} />
-                                        <span style={{ fontSize: '12px', color: '#9CA3AF', flexShrink: 0 }}>%</span>
+                                        <input
+                                            type="number"
+                                            value={Math.round(p.taux_interet * 100 * 10) / 10}
+                                            min={0} max={30} step={0.1}
+                                            onChange={e => update(p.id, 'taux_interet', parseFloat(e.target.value) / 100)}
+                                            style={inputStyle}
+                                        />
+                                        <span style={{ fontSize: '12px', color: '#169B86', fontWeight: 600, flexShrink: 0 }}>%</span>
                                     </div>
+                                    <p style={{ fontSize: '11px', color: '#9CA3AF', marginTop: '4px' }}>
+                                        Ex : 10%
+                                    </p>
                                 </div>
                                 <div>
                                     <label style={{ fontSize: '12px', fontWeight: 500, color: '#374151', display: 'block', marginBottom: '5px' }}>
