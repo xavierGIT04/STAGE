@@ -1,0 +1,1133 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KYA-Monitor | 6 Charges</title>
+    <style>
+        /* ════════════════════════════════
+           VARIABLES — THÈME SOMBRE
+        ════════════════════════════════ */
+        :root {
+            --primary:       #0066ff;
+            --primary-light: #4499ff;
+            --primary-dark:  #0052cc;
+            --kya:           #206d5f;
+            --secondary:     #00d4aa;
+            --danger:        #ff4757;
+            --warning:       #ffa502;
+            --success:       #2ed573;
+
+            --bg-page:    #0a192f;
+            --bg-sidebar: #0d2137;
+            --bg-card:    #112240;
+            --bg-metric:  #0f1e35;
+            --bg-input:   rgba(255,255,255,0.04);
+
+            --border-color: #1e3a5f;
+            --border-light: #2d4a6e;
+
+            --text-primary:   #e2e8f0;
+            --text-secondary: #a8c4e0;
+            --text-muted:     #4a6a8a;
+            --text-faint:     #3a5a7a;
+
+            --radius-sm: 6px;
+            --radius-md: 10px;
+            --radius-lg: 14px;
+            --transition: all 0.25s cubic-bezier(0.4,0,0.2,1);
+
+            --shadow-sm: 0 2px 8px  rgba(0,0,0,0.2);
+            --shadow-md: 0 4px 20px rgba(0,0,0,0.3);
+            --shadow-lg: 0 10px 40px rgba(0,0,0,0.4);
+        }
+
+        body.light-theme {
+            --bg-page:    #f0f4f8;
+            --bg-sidebar: #ffffff;
+            --bg-card:    #ffffff;
+            --bg-metric:  #f7fafc;
+            --bg-input:   #ffffff;
+            --border-color: #d0dce8;
+            --border-light: #b8ccd8;
+            --text-primary:   #0f2240;
+            --text-secondary: #2d5078;
+            --text-muted:     #6b8aaa;
+            --text-faint:     #8faabb;
+            --shadow-sm: 0 2px 8px rgba(0,0,0,0.06);
+            --shadow-md: 0 4px 20px rgba(0,0,0,0.10);
+            --shadow-lg: 0 10px 40px rgba(0,0,0,0.14);
+        }
+
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, 'Roboto', sans-serif;
+            background: var(--bg-page);
+            color: var(--text-primary);
+            min-height: 100vh;
+            line-height: 1.6;
+            overflow-x: hidden;
+            transition: background 0.3s, color 0.3s;
+        }
+
+        .app-shell { display: flex; min-height: 100vh; }
+
+        /* ════════ SIDEBAR ════════ */
+        .sidebar {
+            width: 230px;
+            background: var(--bg-sidebar);
+            border-right: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            flex-shrink: 0;
+            transition: width 0.25s ease;
+            z-index: 100;
+            position: relative;
+        }
+        .sidebar.collapsed { width: 58px; }
+
+        .sb-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 14px;
+            height: 80px;
+            border-bottom: 1px solid var(--border-color);
+            overflow: hidden;
+        }
+
+        .sb-brand { display: flex; align-items: center; gap: 10px; overflow: hidden; }
+
+        .sb-brand-icon {
+            width: 42px;
+            height: 42px;
+            background: none;
+            border-radius: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        .sb-brand-icon img {
+            width: 42px;
+            height: 42px;
+            object-fit: contain;
+        }
+
+        .sb-brand-name {
+            font-size: 13px; font-weight: 700;
+            color: var(--text-primary);
+            white-space: nowrap; overflow: hidden;
+            transition: opacity 0.2s, width 0.25s;
+            letter-spacing: 0.02em;
+        }
+        .sidebar.collapsed .sb-brand-name { opacity: 0; width: 0; }
+
+        .sb-toggle {
+            width: 26px; height: 26px;
+            background: none;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+            flex-shrink: 0;
+            transition: var(--transition);
+            color: var(--text-muted);
+        }
+        .sb-toggle:hover { border-color: var(--primary); color: var(--primary); }
+        .sb-toggle svg { width: 14px; height: 14px; fill: currentColor; transition: transform 0.25s; }
+        .sidebar.collapsed .sb-toggle svg { transform: rotate(180deg); }
+
+        .sb-nav {
+            flex: 1;
+            padding: 14px 8px;
+            display: flex; flex-direction: column; gap: 2px;
+            overflow: hidden;
+        }
+
+        .sb-section-title {
+            font-size: 10px; font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase; letter-spacing: 0.08em;
+            padding: 10px 10px 4px;
+            white-space: nowrap; overflow: hidden;
+            transition: opacity 0.2s;
+        }
+        .sidebar.collapsed .sb-section-title { opacity: 0; }
+
+        .nav-item {
+            display: flex; align-items: center; gap: 10px;
+            padding: 9px 10px;
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            transition: var(--transition);
+            border: 1px solid transparent;
+            overflow: hidden; min-height: 40px;
+        }
+        .nav-item:hover { background: rgba(255,255,255,0.04); }
+        .nav-item.active {
+            background: rgba(0,102,255,0.10);
+            border-color: rgba(0,102,255,0.25);
+        }
+        .nav-item-icon { width: 20px; height: 20px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
+        .nav-item-icon svg { width: 18px; height: 18px; fill: var(--text-muted); transition: fill 0.2s; }
+        .nav-item.active .nav-item-icon svg { fill: var(--primary-light); }
+        .nav-item:hover .nav-item-icon svg { fill: var(--text-secondary); }
+
+        .nav-item-label { font-size: 13px; color: var(--text-secondary); white-space: nowrap; overflow: hidden; transition: opacity 0.2s, color 0.2s; }
+        .nav-item.active .nav-item-label { color: var(--primary-light); font-weight: 500; }
+        .sidebar.collapsed .nav-item-label { opacity: 0; width: 0; }
+
+        .sb-footer {
+            padding: 12px 8px;
+            border-top: 1px solid var(--border-color);
+            display: flex; flex-direction: column; gap: 8px;
+        }
+
+        .conn-status {
+            display: flex; align-items: center; gap: 8px;
+            padding: 8px 10px;
+            border-radius: var(--radius-md);
+            background: rgba(46,213,115,0.08);
+            border: 1px solid rgba(46,213,115,0.18);
+            overflow: hidden;
+        }
+        .conn-dot {
+            width: 8px; height: 8px; border-radius: 50%;
+            background: var(--success); flex-shrink: 0;
+            animation: connPulse 2s infinite;
+        }
+        @keyframes connPulse { 0%,100%{opacity:1} 50%{opacity:0.35} }
+        .conn-label { font-size: 11px; color: var(--success); white-space: nowrap; overflow: hidden; transition: opacity 0.2s; }
+        .sidebar.collapsed .conn-label { opacity: 0; }
+
+        .theme-btn {
+            display: flex; align-items: center; gap: 8px;
+            padding: 8px 10px;
+            border-radius: var(--radius-md);
+            background: none; border: 1px solid var(--border-color);
+            cursor: pointer; color: var(--text-muted);
+            font-size: 12px; transition: var(--transition);
+            overflow: hidden; white-space: nowrap;
+        }
+        .theme-btn:hover { border-color: var(--primary); color: var(--primary); }
+        .theme-btn svg { width: 15px; height: 15px; fill: currentColor; flex-shrink: 0; }
+        .theme-btn-label { transition: opacity 0.2s; }
+        .sidebar.collapsed .theme-btn-label { opacity: 0; width: 0; overflow: hidden; }
+
+        /* ════════ MAIN ════════ */
+        .main-area { flex: 1; display: flex; flex-direction: column; min-width: 0; background: var(--bg-page); }
+
+        .topbar {
+            display: flex; align-items: center;
+            padding: 0 20px; height: 80px;
+            border-bottom: 1px solid var(--border-color);
+            background: var(--bg-sidebar);
+            flex-shrink: 0; gap: 10px;
+        }
+
+        .topbar-left { display: flex; align-items: center; gap: 10px; flex: 1; min-width: 0; }
+
+        .page-title { font-size: 15px; font-weight: 600; color: var(--text-primary); white-space: nowrap; }
+        .page-subtitle { font-size: 12px; color: var(--text-muted); }
+
+        /* Chips topbar */
+        .info-chip {
+            display: flex; align-items: center; gap: 6px;
+            padding: 17px 20px;
+            border-radius: 20px; font-size: 12px;
+            background: var(--bg-metric);
+            border: 1px solid var(--border-color);
+            color: var(--text-secondary); white-space: nowrap; flex-shrink: 0;
+        }
+        .info-chip svg { width: 12px; height: 12px; fill: var(--primary-light); flex-shrink: 0; }
+        .info-chip .chip-val { font-family: monospace; font-size: 20px; color: var(--text-primary); }
+
+        .distance-chip {
+            background: rgba(0,212,170,0.06);
+            border-color: rgba(0,212,170,0.20);
+        }
+        .distance-chip svg { fill: var(--secondary); }
+        .distance-chip .chip-val { color: var(--secondary); font-weight: 700; }
+
+        .btn-hamburger {
+            display: none; align-items: center; justify-content: center;
+            width: 34px; height: 34px;
+            background: var(--bg-metric); border: 1px solid var(--border-color);
+            border-radius: var(--radius-sm); cursor: pointer;
+            color: var(--text-secondary); flex-shrink: 0;
+        }
+        .btn-hamburger svg { width: 16px; height: 16px; fill: currentColor; }
+
+        .page-content { flex: 1; padding: 20px 24px; overflow-y: auto; }
+
+        .section-heading {
+            font-size: 11px; font-weight: 600;
+            text-transform: uppercase; letter-spacing: 0.08em;
+            color: var(--text-muted); margin-bottom: 12px;
+            display: flex; align-items: center; gap: 10px;
+        }
+        .section-heading::after { content: ''; flex: 1; height: 1px; background: var(--border-color); }
+
+        /* ════════ CHARGES GRID ════════ */
+        .charges-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .charge-card {
+            background: var(--bg-card);
+            border-radius: var(--radius-lg);
+            border: 2px solid var(--border-color);
+            padding: 0;
+            transition: var(--transition);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+        .charge-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 3px;
+            background: var(--border-color);
+            transition: var(--transition);
+        }
+        .charge-card.on {
+            border-color: rgba(46,213,115,0.55);
+            box-shadow: 0 0 18px rgba(46,213,115,0.12), var(--shadow-sm);
+        }
+        .charge-card.on::before { background: var(--success); }
+        .charge-card.off {
+            border-color: rgba(255,71,87,0.45);
+            box-shadow: 0 0 18px rgba(255,71,87,0.08), var(--shadow-sm);
+        }
+        .charge-card.off::before { background: var(--danger); }
+        .charge-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); }
+
+        .charge-card-header {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 14px 16px 10px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .charge-title-row { display: flex; align-items: center; gap: 10px; }
+
+        .charge-icon {
+            width: 36px; height: 36px; border-radius: var(--radius-md);
+            display: flex; align-items: center; justify-content: center;
+            flex-shrink: 0;
+        }
+        .charge-icon svg { width: 20px; height: 20px; }
+        .on .charge-icon { background: rgba(46,213,115,0.12); }
+        .on .charge-icon svg { fill: var(--success); }
+        .off .charge-icon { background: rgba(255,71,87,0.10); }
+        .off .charge-icon svg { fill: var(--danger); }
+
+        .charge-name { font-size: 14px; font-weight: 600; color: var(--text-primary); }
+        .charge-id   { font-size: 11px; color: var(--text-muted); }
+
+        .charge-status-badge {
+            display: flex; align-items: center; gap: 5px;
+            padding: 4px 10px;
+            border-radius: 20px; font-size: 11px; font-weight: 700;
+            text-transform: uppercase; letter-spacing: 0.05em;
+        }
+        .on .charge-status-badge { background: rgba(46,213,115,0.12); color: var(--success); border: 1px solid rgba(46,213,115,0.25); }
+        .off .charge-status-badge { background: rgba(255,71,87,0.10); color: var(--danger); border: 1px solid rgba(255,71,87,0.20); }
+        .status-dot {
+            width: 6px; height: 6px; border-radius: 50%;
+        }
+        .on .status-dot { background: var(--success); animation: connPulse 2s infinite; }
+        .off .status-dot { background: var(--danger); }
+
+        .charge-card-body { padding: 12px 16px 14px; }
+
+        .charge-schedule {
+            display: flex; flex-direction: column; gap: 4px;
+        }
+        .schedule-row {
+            display: flex; align-items: center; justify-content: space-between;
+            font-size: 12px;
+        }
+        .schedule-label { color: var(--text-muted); }
+        .schedule-val {
+            font-family: monospace; font-weight: 600;
+            color: var(--text-secondary);
+            background: rgba(255,255,255,0.04);
+            padding: 2px 8px; border-radius: 4px;
+            font-size: 11px;
+            border: 1px solid var(--border-color);
+        }
+
+        .charge-days {
+            display: flex; gap: 3px; flex-wrap: wrap; margin-top: 8px;
+        }
+        .day-pill {
+            padding: 2px 6px;
+            border-radius: 4px; font-size: 10px; font-weight: 600;
+            border: 1px solid var(--border-color);
+            color: var(--text-muted);
+            text-transform: uppercase;
+        }
+        .day-pill.active-day {
+            background: rgba(0,102,255,0.12);
+            border-color: rgba(0,102,255,0.30);
+            color: var(--primary-light);
+        }
+
+        .charge-edit-btn {
+            width: 100%; margin-top: 10px;
+            padding: 7px;
+            background: rgba(0,102,255,0.08);
+            border: 1px solid rgba(0,102,255,0.20);
+            border-radius: var(--radius-sm);
+            color: var(--primary-light); font-size: 12px; font-weight: 600;
+            cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px;
+            transition: var(--transition);
+        }
+        .charge-edit-btn:hover { background: rgba(0,102,255,0.18); }
+        .charge-edit-btn svg { width: 13px; height: 13px; fill: currentColor; }
+
+        /* ════════ CONFIGURATION PAGE ════════ */
+        .config-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .config-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 20px;
+        }
+
+        .config-card-header {
+            display: flex; align-items: center; gap: 10px;
+            margin-bottom: 18px; padding-bottom: 14px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .config-card-icon {
+            width: 34px; height: 34px;
+            border-radius: var(--radius-md);
+            display: flex; align-items: center; justify-content: center;
+        }
+        .config-card-icon svg { width: 18px; height: 18px; }
+        .config-card-title { font-size: 14px; font-weight: 600; color: var(--text-primary); }
+        .config-card-sub { font-size: 11px; color: var(--text-muted); }
+
+        .form-group { display: flex; flex-direction: column; gap: 6px; margin-bottom: 14px; }
+        .form-label { font-size: 12px; font-weight: 500; color: var(--text-secondary); display: flex; align-items: center; gap: 6px; }
+        .form-label svg { width: 13px; height: 13px; fill: var(--primary-light); }
+
+        .form-input {
+            width: 100%; padding: 10px 14px;
+            background: var(--bg-input);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-sm);
+            color: var(--text-primary);
+            font-size: 14px; outline: none;
+            transition: var(--transition);
+            font-family: inherit;
+        }
+        .form-input:focus { border-color: var(--primary); box-shadow: 0 0 0 2px rgba(0,102,255,0.12); }
+        .form-input::placeholder { color: var(--text-muted); }
+
+        .input-with-unit { position: relative; }
+        .input-unit {
+            position: absolute; right: 10px; top: 50%; transform: translateY(-50%);
+            font-size: 12px; color: var(--text-muted); font-weight: 500; pointer-events: none;
+        }
+
+        .btn-save {
+            width: 100%; padding: 10px;
+            background: var(--primary); color: white;
+            border: none; border-radius: var(--radius-sm);
+            font-size: 13px; font-weight: 600;
+            cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px;
+            transition: var(--transition);
+        }
+        .btn-save:hover { background: var(--primary-dark); transform: translateY(-1px); }
+        .btn-save svg { width: 14px; height: 14px; fill: currentColor; }
+
+        .btn-secondary-save {
+            width: 100%; padding: 10px;
+            background: rgba(0,212,170,0.08);
+            color: var(--secondary);
+            border: 1px solid rgba(0,212,170,0.20);
+            border-radius: var(--radius-sm);
+            font-size: 13px; font-weight: 600;
+            cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px;
+            transition: var(--transition); margin-top: 8px;
+        }
+        .btn-secondary-save:hover { background: rgba(0,212,170,0.16); transform: translateY(-1px); }
+        .btn-secondary-save svg { width: 14px; height: 14px; fill: currentColor; }
+
+        .current-val-display {
+            padding: 10px 14px;
+            background: rgba(0,212,170,0.06);
+            border: 1px solid rgba(0,212,170,0.15);
+            border-radius: var(--radius-sm);
+            margin-bottom: 14px;
+            display: flex; align-items: center; justify-content: space-between;
+        }
+        .cvd-label { font-size: 11px; color: var(--text-muted); }
+        .cvd-val   { font-family: monospace; font-size: 14px; font-weight: 700; color: var(--secondary); }
+
+        /* ════════ MODAL PLANNING ════════ */
+        .modal-overlay {
+            position: fixed; inset: 0;
+            background: rgba(0,0,0,0.65);
+            backdrop-filter: blur(4px);
+            display: flex; align-items: center; justify-content: center;
+            z-index: 2000;
+            opacity: 0; visibility: hidden;
+            transition: var(--transition);
+        }
+        .modal-overlay.active { opacity: 1; visibility: visible; }
+
+        .modal-content {
+            background: var(--bg-card);
+            border-radius: var(--radius-lg);
+            padding: 0;
+            width: 90%; max-width: 520px;
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow-lg);
+            transform: translateY(18px);
+            transition: transform 0.3s ease;
+            overflow: hidden;
+        }
+        .modal-overlay.active .modal-content { transform: translateY(0); }
+
+        .modal-header {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 18px 22px 14px;
+            border-bottom: 1px solid var(--border-color);
+            background: var(--bg-metric);
+        }
+        .modal-title-row { display: flex; align-items: center; gap: 10px; }
+        .modal-title { font-size: 15px; font-weight: 600; color: var(--text-primary); }
+        .modal-subtitle { font-size: 11px; color: var(--text-muted); margin-top: 1px; }
+
+        .modal-close {
+            background: none; border: none; color: var(--text-muted);
+            cursor: pointer; font-size: 1.4rem;
+            width: 30px; height: 30px;
+            display: flex; align-items: center; justify-content: center;
+            transition: var(--transition); border-radius: 4px;
+        }
+        .modal-close:hover { color: var(--danger); background: rgba(255,71,87,0.10); }
+
+        .modal-body { padding: 20px 22px; }
+
+        .modal-section-label {
+            font-size: 11px; font-weight: 600;
+            text-transform: uppercase; letter-spacing: 0.07em;
+            color: var(--text-muted); margin-bottom: 10px;
+        }
+
+        .time-row {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
+            margin-bottom: 18px;
+        }
+
+        .days-selector { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 20px; }
+        .day-btn {
+            padding: 6px 10px;
+            border-radius: var(--radius-sm);
+            background: var(--bg-metric);
+            border: 1px solid var(--border-color);
+            color: var(--text-muted);
+            font-size: 12px; font-weight: 600;
+            cursor: pointer; transition: var(--transition);
+            text-transform: uppercase;
+        }
+        .day-btn.selected {
+            background: rgba(0,102,255,0.15);
+            border-color: rgba(0,102,255,0.40);
+            color: var(--primary-light);
+        }
+        .day-btn:hover { border-color: var(--primary); color: var(--primary); }
+
+        .modal-footer {
+            padding: 14px 22px;
+            border-top: 1px solid var(--border-color);
+            display: flex; gap: 10px;
+            background: var(--bg-metric);
+        }
+
+        .btn-modal-cancel {
+            flex: 1; padding: 9px;
+            background: rgba(255,255,255,0.04);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-sm);
+            color: var(--text-muted); font-size: 13px; font-weight: 600;
+            cursor: pointer; display: flex; align-items: center; justify-content: center;
+            transition: var(--transition);
+        }
+        .btn-modal-cancel:hover { border-color: var(--danger); color: var(--danger); }
+
+        .btn-modal-save {
+            flex: 2; padding: 9px;
+            background: var(--primary); color: white;
+            border: none; border-radius: var(--radius-sm);
+            font-size: 13px; font-weight: 600;
+            cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px;
+            transition: var(--transition);
+        }
+        .btn-modal-save:hover { background: var(--primary-dark); }
+        .btn-modal-save svg { width: 14px; height: 14px; fill: currentColor; }
+
+        /* ════════ TOAST ════════ */
+        .toast-container { position: fixed; bottom: 28px; right: 28px; z-index: 9999; }
+        .toast {
+            background: var(--bg-card);
+            border-left: 4px solid var(--primary);
+            border-radius: var(--radius-md);
+            padding: 13px 18px;
+            margin-top: 10px;
+            display: flex; align-items: center; gap: 10px;
+            box-shadow: var(--shadow-lg);
+            animation: toastIn 0.3s ease-out;
+            max-width: 320px;
+            border: 1px solid var(--border-color);
+            border-left-width: 4px;
+        }
+        .toast.success { border-left-color: var(--success); }
+        .toast.error   { border-left-color: var(--danger); }
+        .toast.warning { border-left-color: var(--warning); }
+        .toast svg { width: 17px; height: 17px; flex-shrink: 0; }
+        .toast.success svg { fill: var(--success); }
+        .toast.error   svg { fill: var(--danger); }
+        .toast.warning svg { fill: var(--warning); }
+        .toast .toast-info-icon { fill: var(--primary-light); }
+        .toast-message { flex: 1; font-size: 13px; font-weight: 500; color: var(--text-primary); }
+
+        @keyframes toastIn { from { opacity:0; transform: translateX(100%); } to { opacity:1; transform: translateX(0); } }
+
+        /* ════════ FOOTER ════════ */
+        .footer { padding: 12px 24px; border-top: 1px solid var(--border-color); margin-top: 10px; }
+        .footer-inner { display: flex; align-items: center; justify-content: center; gap: 8px; }
+        .footer-logo { display: flex; align-items: center; gap: 6px; color: var(--text-muted); font-size: 12px; font-weight: 700; }
+        .footer-logo svg { width: 13px; height: 13px; fill: var(--secondary); }
+        .footer-copy { color: var(--text-faint); font-size: 11px; }
+
+        /* ════════ RESPONSIVE ════════ */
+        @media (max-width: 1000px) { .charges-grid { grid-template-columns: repeat(2, 1fr); } .config-grid { grid-template-columns: 1fr; } }
+        @media (max-width: 900px) {
+            .sidebar {
+                position: fixed; top: 0; left: 0; height: 100vh; z-index: 300;
+                transform: translateX(-100%); transition: transform 0.25s ease; width: 230px !important;
+            }
+            .sidebar.mobile-open { transform: translateX(0); }
+            .sidebar-backdrop { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 299; }
+            .sidebar-backdrop.active { display: block; }
+            .btn-hamburger { display: flex !important; }
+        }
+        @media (max-width: 600px) {
+            .page-content { padding: 12px; }
+            .topbar { padding: 6px 12px; height: auto; min-height: 56px; flex-wrap: wrap; gap: 6px; }
+            .charges-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="sidebar-backdrop" id="sidebarBackdrop" onclick="closeMobileSidebar()"></div>
+
+<div class="app-shell">
+
+    <!-- ══ SIDEBAR ══ -->
+    <aside class="sidebar" id="appSidebar">
+        <div class="sb-header">
+
+            <button class="sb-toggle" onclick="document.getElementById('appSidebar').classList.toggle('collapsed')" title="Réduire">
+                <svg viewBox="0 0 14 14"><path d="M9 2L4 7l5 5" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+        </div>
+
+        <nav class="sb-nav">
+            <div class="sb-section-title">Navigation</div>
+            <div class="nav-item active" id="navDashboard" onclick="setPage('dashboard')">
+                <div class="nav-item-icon">
+                    <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+                </div>
+                <span class="nav-item-label">Dashboard</span>
+            </div>
+            <div class="nav-item" id="navConfig" onclick="setPage('config')">
+                <div class="nav-item-icon">
+                    <svg viewBox="0 0 24 24"><path d="M19.14 12.94c.04-.3.06-.61.06-.94s-.02-.64-.07-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 9.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/></svg>
+                </div>
+                <span class="nav-item-label">Configuration</span>
+            </div>
+        </nav>
+
+        <div class="sb-footer">
+            <div class="conn-status">
+                <div class="conn-dot"></div>
+                <span class="conn-label">Connecté</span>
+            </div>
+            <button class="theme-btn" onclick="toggleTheme()">
+                <svg id="themeIcon" viewBox="0 0 24 24"><path d="M21.64 13a1 1 0 0 0-1.05-.14 8.05 8.05 0 0 1-3.37.73 8.15 8.15 0 0 1-8.14-8.1 8.59 8.59 0 0 1 .25-2A1 1 0 0 0 8 2.36a10.14 10.14 0 1 0 14 10.79 1 1 0 0 0-.36-.79z"/></svg>
+                <span class="theme-btn-label" id="themeLabel">Mode clair</span>
+            </button>
+        </div>
+    </aside>
+
+    <!-- ══ MAIN ══ -->
+    <div class="main-area">
+
+        <!-- TOPBAR -->
+        <div class="topbar">
+            <button class="btn-hamburger" onclick="openMobileSidebar()">
+                <svg viewBox="0 0 24 24"><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
+            </button>
+            <div class="topbar-left">
+                <div>
+                    <div class="page-title" id="pageTitle">Dashboard</div>
+                    <div class="page-subtitle">Supervision des 6 charges</div>
+                </div>
+            </div>
+
+            <!-- Heure / Date en temps réel -->
+            <div class="info-chip" id="dateTimeChip">
+                <svg viewBox="0 0 24 24"><path d="M12 1a11 11 0 1 0 11 11A11 11 0 0 0 12 1zm.5 11.71V6h-1v7.41l4.3 4.3.7-.71z"/></svg>
+                <span class="chip-val" id="clockDisplay">--:--:--</span>
+                <span style="color:var(--text-muted);font-size:19px;" id="dateDisplay"></span>
+            </div>
+
+            <!-- Distance -->
+            <div class="info-chip distance-chip" id="distanceChip">
+                <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+                <span style="font-size:18px;color:var(--text-muted);">Distance :</span>
+                <span class="chip-val"><span id="distanceVal">--</span> / <span id="distanceConfigDisplay">100</span> m</span>
+            </div>
+        </div>
+
+        <!-- ══ PAGE CONTENT ══ -->
+        <div class="page-content">
+
+            <!-- ═══════ PAGE DASHBOARD ═══════ -->
+            <div id="pageDashboard">
+                <div class="section-heading">État des charges</div>
+                <div class="charges-grid" id="chargesGrid">
+                    <!-- Générées par JS -->
+                </div>
+            </div>
+
+            <!-- ═══════ PAGE CONFIGURATION ═══════ -->
+            <div id="pageConfig" style="display:none;">
+                <div class="section-heading">Paramètres système</div>
+                <div class="config-grid">
+
+                    <!-- Téléphone -->
+                    <div class="config-card">
+                        <div class="config-card-header">
+                            <div class="config-card-icon" style="background:rgba(0,102,255,0.12)">
+                                <svg viewBox="0 0 24 24" style="fill:var(--primary-light)"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
+                            </div>
+                            <div>
+                                <div class="config-card-title">Numéro de téléphone</div>
+                                <div class="config-card-sub">Numéro pour les notifications SMS</div>
+                            </div>
+                        </div>
+                        <div class="current-val-display">
+                            <span class="cvd-label">Numéro actuel</span>
+                            <span class="cvd-val" id="currentPhone">+228 XX XX XX XX</span>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">
+                                <svg viewBox="0 0 24 24"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
+                                Nouveau numéro
+                            </label>
+                            <input type="tel" class="form-input" id="phoneInput" placeholder="+228 90 00 00 00">
+                        </div>
+                        <button class="btn-save" onclick="savePhone()">
+                            <svg viewBox="0 0 24 24"><path d="M17 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V7l-4-4zm-5 16c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3zm3-10H5V5h10v4z"/></svg>
+                            Enregistrer le numéro
+                        </button>
+                    </div>
+
+                    <!-- Date-Heure -->
+                    <div class="config-card">
+                        <div class="config-card-header">
+                            <div class="config-card-icon" style="background:rgba(0,212,170,0.10)">
+                                <svg viewBox="0 0 24 24" style="fill:var(--secondary)"><path d="M12 1a11 11 0 1 0 11 11A11 11 0 0 0 12 1zm.5 11.71V6h-1v7.41l4.3 4.3.7-.71z"/></svg>
+                            </div>
+                            <div>
+                                <div class="config-card-title">Date &amp; Heure</div>
+                                <div class="config-card-sub">Heure affichée dans le dashboard</div>
+                            </div>
+                        </div>
+                        <div class="current-val-display">
+                            <span class="cvd-label">Heure actuelle</span>
+                            <span class="cvd-val" id="currentDateTime">--</span>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">
+                                <svg viewBox="0 0 24 24"><path d="M12 1a11 11 0 1 0 11 11A11 11 0 0 0 12 1zm.5 11.71V6h-1v7.41l4.3 4.3.7-.71z"/></svg>
+                                Nouvelle date &amp; heure
+                            </label>
+                            <input type="datetime-local" class="form-input" id="dateTimeInput">
+                        </div>
+                        <button class="btn-save" onclick="saveDateTime()">
+                            <svg viewBox="0 0 24 24"><path d="M17 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V7l-4-4zm-5 16c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3zm3-10H5V5h10v4z"/></svg>
+                            Appliquer la date &amp; heure
+                        </button>
+                        <button class="btn-secondary-save" onclick="setNow()">
+                            <svg viewBox="0 0 24 24"><path d="M12 4V1L8 5l4 4V6c3.31 0 6 2.69 6 6 0 1.01-.25 1.97-.7 2.8l1.46 1.46C19.54 15.03 20 13.57 20 12c0-4.42-3.58-8-8-8zm0 14c-3.31 0-6-2.69-6-6 0-1.01.25-1.97.7-2.8L5.24 7.74C4.46 8.97 4 10.43 4 12c0 4.42 3.58 8 8 8v3l4-4-4-4v3z"/></svg>
+                            Utiliser l'heure actuelle
+                        </button>
+                    </div>
+
+                    <!-- Distance -->
+                    <div class="config-card">
+                        <div class="config-card-header">
+                            <div class="config-card-icon" style="background:rgba(255,165,2,0.10)">
+                                <svg viewBox="0 0 24 24" style="fill:var(--warning)"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+                            </div>
+                            <div>
+                                <div class="config-card-title">Distance configurée</div>
+                                <div class="config-card-sub">Distance de référence (distanceConfiguré)</div>
+                            </div>
+                        </div>
+                        <div class="current-val-display">
+                            <span class="cvd-label">Valeur configurée</span>
+                            <span class="cvd-val" id="currentDistance">100 m</span>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">
+                                <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+                                Distance (mètres)
+                            </label>
+                            <div class="input-with-unit">
+                                <input type="number" class="form-input" id="distanceInput" placeholder="100" min="1" style="padding-right:36px;">
+                                <span class="input-unit">m</span>
+                            </div>
+                        </div>
+                        <button class="btn-save" onclick="saveDistance()">
+                            <svg viewBox="0 0 24 24"><path d="M17 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V7l-4-4zm-5 16c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3zm3-10H5V5h10v4z"/></svg>
+                            Enregistrer la distance
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+
+        </div><!-- /page-content -->
+
+        <div class="footer">
+            <div class="footer-inner">
+                <div class="footer-logo">
+                    <svg viewBox="0 0 24 24"><path d="M13 3h-2v10h2V3zm4.83 2.17l-1.42 1.42C17.99 7.86 19 9.81 19 12c0 3.87-3.13 7-7 7s-7-3.13-7-7c0-2.19 1.01-4.14 2.58-5.42L6.17 5.17C4.23 6.82 3 9.26 3 12c0 4.97 4.03 9 9 9s9-4.03 9-9c0-2.74-1.23-5.18-3.17-6.83z"/></svg>
+                    KYA-Monitor
+                </div>
+                <span class="footer-copy">| Plateforme de supervision 6 charges © 2025</span>
+            </div>
+        </div>
+    </div><!-- /main-area -->
+</div><!-- /app-shell -->
+
+<!-- ══ MODAL PLANNING CHARGE ══ -->
+<div class="modal-overlay" id="planningModal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <div class="modal-title-row">
+                <div>
+                    <div class="modal-title" id="modalTitle">Planification — Charge 1</div>
+                    <div class="modal-subtitle">Définir la période et les jours d'activation</div>
+                </div>
+            </div>
+            <button class="modal-close" onclick="closeModal()">✕</button>
+        </div>
+        <div class="modal-body">
+            <div class="modal-section-label">Plage horaire</div>
+            <div class="time-row">
+                <div class="form-group" style="margin:0;">
+                    <label class="form-label">
+                        <svg viewBox="0 0 24 24"><path d="M12 1a11 11 0 1 0 11 11A11 11 0 0 0 12 1zm.5 11.71V6h-1v7.41l4.3 4.3.7-.71z"/></svg>
+                        Heure de début
+                    </label>
+                    <input type="time" class="form-input" id="modalStartTime" value="06:00">
+                </div>
+                <div class="form-group" style="margin:0;">
+                    <label class="form-label">
+                        <svg viewBox="0 0 24 24"><path d="M12 1a11 11 0 1 0 11 11A11 11 0 0 0 12 1zm.5 11.71V6h-1v7.41l4.3 4.3.7-.71z"/></svg>
+                        Heure de fin
+                    </label>
+                    <input type="time" class="form-input" id="modalEndTime" value="22:00">
+                </div>
+            </div>
+
+            <div class="modal-section-label">Jours d'activation</div>
+            <div class="days-selector" id="daySelector">
+                <button class="day-btn selected" data-day="0" onclick="toggleDay(this)">Lun</button>
+                <button class="day-btn selected" data-day="1" onclick="toggleDay(this)">Mar</button>
+                <button class="day-btn selected" data-day="2" onclick="toggleDay(this)">Mer</button>
+                <button class="day-btn selected" data-day="3" onclick="toggleDay(this)">Jeu</button>
+                <button class="day-btn selected" data-day="4" onclick="toggleDay(this)">Ven</button>
+                <button class="day-btn" data-day="5" onclick="toggleDay(this)">Sam</button>
+                <button class="day-btn" data-day="6" onclick="toggleDay(this)">Dim</button>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn-modal-cancel" onclick="closeModal()">Annuler</button>
+            <button class="btn-modal-save" onclick="savePlanning()">
+                <svg viewBox="0 0 24 24"><path d="M17 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V7l-4-4zm-5 16c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3zm3-10H5V5h10v4z"/></svg>
+                Configurer
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- ══ TOASTS ══ -->
+<div class="toast-container" id="toastContainer"></div>
+
+<script>
+    /* ════════ STATE ════════ */
+    const DAY_NAMES = ['Lun','Mar','Mer','Jeu','Ven','Sam','Dim'];
+    let currentPage = 'dashboard';
+    let currentEditCharge = null;
+
+    const settings = {
+        phone: '+228 90 00 00 00',
+        distanceConfigured: 100,
+        customDateTime: null   // si null → heure système
+    };
+
+    // Données charges simulées
+    const charges = [
+        { id: 1, name: 'Charge 1', on: true,  startTime: '06:00', endTime: '22:00', days: [0,1,2,3,4] },
+        { id: 2, name: 'Charge 2', on: false, startTime: '07:00', endTime: '21:00', days: [0,1,2,3,4,5] },
+        { id: 3, name: 'Charge 3', on: true,  startTime: '08:00', endTime: '20:00', days: [0,2,4] },
+        { id: 4, name: 'Charge 4', on: false, startTime: '09:00', endTime: '18:00', days: [1,3,5] },
+        { id: 5, name: 'Charge 5', on: true,  startTime: '06:30', endTime: '23:00', days: [0,1,2,3,4,5,6] },
+        { id: 6, name: 'Charge 6', on: false, startTime: '10:00', endTime: '16:00', days: [5,6] },
+    ];
+
+    // Distance backend simulée
+    let backendDistance = 67;
+
+    /* ════════ NAVIGATION ════════ */
+    function setPage(page) {
+        currentPage = page;
+        document.getElementById('pageDashboard').style.display = page === 'dashboard' ? '' : 'none';
+        document.getElementById('pageConfig').style.display = page === 'config' ? '' : 'none';
+        document.getElementById('navDashboard').classList.toggle('active', page === 'dashboard');
+        document.getElementById('navConfig').classList.toggle('active', page === 'config');
+        document.getElementById('pageTitle').textContent = page === 'dashboard' ? 'Dashboard' : 'Configuration';
+        if(window.innerWidth <= 900) closeMobileSidebar();
+    }
+
+    /* ════════ CLOCK ════════ */
+    function updateClock() {
+        const now = settings.customDateTime ? new Date(settings.customDateTime.getTime() + (Date.now() - settings._baseTs)) : new Date();
+        const hms = [now.getHours(), now.getMinutes(), now.getSeconds()]
+            .map(n => String(n).padStart(2,'0')).join(':');
+        const dmy = now.toLocaleDateString('fr-FR', { weekday:'short', day:'2-digit', month:'short', year:'numeric' });
+        document.getElementById('clockDisplay').textContent = hms;
+        document.getElementById('dateDisplay').textContent = dmy;
+
+        const el = document.getElementById('currentDateTime');
+        if(el) el.textContent = now.toLocaleString('fr-FR');
+    }
+
+    /* ════════ DISTANCE UPDATE ════════ */
+    function updateDistance() {
+        // Simule une valeur changeante envoyée par backend
+        backendDistance = Math.max(0, backendDistance + (Math.random() > 0.5 ? 1 : -1));
+        document.getElementById('distanceVal').textContent = backendDistance;
+        document.getElementById('distanceConfigDisplay').textContent = settings.distanceConfigured;
+    }
+
+    /* ════════ RENDER CHARGES ════════ */
+    function renderCharges() {
+        const grid = document.getElementById('chargesGrid');
+        grid.innerHTML = '';
+        charges.forEach(c => {
+            const card = document.createElement('div');
+            card.className = 'charge-card ' + (c.on ? 'on' : 'off');
+            card.id = 'chargeCard' + c.id;
+
+            const activeDays = DAY_NAMES.map((d, i) =>
+                `<span class="day-pill ${c.days.includes(i) ? 'active-day' : ''}">${d}</span>`
+            ).join('');
+
+            card.innerHTML = `
+                <div class="charge-card-header">
+                    <div class="charge-title-row">
+                        <div class="charge-icon">
+                            <svg viewBox="0 0 24 24"><path d="M13 3h-2v10h2V3zm4.83 2.17l-1.42 1.42C17.99 7.86 19 9.81 19 12c0 3.87-3.13 7-7 7s-7-3.13-7-7c0-2.19 1.01-4.14 2.58-5.42L6.17 5.17C4.23 6.82 3 9.26 3 12c0 4.97 4.03 9 9 9s9-4.03 9-9c0-2.74-1.23-5.18-3.17-6.83z"/></svg>
+                        </div>
+                        <div>
+                            <div class="charge-name">${c.name}</div>
+                        </div>
+                    </div>
+                    <div class="charge-status-badge">
+                        <span class="status-dot"></span>
+                        ${c.on ? 'ON' : 'OFF'}
+                    </div>
+                </div>
+                <div class="charge-card-body">
+                    <div class="charge-schedule">
+                        <div class="schedule-row">
+                            <span class="schedule-label">Début</span>
+                            <span class="schedule-val">${c.startTime}</span>
+                        </div>
+                        <div class="schedule-row">
+                            <span class="schedule-label">Fin</span>
+                            <span class="schedule-val">${c.endTime}</span>
+                        </div>
+                    </div>
+                    <div class="charge-days">${activeDays}</div>
+                    <button class="charge-edit-btn" onclick="openModal(${c.id})">
+                        <svg viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>
+                        Modifier la planification
+                    </button>
+                </div>
+            `;
+            grid.appendChild(card);
+        });
+    }
+
+    /* ════════ MODAL PLANNING ════════ */
+    function openModal(chargeId) {
+        currentEditCharge = chargeId;
+        const c = charges.find(x => x.id === chargeId);
+        document.getElementById('modalTitle').textContent = `Planification — ${c.name}`;
+        document.getElementById('modalStartTime').value = c.startTime;
+        document.getElementById('modalEndTime').value = c.endTime;
+
+        document.querySelectorAll('#daySelector .day-btn').forEach((btn, i) => {
+            btn.classList.toggle('selected', c.days.includes(i));
+        });
+
+        document.getElementById('planningModal').classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal() {
+        document.getElementById('planningModal').classList.remove('active');
+        document.body.style.overflow = '';
+        currentEditCharge = null;
+    }
+
+    function toggleDay(btn) {
+        btn.classList.toggle('selected');
+    }
+
+    function savePlanning() {
+        const c = charges.find(x => x.id === currentEditCharge);
+        if (!c) return;
+
+        c.startTime = document.getElementById('modalStartTime').value;
+        c.endTime   = document.getElementById('modalEndTime').value;
+        c.days = [];
+        document.querySelectorAll('#daySelector .day-btn.selected').forEach(btn => {
+            c.days.push(parseInt(btn.dataset.day));
+        });
+
+        renderCharges();
+        closeModal();
+        showToast(`${c.name} : planification mise à jour`, 'success');
+    }
+
+    /* ════════ CONFIG ACTIONS ════════ */
+    function savePhone() {
+        const val = document.getElementById('phoneInput').value.trim();
+        if (!val) { showToast('Veuillez saisir un numéro', 'warning'); return; }
+        settings.phone = val;
+        document.getElementById('currentPhone').textContent = val;
+        document.getElementById('phoneInput').value = '';
+        showToast('Numéro enregistré avec succès', 'success');
+    }
+
+    function saveDateTime() {
+        const val = document.getElementById('dateTimeInput').value;
+        if (!val) { showToast('Veuillez choisir une date et heure', 'warning'); return; }
+        settings.customDateTime = new Date(val);
+        settings._baseTs = Date.now();
+        showToast('Date &amp; heure mises à jour', 'success');
+    }
+
+    function setNow() {
+        const now = new Date();
+        document.getElementById('dateTimeInput').value =
+            new Date(now.getTime() - now.getTimezoneOffset() * 60000).toISOString().slice(0,16);
+    }
+
+    function saveDistance() {
+        const val = parseFloat(document.getElementById('distanceInput').value);
+        if (!val || val <= 0) { showToast('Veuillez saisir une distance valide', 'warning'); return; }
+        settings.distanceConfigured = val;
+        document.getElementById('currentDistance').textContent = val + ' m';
+        document.getElementById('distanceInput').value = '';
+        document.getElementById('distanceConfigDisplay').textContent = val;
+        showToast('Distance configurée : ' + val + ' m', 'success');
+    }
+
+    /* ════════ THEME ════════ */
+    function toggleTheme() {
+        document.body.classList.toggle('light-theme');
+        const isLight = document.body.classList.contains('light-theme');
+        document.getElementById('themeLabel').textContent = isLight ? 'Mode sombre' : 'Mode clair';
+        document.getElementById('themeIcon').innerHTML = isLight
+            ? '<circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>'
+            : '<path d="M21.64 13a1 1 0 0 0-1.05-.14 8.05 8.05 0 0 1-3.37.73 8.15 8.15 0 0 1-8.14-8.1 8.59 8.59 0 0 1 .25-2A1 1 0 0 0 8 2.36a10.14 10.14 0 1 0 14 10.79 1 1 0 0 0-.36-.79z"/>';
+    }
+
+    /* ════════ MOBILE SIDEBAR ════════ */
+    function openMobileSidebar() {
+        document.getElementById('appSidebar').classList.add('mobile-open');
+        document.getElementById('sidebarBackdrop').classList.add('active');
+    }
+    function closeMobileSidebar() {
+        document.getElementById('appSidebar').classList.remove('mobile-open');
+        document.getElementById('sidebarBackdrop').classList.remove('active');
+    }
+
+    /* ════════ TOAST ════════ */
+    function showToast(msg, type = 'info') {
+        const c = document.getElementById('toastContainer');
+        const t = document.createElement('div');
+        t.className = 'toast ' + type;
+        const icons = {
+            success: '<svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/></svg>',
+            error:   '<svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>',
+            warning: '<svg viewBox="0 0 24 24"><path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"/></svg>',
+            info:    '<svg viewBox="0 0 24 24" class="toast-info-icon"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>'
+        };
+        t.innerHTML = (icons[type] || icons.info) + `<span class="toast-message">${msg}</span>`;
+        c.appendChild(t);
+        if (c.children.length > 5) c.children[0].remove();
+        setTimeout(() => {
+            t.style.opacity = '0';
+            t.style.transform = 'translateX(100%)';
+            t.style.transition = 'all 0.3s';
+            setTimeout(() => t.remove(), 300);
+        }, 4000);
+    }
+
+    /* ════════ INIT ════════ */
+    function init() {
+        renderCharges();
+        setNow();
+        setInterval(updateClock, 1000);
+        setInterval(updateDistance, 3000);
+        updateClock();
+        updateDistance();
+
+        // Fermer modal en cliquant outside
+        document.getElementById('planningModal').addEventListener('click', function(e) {
+            if (e.target === this) closeModal();
+        });
+    }
+
+    document.addEventListener('DOMContentLoaded', init);
+</script>
+</body>
+</html>

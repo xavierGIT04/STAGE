@@ -1,5 +1,15 @@
-l'objectif n'est pas de reproduire une plateforme pour le KYA-SOP. mais de faire une plateforme flexible pour gérer les business modèles; l'entreprise de fait que vendre les KYA-SOP. il y a et il y aura des produits dans le future ou meme d'autre projet qui demanderons un business modèle et c'est la que notre application interviendrai; je ne sais pas si tu comprends un peu.
 
-donc tu t'es uniquement focaliser sur produit KYA-SOP qui se trouve  dans le fichier excel ce qui ne devrait pas etre le cas. mon idée derrière en te donnant le fichier excel c'était pour que tu puisse débuter en ayant qlq chose à la main. 
+je souhaite que tu me fasses une plateforme de monitoring de six charges dont voici le fonctionnement
+la plateforme sera un dashboard formé d'une sidebar plus un contenu. la sidebar aura deux tab à savoir "dashboard"&"configuration"
+ contenu du "Dashboard" 
+en première partie nous aurons
+   en premier lieu nous aurons en affichage en haut à gauche HEURE-DATE actuelle en temps réel à droite . en deuxième lieu directement à droite nous aurons
+   l'affichage d'une distance sous cette forme v/ disatnceConfiguré (m) (disatnceConfiguré sera configuré dans la partie configuration alors que v sera envoyé par le backend)
+ensuite en deuxième partie nous aurons
+   l'affichage des six charges sous forme de card le contour des card sera fonction de son état . si la charge est allumée les contours seront verts par contre si la charge est éteinte les contours serons  rouges
+   lorsqu'on clique sur une charge on aimerais pouvoir modifier la période c'est à dire heure de début et heure de fin pour des jours spécifiques. donc on aura les jours de la semaine Lundi à Dimanche; nous sélectionons 
+   les jours pour lesquelles si nous voulons appliquer la période définie sur ce il y aura un bouton 'configurer' qui nous permettra d'appliquer les modifs; 
 
-merci de prendre cela en considération
+Contenu de "Configuration"
+
+dans cette partie nous aurons à configurer un numero de téléphone , une nouvelle heure-DATE  c'est cette heure qui sera affichée dans le dashboard en haut à gauche;  configuré égalment  la distance dont je t'avais parlé dans la première partie(disatnceConfiguré )

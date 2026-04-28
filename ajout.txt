@@ -1,0 +1,11 @@
+
+(modification) section information: j'aimerais qu'on rajoute un champs  promoteur, cout total du projet, pays d'exécution
+(modification) Section hypothèse : j'aimerai qu'on rajoute des champs comme le taux de retention annuel(ex de format 17%), le taux de conversion premium
+
+(modification) Section concurent: j'aimerais qu'on rajoute tout en bas une zone de saisie de l'avantage concurentiel( au cas où il veut écrire un petit résumé)
+(modification) nous avons actuelement deux types de partenaires (financiers et techniques) qui sont dans des sections différentes ; j'aimerais que ces sections soient regroupées en une seule section dans laquelle on aura deux tab "financiers" , "techniques"; egalement la possibilité se rajouter une nouvelle tab si nécéssaire plus tard. en plus de ça concernant la Section partenaires financier
+		j'aimerais qu'on rajoute un champ de saisi role dans le projet, au niveau du type de financement s'il choisit autre donne lui la possibilité d'ecrire
+
+(modification) section risques: si l'utilisateur choisit categorie =autre  donne lui la possibilité d'ecrire
+
+(ajout d'une nouvelle section) "segment clientèle"  = tab cible (libellé + categorie[institution publique, [institution privée, ménage, autre(s'il choisit cette option donne lui la possibilité d'ecrire)]), tab relation clintèle(libellé), tab canaux de distribution(libellé + categorie[reseau sociaux, autre(s'il choisit cette option donne lui la possibilité d'ecrire)]
