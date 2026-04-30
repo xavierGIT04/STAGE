@@ -25,6 +25,7 @@ const typeConfig: Record<string, { label: string; bg: string; color: string }> =
 export default function SectionConcurrents({ projetId, onSave }: Props) {
     const [concurrents, setConcurrents] = useState<Concurrent[]>([])
     const [saved, setSaved]             = useState(false)
+    const [avantageGlobal, setAvantageGlobal] = useState('')
     const supabase = createClient()
 
     useEffect(() => { fetchData() }, [projetId])
@@ -194,6 +195,20 @@ export default function SectionConcurrents({ projetId, onSave }: Props) {
                         </div>
                     )
                 })}
+            </div>
+
+            {/* Zone avantage concurrentiel global */}
+            <div style={{ backgroundColor: '#E1F5EE', border: '1px solid #A7F3D0', borderRadius: '12px', padding: '18px', marginBottom: '16px' }}>
+                <p style={{ fontSize: '13px', fontWeight: 600, color: '#0F6E56', margin: '0 0 10px' }}>
+                    🏆 Notre avantage concurrentiel global
+                </p>
+                <textarea
+                    value={avantageGlobal}
+                    onChange={e => setAvantageGlobal(e.target.value)}
+                    placeholder="Décrivez en quoi votre offre est globalement supérieure à la concurrence..."
+                    rows={4}
+                    style={{ ...inputStyle, resize: 'vertical', lineHeight: 1.6, borderColor: '#169B86' }}
+                />
             </div>
 
             <button onClick={ajouter}

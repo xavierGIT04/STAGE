@@ -46,6 +46,9 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                         <div key={i} style={{ width: '6px', height: '6px', borderRadius: '50%', backgroundColor: c, opacity: c === '#fff' ? 0.4 : 1 }} />
                     ))}
                 </div>
+                <Link href="/parametres" style={{ fontSize: '13px', color: '#fff', textDecoration: 'none' }}>
+                    ⚙ Paramètres
+                </Link>
                 <div className="flex items-center gap-3 bg-transparent p-2">
                     {/* Le cercle reste vert, il ressort bien sur le noir */}
                     <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#169B86] text-white shadow-sm" style={{color: '#fff'}}>

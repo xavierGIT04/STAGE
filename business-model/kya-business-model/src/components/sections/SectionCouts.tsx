@@ -211,8 +211,6 @@ export default function SectionCouts({ projetId, onSave }: Props) {
                     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '12px', marginBottom: '16px' }}>
                         {[
                             { label: 'Total charges fixes/an', value: formatNum(totalOpexFixe) + ' FCFA', color: '#0D2B55' },
-                            { label: 'Charges en % du CA', value: opex.filter(o => o.type_calcul === 'pourcentage').length + ' postes', color: '#F0A02B' },
-                            { label: 'charges fixes', value: opex.length.toString(), color: '#169B86' },
                         ].map(s => (
                             <div key={s.label} style={{ backgroundColor: '#F9FAFB', borderRadius: '10px', padding: '14px 16px', border: '1px solid #E5E7EB' }}>
                                 <p style={{ fontSize: '11px', color: '#9CA3AF', margin: '0 0 4px' }}>{s.label}</p>
@@ -251,22 +249,12 @@ export default function SectionCouts({ projetId, onSave }: Props) {
                                                placeholder="Ex : Personnel"
                                                style={{ ...inputStyle, padding: '5px 8px', fontSize: '12px' }} />
                                     </td>
-                                    <td style={{ padding: '8px 14px' }}>
-                                        <select value={o.type_calcul}
-                                                onChange={e => updateOpex(o.id, 'type_calcul', e.target.value)}
-                                                style={{ ...inputStyle, padding: '5px 8px', fontSize: '12px', cursor: 'pointer', width: '140px' }}>
-                                            <option value="fixe">Montant fixe</option>
-                                            <option value="pourcentage">% du CA</option>
-                                        </select>
-                                    </td>
+
                                     <td style={{ padding: '8px 14px' }}>
                                         <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
                                             <input type="number" value={o.valeur} min={0}
                                                    onChange={e => updateOpex(o.id, 'valeur', parseFloat(e.target.value))}
                                                    style={{ ...inputStyle, padding: '5px 8px', fontSize: '12px', width: '120px', textAlign: 'right' }} />
-                                            <span style={{ fontSize: '12px', color: '#9CA3AF', flexShrink: 0 }}>
-                                                {o.type_calcul === 'fixe' ? 'FCFA' : '%'}
-                                            </span>
                                         </div>
                                     </td>
                                     <td style={{ padding: '8px 14px', textAlign: 'center' }}>

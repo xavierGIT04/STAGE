@@ -1,0 +1,1084 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KYA-Monitor | Périodes</title>
+    <style>
+        :root {
+            --primary: #0066ff;
+            --primary-light: #4499ff;
+            --primary-dark: #0052cc;
+            --success: #2ed573;
+            --danger: #ff4757;
+            --warning: #ffa502;
+            --bg-page: #0a192f;
+            --bg-top: #0d2137;
+            --bg-card: #112240;
+            --bg-metric: #0f1e35;
+            --bg-input: rgba(255, 255, 255, 0.05);
+            --border: #1e3a5f;
+            --text-1: #e2e8f0;
+            --text-2: #a8c4e0;
+            --text-3: #4a6a8a;
+            --r-sm: 6px;
+            --r-md: 10px;
+            --r-lg: 14px;
+            --tr: all 0.22s cubic-bezier(0.4, 0, 0.2, 1);
+            --sh-md: 0 4px 20px rgba(0, 0, 0, .30);
+            --sh-lg: 0 10px 40px rgba(0, 0, 0, .40);
+        }
+
+        body.light {
+            --bg-page: #f0f4f8;
+            --bg-top: #fff;
+            --bg-card: #fff;
+            --bg-metric: #f7fafc;
+            --bg-input: #f0f4f8;
+            --border: #d0dce8;
+            --text-1: #0f2240;
+            --text-2: #2d5078;
+            --text-3: #6b8aaa;
+            --sh-md: 0 4px 20px rgba(0, 0, 0, .10);
+            --sh-lg: 0 10px 40px rgba(0, 0, 0, .14);
+        }
+
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0
+        }
+
+        body {
+            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-page);
+            color: var(--text-1);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            transition: background .3s, color .3s
+        }
+
+        /* TOPBAR */
+        .topbar {
+            background: var(--bg-top);
+            border-bottom: 1px solid var(--border);
+            padding: 0 28px;
+            height: 72px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            position: sticky;
+            top: 0;
+            z-index: 50
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 10px
+        }
+
+        .sb-brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            overflow: hidden;
+        }
+
+        .sb-brand-icon {
+            width: 42px;
+            height: 42px;
+            background: none;
+            border-radius: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .sb-brand-icon img {
+            width: 42px;
+            height: 42px;
+            object-fit: contain;
+        }
+
+        .sb-brand-name {
+            font-size: 13px;
+            font-weight: 600;
+
+            white-space: nowrap;
+            overflow: hidden;
+            transition: opacity 0.2s, width 0.25s;
+        }
+
+        .topbar-center {
+            flex: 1;
+            text-align: center
+        }
+
+        .page-title {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--text-1)
+        }
+
+        .page-sub {
+            font-size: 11px;
+            color: var(--text-3);
+            margin-top: 2px
+        }
+
+        .topbar-right {
+            display: flex;
+            align-items: center;
+            gap: 10px
+        }
+
+        .clock-chip {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 14px;
+            border-radius: 20px;
+            background: var(--bg-metric);
+            border: 1px solid var(--border);
+            white-space: nowrap
+        }
+
+        .clock-chip svg {
+            width: 12px;
+            height: 12px;
+            fill: var(--primary-light);
+            flex-shrink: 0
+        }
+
+        .clock-val {
+            font-family: monospace;
+            font-size: 17px;
+            font-weight: 700;
+            color: var(--text-1)
+        }
+
+        .clock-date {
+            font-size: 11px;
+            color: var(--text-3)
+        }
+
+        .btn-theme {
+            width: 34px;
+            height: 34px;
+            border-radius: var(--r-sm);
+            border: 1px solid var(--border);
+            background: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-3);
+            transition: var(--tr);
+            flex-shrink: 0
+        }
+
+        .btn-theme svg {
+            width: 16px;
+            height: 16px;
+            fill: currentColor
+        }
+
+        .btn-theme:hover {
+            border-color: var(--primary);
+            color: var(--primary)
+        }
+
+        /* PAGE */
+        .page {
+            flex: 1;
+            padding: 32px 28px;
+            max-width: 1100px;
+            width: 100%;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 32px
+        }
+
+        /* SECTION HEADING */
+        .sec-head {
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: .09em;
+            color: var(--text-3);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 18px
+        }
+
+        .sec-head::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: var(--border)
+        }
+
+        /* TOGGLE GLOBAL */
+        .global-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--r-lg);
+            padding: 14px 18px;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px
+        }
+
+        .toggle-info strong {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-1);
+            display: block
+        }
+
+        .toggle-info span {
+            font-size: 11px;
+            color: var(--text-3)
+        }
+
+        .sw {
+            position: relative;
+            width: 42px;
+            height: 24px;
+            flex-shrink: 0
+        }
+
+        .sw input {
+            opacity: 0;
+            width: 0;
+            height: 0
+        }
+
+        .sw-track {
+            position: absolute;
+            cursor: pointer;
+            inset: 0;
+            background: var(--bg-metric);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            transition: .3s
+        }
+
+        .sw-track::before {
+            content: '';
+            position: absolute;
+            height: 16px;
+            width: 16px;
+            left: 3px;
+            top: 3px;
+            background: var(--text-3);
+            border-radius: 50%;
+            transition: .3s
+        }
+
+        .sw input:checked ~ .sw-track {
+            background: rgba(0, 102, 255, .18);
+            border-color: var(--primary)
+        }
+
+        .sw input:checked ~ .sw-track::before {
+            transform: translateX(18px);
+            background: var(--primary)
+        }
+
+        /* PLAGES HORIZONTAL */
+        .plages-wrap {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 14px;
+            align-items: stretch
+        }
+
+        .plage-card {
+            background: var(--bg-metric);
+            border: 1px solid var(--border);
+            border-radius: var(--r-lg);
+            padding: 16px 14px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            width: 190px;
+            flex-shrink: 0;
+            transition: var(--tr);
+            position: relative
+        }
+
+        .plage-card:hover {
+            border-color: rgba(0, 102, 255, .40);
+            box-shadow: var(--sh-md)
+        }
+
+        .plage-card.off {
+            opacity: .45
+        }
+
+        .plage-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between
+        }
+
+        .plage-badge {
+            width: 30px;
+            height: 30px;
+            border-radius: var(--r-sm);
+            background: rgba(0, 102, 255, .12);
+            border: 1px solid rgba(0, 102, 255, .28);
+            color: var(--primary-light);
+            font-size: 11px;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            justify-content: center
+        }
+
+        .plage-btns {
+            display: flex;
+            gap: 5px
+        }
+
+        .bic {
+            width: 26px;
+            height: 26px;
+            border-radius: var(--r-sm);
+            border: 1px solid var(--border);
+            background: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--tr);
+            color: var(--text-3)
+        }
+
+        .bic svg {
+            width: 13px;
+            height: 13px;
+            fill: currentColor
+        }
+
+        .bic.del:hover {
+            border-color: var(--danger);
+            color: var(--danger);
+            background: rgba(255, 71, 87, .08)
+        }
+
+        .bic.tog.on {
+            border-color: var(--success);
+            color: var(--success);
+            background: rgba(46, 213, 115, .08)
+        }
+
+        .bic.tog:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+            background: rgba(0, 102, 255, .06)
+        }
+
+        .tf {
+            display: flex;
+            flex-direction: column;
+            gap: 4px
+        }
+
+        .tf-lbl {
+            font-size: 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: .07em;
+            color: var(--text-3)
+        }
+
+        .ti {
+            width: 100%;
+            padding: 8px 10px;
+            border-radius: var(--r-sm);
+            background: var(--bg-input);
+            border: 1px solid var(--border);
+            color: var(--text-1);
+            font-size: 16px;
+            font-family: monospace;
+            font-weight: 700;
+            outline: none;
+            transition: var(--tr)
+        }
+
+        .ti:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 2px rgba(0, 102, 255, .12)
+        }
+
+        .arr {
+            text-align: center;
+            font-size: 16px;
+            color: var(--text-3);
+            line-height: 1
+        }
+
+        /* ADD CARD */
+        .plage-add {
+            width: 150px;
+            flex-shrink: 0;
+            background: none;
+            border: 1px dashed var(--border);
+            border-radius: var(--r-lg);
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            cursor: pointer;
+            transition: var(--tr);
+            color: var(--text-3)
+        }
+
+        .plage-add:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+            background: rgba(0, 102, 255, .04)
+        }
+
+        .plage-add svg {
+            width: 22px;
+            height: 22px;
+            fill: currentColor
+        }
+
+        .plage-add span {
+            font-size: 12px;
+            font-weight: 500;
+            text-align: center;
+            line-height: 1.4
+        }
+
+        /* SAVE BAR */
+        .save-bar {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 18px
+        }
+
+        .btn-save {
+            align-items: center;
+            gap: 8px;
+            padding: 11px 28px;
+            border-radius: var(--r-md);
+            background: var(--primary);
+            border: none;
+            color: #fff;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--tr)
+        }
+
+        .btn-save svg {
+            width: 15px;
+            height: 15px;
+            fill: currentColor
+        }
+
+        .btn-save:hover {
+            background: var(--primary-dark);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 18px rgba(0, 102, 255, .45)
+        }
+
+        .btn-save:disabled {
+            opacity: .55;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none
+        }
+
+        /* RTC */
+        .rtc-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px
+        }
+
+        @media (max-width: 560px) {
+            .rtc-grid {
+                grid-template-columns: 1fr
+            }
+        }
+
+        .rtc-block {
+            background: var(--bg-metric);
+            border: 1px solid var(--border);
+            border-radius: var(--r-lg);
+            padding: 16px 18px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px
+        }
+
+        .rtc-title {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-2);
+            display: flex;
+            align-items: center;
+            gap: 6px
+        }
+
+        .rtc-title svg {
+            width: 13px;
+            height: 13px;
+            fill: var(--primary-light)
+        }
+
+        .rtc-cur {
+            font-family: monospace;
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--text-1);
+            background: var(--bg-input);
+            border: 1px solid var(--border);
+            border-radius: var(--r-sm);
+            padding: 10px 14px;
+            letter-spacing: 1px
+        }
+
+        .rtc-cur.stale {
+            color: var(--text-3)
+        }
+
+        .rtc-row {
+            display: flex;
+            gap: 8px;
+            align-items: flex-end;
+        }
+
+        .rtc-inp {
+            flex: 1;
+            padding: 9px 12px;
+            background: var(--bg-input);
+            border: 1px solid var(--border);
+            border-radius: var(--r-sm);
+            color: var(--text-1);
+            font-size: 13px;
+            font-family: monospace;
+            outline: none;
+            transition: var(--tr)
+        }
+
+        .rtc-inp:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 2px rgba(0, 102, 255, .12)
+        }
+
+        .btn-rtc {
+            padding: 9px 14px;
+            border-radius: var(--r-sm);
+            border: none;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 600;
+            transition: var(--tr);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            flex-shrink: 0;
+            white-space: nowrap
+        }
+
+        .btn-rtc svg {
+            width: 13px;
+            height: 13px;
+            fill: currentColor
+        }
+
+        .btn-rtc.get {
+            background: rgba(0, 102, 255, .12);
+            color: var(--primary-light);
+            border: 1px solid rgba(0, 102, 255, .25)
+        }
+
+        .btn-rtc.get:hover {
+            background: rgba(0, 102, 255, .22)
+        }
+
+        .btn-rtc.set {
+            background: var(--primary);
+            color: #fff
+        }
+
+        .btn-rtc.set:hover {
+            background: var(--primary-dark)
+        }
+
+        .btn-rtc:disabled {
+            opacity: .5;
+            cursor: not-allowed
+        }
+
+        .rtc-hint {
+            font-size: 10px;
+            color: var(--text-3)
+        }
+
+        /* FOOTER */
+        .footer {
+            padding: 10px 28px;
+            border-top: 1px solid var(--border);
+            background: var(--bg-top);
+            display: flex;
+            align-items: center;
+            gap: 8px
+        }
+
+        .footer-logo {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--text-3)
+        }
+
+        .footer-logo svg {
+            width: 13px;
+            height: 13px;
+            fill: var(--primary-light)
+        }
+
+        .footer-copy {
+            font-size: 10px;
+            color: var(--text-3);
+            opacity: .5
+        }
+
+        /* TOAST */
+        .toasts {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            gap: 8px
+        }
+
+        .toast {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 11px 16px;
+            border-radius: var(--r-md);
+            background: var(--bg-card);
+            border: 1px solid rgba(46, 213, 115, .30);
+            box-shadow: var(--sh-lg);
+            font-size: 13px;
+            color: var(--text-1);
+            max-width: 320px;
+            animation: slideIn .28s ease
+        }
+
+        .toast.err {
+            border-color: rgba(255, 71, 87, .35)
+        }
+
+        .toast.err svg {
+            fill: var(--danger) !important
+        }
+
+        .toast.warn {
+            border-color: rgba(255, 165, 2, .35)
+        }
+
+        .toast.warn svg {
+            fill: var(--warning) !important
+        }
+
+        .toast svg {
+            width: 15px;
+            height: 15px;
+            fill: var(--success);
+            flex-shrink: 0
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(40px)
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0)
+            }
+        }
+
+        .spin {
+            display: inline-block;
+            width: 13px;
+            height: 13px;
+            border: 2px solid rgba(255, 255, 255, .3);
+            border-top-color: #fff;
+            border-radius: 50%;
+            animation: rot .65s linear infinite
+        }
+
+        @keyframes rot {
+            to {
+                transform: rotate(360deg)
+            }
+        }
+
+        @media (max-width: 600px) {
+            .topbar {
+                padding: 0 14px
+            }
+
+            .page {
+                padding: 18px 14px
+            }
+
+            .topbar-center {
+                display: none
+            }
+        }
+    </style>
+</head>
+<body>
+
+<header class="topbar">
+    <div class="sb-brand">
+        <div class="sb-brand-icon">
+            <img src="./kya_logo_light.png" alt="Logo KYA"/>
+        </div>
+        <span class="sb-brand-name">KYA-MONITOR</span>
+    </div>
+    <div class="topbar-center">
+        <div class="page-title">Périodes de fonctionnement</div>
+        <div class="page-sub">Plages horaires &amp; horloge temps réel</div>
+    </div>
+    <div class="topbar-right">
+        <div class="clock-chip">
+            <svg viewBox="0 0 24 24">
+                <path d="M12 1a11 11 0 1 0 11 11A11 11 0 0 0 12 1zm.5 11.71V6h-1v7.41l4.3 4.3.7-.71z"/>
+            </svg>
+            <span class="clock-val" id="clock">--:--:--</span>
+            <span class="clock-date" id="dateDisp"></span>
+        </div>
+        <button class="btn-theme" onclick="toggleTheme()" title="Thème">
+            <svg id="themeIcon" viewBox="0 0 24 24">
+                <path d="M21.64 13a1 1 0 0 0-1.05-.14 8.05 8.05 0 0 1-3.37.73 8.15 8.15 0 0 1-8.14-8.1 8.59 8.59 0 0 1 .25-2A1 1 0 0 0 8 2.36a10.14 10.14 0 1 0 14 10.79 1 1 0 0 0-.36-.79z"/>
+            </svg>
+        </button>
+    </div>
+</header>
+
+<main class="page">
+
+    <!-- ── Plages horaires ── -->
+    <section>
+        <div class="sec-head">Plages horaires</div>
+
+        <div class="global-card">
+            <div class="toggle-info">
+                <strong>Section activée</strong>
+            </div>
+            <label class="sw">
+                <input type="checkbox" id="globalEnabled" checked>
+                <span class="sw-track"></span>
+            </label>
+        </div>
+
+        <div class="plages-wrap" id="plagesWrap">
+            <button class="plage-add" onclick="addPlage()">
+                <svg viewBox="0 0 24 24">
+                    <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
+                </svg>
+                <span>Ajouter<br>une plage</span>
+            </button>
+        </div>
+
+        <div class="save-bar">
+            <button class="btn-save" id="btnSave" onclick="saveAll()">
+                <svg viewBox="0 0 24 24">
+                    <path d="M17 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V7l-4-4zm-5 16c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3zm3-10H5V5h10v4z"/>
+                </svg>
+                Enregistrer les plages
+            </button>
+        </div>
+    </section>
+
+    <!-- ── RTC ── -->
+    <section>
+        <div class="sec-head">Horloge temps réel (RTC)</div>
+        <div class="rtc-grid">
+
+            <div class="rtc-block">
+                <div class="rtc-title">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M12 1a11 11 0 1 0 11 11A11 11 0 0 0 12 1zm.5 11.71V6h-1v7.41l4.3 4.3.7-.71z"/>
+                    </svg>
+                    Heure actuelle du module
+                </div>
+                <div class="rtc-cur stale" id="rtcDisplay">— non lu —</div>
+                <button class="btn-rtc get" id="btnGetRtc" onclick="getRtc()" style="align-self:flex-start">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M17.65 6.35A7.958 7.958 0 0 0 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08A5.99 5.99 0 0 1 12 18c-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/>
+                    </svg>
+                    Lire le RTC
+                </button>
+            </div>
+
+            <div class="rtc-block">
+                <div class="rtc-title">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M19.14 12.94c.04-.3.06-.61.06-.94s-.02-.64-.07-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 9.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/>
+                    </svg>
+                    Régler l'heure du module
+                </div>
+                <div class="rtc-row">
+                    <input type="datetime-local" class="rtc-inp" id="rtcSetInput" step="1">
+                    <button class="btn-rtc set" id="btnSetRtc" onclick="setRtc()">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M17 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V7l-4-4zm-5 16c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3zm3-10H5V5h10v4z"/>
+                        </svg>
+                        Régler
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+</main>
+
+
+<div class="toasts" id="toasts"></div>
+
+<script>
+    let plages = [];
+
+    // ── Render ───────────────────────────────────────────────────────────────────
+    function renderPlages() {
+        const wrap = document.getElementById('plagesWrap');
+        const addBtn = wrap.querySelector('.plage-add');
+        wrap.innerHTML = '';
+
+        plages.forEach((p, i) => {
+            const c = document.createElement('div');
+            c.className = 'plage-card' + (p.enabled ? '' : ' off');
+            c.innerHTML = `
+            <div class="plage-top">
+                <div class="plage-badge">P${i + 1}</div>
+                <div class="plage-btns">
+                    <button class="bic tog${p.enabled ? ' on' : ''}" title="${p.enabled ? 'Désactiver' : 'Activer'}" onclick="togglePlage(${i})">
+                        <svg viewBox="0 0 24 24" style="fill: ${p.enabled ? '#4caf50' : '#888'}">
+                            <path d="M13 3h-2v10h2V3zm4.83 2.17l-1.42 1.42C17.99 7.86 19 9.81 19 12c0 3.87-3.13 7-7 7s-7-3.13-7-7c0-2.19 1.01-4.14 2.58-5.42L6.17 5.17C4.23 6.82 3 9.26 3 12c0 4.97 4.03 9 9 9s9-4.03 9-9c0-2.74-1.23-5.18-3.17-6.83z"/>
+                        </svg>
+                    </button>
+                    <button class="bic del" title="Supprimer" onclick="removePlage(${i})">
+                        <svg viewBox="0 0 24 24"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>
+                    </button>
+                </div>
+            </div>
+            <div class="tf"><div class="tf-lbl">Début</div>
+                <input type="time" class="ti" value="${p.start}" oninput="plages[${i}].start=this.value">
+            </div>
+            <div class="arr">↓</div>
+            <div class="tf"><div class="tf-lbl">Fin</div>
+                <input type="time" class="ti" value="${p.end}" oninput="plages[${i}].end=this.value">
+            </div>`;
+            wrap.appendChild(c);
+        });
+
+        wrap.appendChild(addBtn);
+    }
+
+    function addPlage() {
+        plages.push({start: '08:00', end: '18:00', enabled: true});
+        renderPlages();
+        const cards = document.querySelectorAll('.plage-card');
+        if (cards.length) cards[cards.length - 1].scrollIntoView({behavior: 'smooth', block: 'nearest'});
+    }
+
+    function removePlage(i) {
+        plages.splice(i, 1);
+        renderPlages();
+    }
+
+    function togglePlage(i) {
+        plages[i].enabled = !plages[i].enabled;
+        renderPlages();
+    }
+
+    // ── Save plages ──
+    async function saveAll() {
+        for (let i = 0; i < plages.length; i++) {
+            if (!plages[i].start || !plages[i].end) {
+                toast(`P${i + 1} : heure manquante.`, 'err');
+                return;
+            }
+        }
+        const payload = {
+            enabled: document.getElementById('globalEnabled').checked,
+            plages: plages.map(p => ({start: p.start, end: p.end, enabled: p.enabled}))
+        };
+        const btn = document.getElementById('btnSave');
+        btn.disabled = true;
+        btn.innerHTML = '<span class="spin"></span> Enregistrement…';
+        try {
+            const r = await fetch('/save', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(payload)
+            });
+            if (!r.ok) throw new Error();
+            toast(`${plages.length} plage(s) enregistrée(s).`);
+        } catch {
+            console.log('POST /save', JSON.stringify(payload, null, 2));
+            toast(`Simulation — ${plages.length} plage(s) OK.`, 'warn');
+        } finally {
+            btn.disabled = false;
+            btn.innerHTML = `<svg viewBox="0 0 24 24"><path d="M17 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V7l-4-4zm-5 16c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3zm3-10H5V5h10v4z"/></svg> Enregistrer les plages`;
+        }
+    }
+
+    // ── RTC GET ──────────────────────────────────────────────────────────────────
+    async function getRtc() {
+        const btn = document.getElementById('btnGetRtc'), disp = document.getElementById('rtcDisplay');
+        btn.disabled = true;
+        btn.innerHTML = '<span class="spin"></span> Lecture…';
+        try {
+            const r = await fetch('/get_rtc');
+            if (!r.ok) throw new Error();
+            const d = await r.json();
+            disp.textContent = d.datetime;
+            disp.classList.remove('stale');
+            toast('RTC lu : ' + d.datetime);
+        } catch {
+            disp.textContent = '— erreur de lecture —';
+            disp.classList.add('stale');
+            toast('Impossible de lire le RTC.', 'err');
+        } finally {
+            btn.disabled = false;
+            btn.innerHTML = `<svg viewBox="0 0 24 24"><path d="M17.65 6.35A7.958 7.958 0 0 0 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08A5.99 5.99 0 0 1 12 18c-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/></svg> Lire le RTC`;
+        }
+    }
+
+    // ── RTC SET ──────────────────────────────────────────────────────────────────
+    async function setRtc() {
+        syncNow();
+        const inp = document.getElementById('rtcSetInput').value;
+        if (!inp) {
+            toast('Saisissez une date/heure.', 'err');
+            return;
+        }
+
+        const datetime = inp.replace('T', ' ').substring(0, 19).padEnd(19, ':00');
+        const btn = document.getElementById('btnSetRtc');
+        btn.disabled = true;
+        btn.innerHTML = '<span class="spin"></span>';
+        try {
+            const r = await fetch('/set_rtc', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({datetime})
+            });
+            if (!r.ok) throw new Error();
+            document.getElementById('rtcDisplay').textContent = datetime;
+            document.getElementById('rtcDisplay').classList.remove('stale');
+            toast('RTC réglé sur ' + datetime);
+        } catch {
+            console.log('POST /set_rtc', {datetime});
+            document.getElementById('rtcDisplay').textContent = datetime;
+            document.getElementById('rtcDisplay').classList.remove('stale');
+            toast('Simulation — RTC réglé sur ' + datetime, 'warn');
+        } finally {
+            btn.disabled = false;
+            btn.innerHTML = `<svg viewBox="0 0 24 24"><path d="M17 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V7l-4-4zm-5 16c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3zm3-10H5V5h10v4z"/></svg> Régler`;
+        }
+    }
+
+    function syncNow() {
+        const n = new Date(), p = v => String(v).padStart(2, '0');
+        document.getElementById('rtcSetInput').value = `${n.getFullYear()}-${p(n.getMonth() + 1)}-${p(n.getDate())}T${p(n.getHours())}:${p(n.getMinutes())}:${p(n.getSeconds())}`;
+    }
+
+    // ── Chargement /config ──
+    async function loadConfig() {
+        try {
+            const r = await fetch('/config');
+            if (!r.ok) throw new Error();
+            const d = await r.json();
+            document.getElementById('globalEnabled').checked = d.enabled ?? true;
+            plages = (d.plages || []).map(p => ({
+                start: p.start || '08:00',
+                end: p.end || '18:00',
+                enabled: p.enabled ?? true
+            }));
+            if (!plages.length) setDefaults();
+        } catch {
+            setDefaults();
+        }
+        renderPlages();
+    }
+
+    function setDefaults() {
+        plages = [{start: '08:00', end: '12:00', enabled: true}, {start: '22:00', end: '06:00', enabled: true}];
+    }
+
+    // ── Toast ────────────────────────────────────────────────────────────────────
+    function toast(msg, type = '') {
+        const c = document.getElementById('toasts'), t = document.createElement('div');
+        t.className = 'toast' + (type ? ' ' + type : '');
+        const ico = {
+            '': ' M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z',
+            'err': 'M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z',
+            'warn': 'M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z'
+        };
+        t.innerHTML = `<svg viewBox="0 0 24 24"><path d="${ico[type] || ico['']}"/></svg><span>${msg}</span>`;
+        c.appendChild(t);
+        setTimeout(() => {
+            t.style.opacity = '0';
+            t.style.transform = 'translateX(40px)';
+            t.style.transition = 'all .28s';
+            setTimeout(() => t.remove(), 300);
+        }, 3800);
+    }
+
+    // ── Thème ────────────────────────────────────────────────────────────────────
+    function toggleTheme() {
+        document.body.classList.toggle('light');
+        const l = document.body.classList.contains('light');
+        document.getElementById('themeIcon').innerHTML = l
+            ? '<circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>'
+            : '<path d="M21.64 13a1 1 0 0 0-1.05-.14 8.05 8.05 0 0 1-3.37.73 8.15 8.15 0 0 1-8.14-8.1 8.59 8.59 0 0 1 .25-2A1 1 0 0 0 8 2.36a10.14 10.14 0 1 0 14 10.79 1 1 0 0 0-.36-.79z"/>';
+    }
+
+    // ── Horloge locale ───────────────────────────────────────────────────────────
+    function tick() {
+        const n = new Date();
+        document.getElementById('clock').textContent = [n.getHours(), n.getMinutes(), n.getSeconds()].map(v => String(v).padStart(2, '0')).join(':');
+        document.getElementById('dateDisp').textContent = n.toLocaleDateString('fr-FR', {
+            weekday: 'short',
+            day: '2-digit',
+            month: 'short'
+        });
+    }
+
+    tick();
+    setInterval(tick, 1000);
+    loadConfig();
+</script>
+</body>
+</html>

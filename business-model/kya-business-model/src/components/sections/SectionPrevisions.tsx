@@ -100,7 +100,6 @@ export default function SectionPrevisions({ projetId, onSave }: Props) {
 
         // OPEX fixes annuelles
         const opex_fixe = (opexData || [])
-            .filter(o => o.type_calcul === 'fixe')
             .reduce((s, o) => s + o.valeur, 0)
 
         // Emprunts : liste pour calcul dégressif
@@ -121,13 +120,9 @@ export default function SectionPrevisions({ projetId, onSave }: Props) {
             // Charges variables issues des hypothèses (% du CA)
             const charges_var = ca * (frais_coord + frais_marketing + frais_rd)
 
-            // OPEX variables (% du CA saisis dans Section Coûts)
-            const opex_pct = (opexData || [])
-                .filter(o => o.type_calcul === 'pourcentage')
-                .reduce((s, o) => s + ca * o.valeur, 0)
 
             // Charges d'exploitation totales
-            const charges_fixes = opex_fixe + charges_var + opex_pct
+            const charges_fixes = opex_fixe + charges_var
 
             // EBITDA
             const ebitda = marge_brute - charges_fixes

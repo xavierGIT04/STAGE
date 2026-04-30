@@ -93,7 +93,7 @@ export default function SectionPartenairesTechniques({ projetId, onSave }: Props
                 {partenaires.length === 0 ? (
                     <div style={{ textAlign: 'center', padding: '40px', backgroundColor: '#F9FAFB', borderRadius: '12px', color: '#9CA3AF' }}>
                         <p style={{ fontSize: '14px' }}>Aucun partenaire technique</p>
-                        <p style={{ fontSize: '12px', marginTop: '4px' }}>Cliquez sur "+ Ajouter" pour commencer</p>
+                        <p style={{ fontSize: '12px', marginTop: '4px' }}>Cliquez sur &apos;+ Ajouter &apos; pour commencer</p>
                     </div>
                 ) : partenaires.map(p => {
                     const typeConf = typeColors[p.type || 'Autre'] || typeColors['Autre']

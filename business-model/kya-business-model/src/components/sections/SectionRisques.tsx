@@ -155,18 +155,31 @@ export default function SectionRisques({ projetId, onSave }: Props) {
                                 </div>
                                 <div>
                                     <label style={{ fontSize: '12px', fontWeight: 500, color: '#374151', display: 'block', marginBottom: '5px' }}>Catégorie</label>
-                                    <select value={r.categorie || ''}
-                                            onChange={e => update(r.id, 'categorie', e.target.value)}
-                                            style={{ ...inputStyle, cursor: 'pointer' }}>
-                                        <option value="">Choisir</option>
-                                        <option value="Financier">Financier</option>
-                                        <option value="Technique">Technique</option>
-                                        <option value="Marché">Marché</option>
-                                        <option value="Réglementaire">Réglementaire</option>
-                                        <option value="Opérationnel">Opérationnel</option>
-                                        <option value="Environnemental">Environnemental</option>
-                                        <option value="Autre">Autre</option>
-                                    </select>
+                                    <div>
+                                        <label style={{ fontSize: '12px', fontWeight: 500, color: '#374151', display: 'block', marginBottom: '5px' }}>Catégorie</label>
+                                        <select value={r.categorie || ''}
+                                                onChange={e => update(r.id, 'categorie', e.target.value)}
+                                                style={{ ...inputStyle, cursor: 'pointer' }}>
+                                            <option value="">Choisir</option>
+                                            <option value="Financier">Financier</option>
+                                            <option value="Technique">Technique</option>
+                                            <option value="Marché">Marché</option>
+                                            <option value="Réglementaire">Réglementaire</option>
+                                            <option value="Opérationnel">Opérationnel</option>
+                                            <option value="Environnemental">Environnemental</option>
+                                            <option value="Autre">Autre</option>
+                                        </select>
+
+                                        {r.categorie === 'Autre' && (
+                                            <input
+                                                type="text"
+                                                value={r.categorie_libre || ''}
+                                                onChange={e => update(r.id, 'categorie_libre', e.target.value)}
+                                                placeholder="Précisez la catégorie..."
+                                                style={{ ...inputStyle, marginTop: '6px', borderColor: '#F0A02B' }}
+                                            />
+                                        )}
+                                    </div>
                                 </div>
                                 <div>
                                     <label style={{ fontSize: '12px', fontWeight: 500, color: '#374151', display: 'block', marginBottom: '5px' }}>Responsable</label>

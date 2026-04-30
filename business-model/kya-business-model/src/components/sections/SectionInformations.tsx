@@ -35,6 +35,9 @@ export default function SectionInformations({ projet, onSave }: Props) {
         duree_projet:      projet.duree_projet || 5,
         devise:            projet.devise || 'FCFA',
         statut:            projet.statut || 'draft',
+        promoteur:         projet.promoteur || '',
+        cout_total:        projet.cout_total || 0,
+        pays_execution:    projet.pays_execution || '',
     })
     const supabase = createClient()
 
@@ -180,6 +183,35 @@ export default function SectionInformations({ projet, onSave }: Props) {
                             <option value="finalise">Finalisé</option>
                             <option value="archive">Archivé</option>
                         </select>
+                    </div>
+                </div>
+                {/* Nouveaux champs */}
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '14px' }}>
+                    <div>
+                        <label style={labelStyle}>Promoteur du projet</label>
+                        <input
+                            type="text" value={form.promoteur}
+                            onChange={e => setForm({ ...form, promoteur: e.target.value })}
+                            placeholder="Ex : KYA-Energy Group"
+                            style={inputStyle}
+                        />
+                    </div>
+                    <div>
+                        <label style={labelStyle}>Coût total du projet (FCFA)</label>
+                        <input
+                            type="number" value={form.cout_total}
+                            onChange={e => setForm({ ...form, cout_total: parseFloat(e.target.value) })}
+                            style={inputStyle}
+                        />
+                    </div>
+                    <div>
+                        <label style={labelStyle}>Pays d'exécution</label>
+                        <input
+                            type="text" value={form.pays_execution}
+                            onChange={e => setForm({ ...form, pays_execution: e.target.value })}
+                            placeholder="Ex : Togo"
+                            style={inputStyle}
+                        />
                     </div>
                 </div>
 

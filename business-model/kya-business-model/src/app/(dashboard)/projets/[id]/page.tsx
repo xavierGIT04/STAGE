@@ -16,9 +16,9 @@ import SectionPartenaires from '@/components/sections/SectionPartenaires'
 import SectionConcurrents from '@/components/sections/SectionConcurrents'
 import SectionPrevisions  from '@/components/sections/SectionPrevisions'
 import SectionDashboard   from '@/components/sections/SectionDashboard'
-import SectionPartenairesTechniques from '@/components/sections/SectionPartenairesTechniques'
 import SectionImpacts from '@/components/sections/SectionImpacts'
 import SectionRisques from '@/components/sections/SectionRisques'
+import SectionSegmentClientele from '@/components/sections/SectionSegmentClientele'
 
 const SECTIONS = [
     { id: 1,  label: 'Qui sommes-nous ?'        },
@@ -27,9 +27,9 @@ const SECTIONS = [
     { id: 4,  label: 'Hypothèses'               },
     { id: 5,  label: 'Coûts & Composants'       },
     { id: 6,  label: 'Revenus'                  },
-    { id: 7,  label: 'Partenaires financiers'   },
-    { id: 8,  label: 'Concurrents'              },
-    { id: 9,  label: 'Partenaires techniques'   },
+    { id: 7,  label: 'Partenaires'   },
+    { id: 8, label: 'Segment Clientèle' },
+    { id: 9,  label: 'Concurrents'              },
     { id: 10, label: 'Impacts du projet'        },
     { id: 11, label: 'Risques'                  },
     { id: 12, label: 'Prévisions financières'   },
@@ -97,8 +97,8 @@ export default function ProjetPage() {
             case 5:  return <SectionCouts              projetId={id} onSave={() => markSectionOk(5)}  />
             case 6:  return <SectionRevenus            projetId={id} onSave={() => markSectionOk(6)}  />
             case 7:  return <SectionPartenaires        projetId={id} onSave={() => markSectionOk(7)}  />
-            case 8:  return <SectionConcurrents        projetId={id} onSave={() => markSectionOk(8)}  />
-            case 9:  return <SectionPartenairesTechniques projetId={id} onSave={() => markSectionOk(9)}  />
+            case 8: return <SectionSegmentClientele projetId={id} onSave={() => markSectionOk(14)} />
+            case 9:  return <SectionConcurrents        projetId={id} onSave={() => markSectionOk(8)}  />
             case 10: return <SectionImpacts            projetId={id} onSave={() => markSectionOk(10)} />
             case 11: return <SectionRisques            projetId={id} onSave={() => markSectionOk(11)} />
             case 12: return <SectionPrevisions         projetId={id} onSave={() => markSectionOk(12)} />

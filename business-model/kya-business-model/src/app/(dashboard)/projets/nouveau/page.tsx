@@ -25,18 +25,28 @@ export default function NouveauProjetPage() {
     const handleCreate = async (e: React.FormEvent) => {
         e.preventDefault()
         setLoading(true)
-        setError('')
 
+        // 1. Créer le projet
         const { data, error } = await supabase
             .from('projets')
             .insert([{ ...form, modele: modeleChoisi, statut: 'draft' }])
-            .select()
+            .select().single()
+
+        if (error || !data) { setError('Erreur création.'); setLoading(false); return }
+
+        // 2. NOUVEAU : Cloner le profil global dans le projet
+        const { data: profilGlobal } = await supabase
+            .from('profil_entreprise_global')
+            .select('*')
+            .limit(1)
             .single()
 
-        if (error || !data) {
-            setError('Erreur lors de la création du projet.')
-            setLoading(false)
-            return
+        if (profilGlobal) {
+            const { id: _, created_at, updated_at, ...profilSansId } = profilGlobal
+            await supabase.from('entreprise_profil').insert([{
+                ...profilSansId,
+                projet_id: data.id,
+            }])
         }
 
         router.push(`/projets/${data.id}`)

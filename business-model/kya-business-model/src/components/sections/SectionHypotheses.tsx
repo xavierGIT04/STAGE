@@ -122,6 +122,22 @@ const STRUCTURE: HypoSection[] = [
                 step: 0.5, min: 0, max: 300
             },
             {
+                cle: 'taux_retention',
+                label: 'Taux de rétention annuel',
+                unite: '%',
+                description: 'Ex : 85 pour 85%. Part des clients conservés d\'une année à l\'autre.',
+                defaut: 0.85, affichage: 85, estPourcentage: true,
+                step: 1, min: 0, max: 100
+            },
+            {
+                cle: 'taux_conversion_premium',
+                label: 'Taux de conversion premium',
+                unite: '%',
+                description: 'Ex : 20 pour 20%. Part des clients basiques qui passent en offre premium.',
+                defaut: 0.20, affichage: 20, estPourcentage: true,
+                step: 0.5, min: 0, max: 100
+            },
+            {
                 cle: 'taux_encaissement',
                 label: "Taux d'encaissement",
                 unite: '%',
@@ -322,7 +338,6 @@ export default function SectionHypotheses({ projetId, onSave }: Props) {
 
                 <span>
                     Les champs en <strong>%</strong> acceptent des valeurs entre 0 et 100 (ou plus pour les marges).
-                    Le système convertit automatiquement pour les calculs. Exemple : <strong>27</strong> → 27% d'IS.
                 </span>
             </div>
 
