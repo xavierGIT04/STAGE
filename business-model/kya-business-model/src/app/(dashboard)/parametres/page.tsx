@@ -78,7 +78,7 @@ export default function ParametresPage() {
 
             {/* Bandeau info */}
             <div style={{ backgroundColor: '#E6F1FB', border: '1px solid #B5D4F4', borderRadius: '10px', padding: '12px 16px', marginBottom: '28px', fontSize: '13px', color: '#185FA5' }}>
-                💡 Ces données constituent le profil <strong>global</strong> de votre organisation. À la création d&apos;un nouveau projet, elles seront copiées dans la section &apos;Qui sommes-nous ?&apos; — vous pourrez les modifier sans affecter les autres projets.
+                 Ces données constituent le profil <strong>global</strong> de votre organisation. À la création d&apos;un nouveau projet, elles seront copiées dans la section &apos;Qui sommes-nous ?&apos; — vous pourrez les modifier sans affecter les autres projets.
             </div>
 
             <form onSubmit={handleSave} style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>

@@ -18,6 +18,9 @@ export default function NouveauProjetPage() {
         annee_demarrage:   new Date().getFullYear(),
         duree_projet:      5,
         devise:            'FCFA',
+        promoteur:         '',
+        cout_total:         0,
+        pays_execution:     '',
     })
     const router   = useRouter()
     const supabase = createClient()
@@ -320,6 +323,35 @@ export default function NouveauProjetPage() {
                             </select>
                         </div>
                     </div>
+                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '14px' }}>
+                        <div>
+                            <label style={labelStyle}>Promoteur du projet</label>
+                            <input
+                                type="text" value={form.promoteur}
+                                onChange={e => setForm({ ...form, promoteur: e.target.value })}
+                                placeholder="Ex : KYA-Energy Group"
+                                style={inputStyle}
+                            />
+                        </div>
+                        <div>
+                            <label style={labelStyle}>Coût total du projet (FCFA)</label>
+                            <input
+                                type="number" value={form.cout_total}
+                                onChange={e => setForm({ ...form, cout_total: parseFloat(e.target.value) })}
+                                style={inputStyle}
+                            />
+                        </div>
+                        <div>
+                            <label style={labelStyle}>Pays d&apos;exécution</label>
+                            <input
+                                type="text" value={form.pays_execution}
+                                onChange={e => setForm({ ...form, pays_execution: e.target.value })}
+                                placeholder="Ex : Togo"
+                                style={inputStyle}
+                            />
+                        </div>
+                    </div>
+
 
                     {error && (
                         <p style={{
