@@ -224,7 +224,7 @@ export default function SectionCouts({ projetId, onSave }: Props) {
                         <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '13px' }}>
                             <thead>
                             <tr style={{ backgroundColor: '#0D2B55' }}>
-                                {['Libellé', 'Catégorie', 'Type de calcul', 'Valeur', ''].map(h => (
+                                {['Libellé', 'Catégorie', 'Valeur', ''].map(h => (
                                     <th key={h} style={{ padding: '10px 14px', textAlign: 'left', color: '#fff', fontWeight: 500, fontSize: '12px' }}>
                                         {h}
                                     </th>
