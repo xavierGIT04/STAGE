@@ -156,7 +156,6 @@ export default function SectionRisques({ projetId, onSave }: Props) {
                                 <div>
                                     <label style={{ fontSize: '12px', fontWeight: 500, color: '#374151', display: 'block', marginBottom: '5px' }}>Catégorie</label>
                                     <div>
-                                        <label style={{ fontSize: '12px', fontWeight: 500, color: '#374151', display: 'block', marginBottom: '5px' }}>Catégorie</label>
                                         <select value={r.categorie || ''}
                                                 onChange={e => update(r.id, 'categorie', e.target.value)}
                                                 style={{ ...inputStyle, cursor: 'pointer' }}>

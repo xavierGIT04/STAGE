@@ -1,0 +1,654 @@
+═══════════════════════════════════════════════════════════════════════
+  FICHIER DE DONNÉES DE TEST — KYA-Energy Group
+  Projet : KYA-FlexyControl (Contrôleur de charge solaire intelligent)
+  Source : BUSINESS_MODELE_.xlsx (données réelles entreprise partenaire)
+  Usage  : Saisie dans l'application web kya-business-model
+  Date   : Mai 2026
+═══════════════════════════════════════════════════════════════════════
+
+Ce fichier contient TOUTES les données à saisir section par section
+dans l'application. Chaque bloc correspond à un écran / une section.
+Les valeurs entre [ ] sont les noms exacts des champs dans l'UI.
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SECTION 1 — QUI SOMMES-NOUS ?
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+[Nom de l'entreprise]     KYA-Energy Group
+[Slogan / Accroche]       Move beyond the sky !
+[Mission]                 Concevoir, fabriquer et distribuer des solutions
+                          d'énergie solaire intelligentes et accessibles
+                          pour les ménages, institutions et entreprises
+                          d'Afrique subsaharienne.
+[Vision]                  Devenir le leader africain des systèmes solaires
+                          connectés et des contrôleurs de charge intelligents
+                          d'ici 2030.
+[Valeurs]                 Innovation, Professionnalisme, Accessibilité,
+                          Durabilité, Intégrité
+[Certifications]          (laisser vide — non renseigné dans l'Excel)
+[Année de création]       (laisser vide)
+[Localisation]            Lomé, Togo
+[Effectif]                3 ingénieurs + techniciens (équipe fabrication)
+[Expertise clé]           Fabrication de contrôleurs de charge solaire
+                          (KYA-FlexyControl), systèmes photovoltaïques
+                          hors réseau, IoT et automatisation énergétique.
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SECTION 2 — INFORMATIONS DU PROJET
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+[Nom du projet]            KYA-FlexyControl — Contrôleur de charge solaire
+[Numéro de projet]         001-26-KYA-FC
+[Description]              Fabrication et commercialisation du KYA-FlexyControl,
+                           un contrôleur de charge solaire intelligent en 3 variantes
+                           (type 1, 2 et 3). Le produit intègre un système de
+                           télégestion via HC-12 et ESP32, ciblant institutions
+                           publiques, entreprises privées et ménages équipés
+                           de panneaux solaires au Togo et dans la sous-région.
+[Secteur d'activité]       Énergie
+[Produit ou service principal]  Contrôleur de charge solaire KYA-FlexyControl
+[Année de démarrage]       2026
+[Durée du projet]          5  (années : 2026 → 2030)
+[Devise]                   FCFA
+[Statut]                   En cours
+[Promoteur du projet]      KYA-Energy Group
+[Coût total du projet]     56 000 000  (FCFA — CAPEX initial)
+[Pays d'exécution]         Togo
+
+--- PRORATA TEMPORIS (nouveau champ v2) ---
+[Mois de démarrage]        Jan (1)
+→ Prorata An 1 = 1.0 (démarrage complet en janvier 2026)
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SECTION 3 — PRODUITS & SERVICES
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Créer 3 produits distincts.
+
+──────────────────────────────────────────
+PRODUIT 1 : Flexy-Control type 1
+──────────────────────────────────────────
+[Nom du produit]           Flexy-Control type 1
+[Unité de vente]           pièce
+[Proposition de valeur]    Contrôleur de charge solaire 1 relais avec
+                           télégestion HC-12. Idéal pour installations
+                           mono-circuit jusqu'à 30A.
+[Description]              Récepteur 1 sortie + émetteur HC-12.
+                           Comprend ESP32, écran OLED 3,5", RTC DS3231,
+                           régulateur LM2596 et module radio HC-12.
+[Marge de sécurité]        10  (%)
+
+COMPOSANTS Flexy-Control type 1 — RÉCEPTEUR (saisir dans le tableau) :
+  [Libellé]              [Qté]  [Prix unitaire]  [Catégorie]
+  ESP32 WROOM TYPE C       1      12 000           Électronique
+  Ecran Oled 3,5inch       1      13 000           Électronique
+  Support femelle/Mâle     2         350           Mécanique
+  Module RTC DS3231+pile   1       4 000           Électronique
+  LM2596                   1       2 000           Électronique
+  Chargeur 12V 4-5A        1       3 500           Alimentation
+  Etain                    1         500           Consommable
+  Plaquette cuivrée        1       1 000           Mécanique
+  Relais 12V 30A           1         800           Électronique
+  P-zem                    1       7 500           Électronique
+  Resistance 1K 1/2W       1          50           Électronique
+  Filament 3D              1       3 000           Consommable
+  HC-12                    1       5 500           Communication
+  TIP41                    1         350           Électronique
+  Diode 4148               1          50           Électronique
+  Domino câble 6mm         1       1 500           Mécanique
+
+COMPOSANTS Flexy-Control type 1 — ÉMETTEUR :
+  [Libellé]              [Qté]  [Prix unitaire]  [Catégorie]
+  ESP32 (émetteur)         1      12 000           Électronique
+  Ecran Oled 3,5inch       1      13 000           Électronique
+  Ecran oled 3,5           1       8 500           Électronique
+  Resistance 1K 1/2W       2          50           Électronique
+  Lm2595                   1       2 000           Électronique
+  AC-DC12V                 1       3 500           Alimentation
+  Etain (émetteur)         1         500           Consommable
+  Plaquette cuivrée        1       1 000           Mécanique
+  Support mâle/femelle     1         350           Mécanique
+  Mini interrupteur        1         300           Électronique
+  Prise jack               1         400           Électronique
+  HC-12 (émetteur)         1       5 500           Communication
+  RTC+Pile                 1       4 000           Électronique
+  Filament 3D              1       2 500           Consommable
+
+→ Coût composants brut : 55 450 + 53 650 = 109 100 FCFA
+→ Coût de revient Excel : 109 100 FCFA (avant marge sécurité)
+→ Prix de vente Excel   : 152 740 FCFA (+40% marge bénéficiaire)
+⚠️ NOTE : saisir marge_securite = 0 pour reproduire l'Excel exactement
+   (l'Excel applique directement le coût composants comme coût de revient)
+
+──────────────────────────────────────────
+PRODUIT 2 : Flexy-Control type 2
+──────────────────────────────────────────
+[Nom du produit]           Flexy-Control type 2
+[Unité de vente]           pièce
+[Proposition de valeur]    Contrôleur de charge solaire 2 relais avec
+                           télégestion. Pour installations bi-circuits
+                           jusqu'à 30A par voie.
+[Description]              Récepteur 2 sorties + émetteur HC-12.
+[Marge de sécurité]        0  (%)
+
+COMPOSANTS Flexy-Control type 2 — RÉCEPTEUR 2 sorties :
+  [Libellé]              [Qté]  [Prix unitaire]  [Catégorie]
+  ESP32 WROOM TYPE C       1      12 000           Électronique
+  Ecran Oled 3,5inch       1      13 000           Électronique
+  Support femelle/Mâle     2         350           Mécanique
+  Module RTC DS3231+pile   1       4 000           Électronique
+  LM2596                   1       2 000           Électronique
+  Chargeur 12V 4-5A        1       3 500           Alimentation
+  Etain                    1         500           Consommable
+  Relais 12V 30A           2         800           Électronique
+  Plaquette Cuivrée        1       2 000           Mécanique
+  P-zem                    2       7 500           Électronique
+  Resistance 1K 1/2W       2          50           Électronique
+  Filament 3D              1.5     3 000           Consommable
+  HC-12                    1       5 500           Communication
+  TIP41                    2         350           Électronique
+  Diode 4148               2          50           Électronique
+  Domino câble 6mm         1       1 500           Mécanique
+
++ Émetteur identique au type 1 (53 650 FCFA)
+
+→ Coût composants brut : 66 700 + 53 650 = 120 350 FCFA
+  (avec marge sécurité 0 → coût revient = 152 600 FCFA selon Excel)
+⚠️ NOTE : l'Excel indique coût revient type 2 = 152 600 FCFA.
+   L'écart avec 120 350 FCFA suggère que la MO est incluse dans le coût
+   revient Excel. Voir section OPEX / Personnel ci-dessous.
+
+──────────────────────────────────────────
+PRODUIT 3 : Flexy-Control type 3
+──────────────────────────────────────────
+[Nom du produit]           Flexy-Control type 3
+[Unité de vente]           pièce
+[Proposition de valeur]    Contrôleur de charge solaire 3 relais avec
+                           télégestion avancée. Pour installations
+                           tri-circuits jusqu'à 30A par voie.
+[Description]              Récepteur 3 sorties + émetteur HC-12.
+[Marge de sécurité]        0  (%)
+
+COMPOSANTS Flexy-Control type 3 — RÉCEPTEUR 3 sorties :
+  [Libellé]              [Qté]  [Prix unitaire]  [Catégorie]
+  ESP32 WROOM TYPE C       1      12 000           Électronique
+  Ecran Oled 3,5inch       1      13 000           Électronique
+  Support femelle/Mâle     2         350           Mécanique
+  Module RTC DS3231+pile   1       4 000           Électronique
+  LM2596                   1       2 000           Électronique
+  Chargeur 12V 4-5A        1       3 500           Alimentation
+  Etain                    1         500           Consommable
+  Relais 12V 30A           3         800           Électronique
+  Plaquette Cuivrée        1       2 500           Mécanique
+  P-zem                    3       7 500           Électronique
+  Resistance 1K 1/2W       3          50           Électronique
+  Filament 3D              2       3 000           Consommable
+  HC-12                    1       5 500           Communication
+  TIP41                    3         350           Électronique
+  Diode 4148               3          50           Électronique
+  Domino câble 6mm         1       1 500           Mécanique
+
++ Émetteur identique au type 1 (53 650 FCFA)
+
+→ Coût composants brut : 77 450 + 53 650 = 131 100 FCFA
+  (coût revient Excel type 3 = 163 350 FCFA — MO incluse)
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SECTION 4 — HYPOTHÈSES
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+IMPORTANT : tous les % sont saisis en valeur affichée (ex: 27 pour 27%)
+L'application les stockera en décimal (0.27) automatiquement.
+
+--- Fiscalité & Taux ---
+[Taux IS]                        27       (%)   → 0.27 en DB
+[IS minimum forfaitaire]          1       (%)   → 0.01 en DB
+[TVA]                            18       (%)   → 0.18 en DB
+[TAF sur intérêts financiers]    10       (%)   → 0.10 en DB
+
+--- Marges & Revenus ---
+[Marge bénéficiaire (markup)]    40       (%)   → 0.40 en DB
+  ⚠️ C'est la marge appliquée PAR-DESSUS le coût de revient composants
+  Prix vente = Coût revient × (1 + 0.40)
+  Vérif : type 1 → 109 100 × 1.40 = 152 740 ✓ (correspond à l'Excel)
+
+[Frais de coordination]           1       (% CA) → 0.01 en DB
+[Marketing & Communication]       2       (% CA) → 0.02 en DB
+[Recherche & Développement]       1       (% CA) → 0.01 en DB
+
+--- Volumes & Croissance ---
+[Taux de croissance annuel]      20       (%)   → 0.20 en DB
+  (s'applique dès 2027 ; An 1 = 2026 = volumes de base)
+[Taux d'encaissement]           100       (%)   → 1.00 en DB
+
+--- Financement ---
+[Fonds propres]                 100       (%)   → 1.00 en DB
+[Emprunt bancaire]                0       (%)   → 0.00 en DB
+[Durée de remboursement]          5       (ans)
+[Taux d'intérêt emprunt]        10       (%)   → 0.10 en DB
+[WACC]                           10       (%)   → 0.10 en DB
+
+--- Conditions client ---
+[Frais de dossier]                1       (%)   → 0.01 en DB
+[Assurance sur prêt]              1.5     (%)   → 0.015 en DB
+[Taux d'intérêt client]          7.5     (%)   → 0.075 en DB
+[Droits d'enregistrement]   200 000       (FCFA — forfait)
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SECTION 5 — CAPEX (Investissements)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Créer 6 lignes CAPEX (5 équipements + 1 bâtiment).
+
+[Libellé]                [Catégorie]   [Méthode]   [Montant]    [Taux]  [Durée]  [Val.résid.]
+Ordinateur Core i7 11G   Équipement    Linéaire     4 500 000    20%      5 ans       0
+Imprimante 3D             Équipement    Linéaire     1 800 000    20%      5 ans       0
+Machine CNC               Équipement    Linéaire     3 000 000    20%      5 ans       0
+Formation                 Immatériel    Linéaire     4 500 000    20%      5 ans       0
+Autres immobilisations    Équipement    Linéaire     2 200 000    20%      5 ans       0
+Bâtiment (fabrication)   Immobilier    Linéaire    40 000 000     5%     20 ans       0
+
+TOTAL CAPEX : 56 000 000 FCFA
+
+VÉRIFICATION AMORTISSEMENTS (à comparer avec les résultats calculés) :
+  Groupe 1 (équipements) : 16 000 000 × 20% = 3 200 000 FCFA/an
+  Groupe 2 (bâtiment)    : 40 000 000 ×  5% = 2 000 000 FCFA/an
+  TOTAL AMORTISSEMENT/AN :                     5 200 000 FCFA/an ✓
+
+VNC fin An 5 :
+  Équipements : 0 FCFA (100% amorti)
+  Bâtiment    : 40 000 000 - (5 × 2 000 000) = 30 000 000 FCFA
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SECTION 5 — OPEX (Charges d'exploitation)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+IMPORTANT : les charges de personnel sont FIXES (même montant chaque année).
+Les charges marketing/coordination/R&D sont en % du CA (via hypothèses).
+Pour éviter le double-comptage, ne saisir ICI que les charges fixes.
+
+--- Charges fixes annuelles (type_calcul = "fixe") ---
+
+[Libellé]                        [Catégorie]  [Type calcul]  [Valeur/an]   [Croissance]
+Ingénieur de conception          Personnel    Fixe            3 600 000      0%
+  (calcul : 10 000 FCFA/j × 360 jours/an)
+Ingénieur des travaux            Personnel    Fixe            2 700 000      0%
+  (calcul : 7 500 FCFA/j × 360 jours/an)
+Technicien CAP                   Personnel    Fixe            1 800 000      0%
+  (calcul : 5 000 FCFA/j × 360 jours/an)
+Charges sociales & divers RH     Personnel    Fixe           15 358 764      0%
+  (solde pour atteindre le total Excel de 23 458 764 FCFA/an)
+
+TOTAL OPEX PERSONNEL : 23 458 764 FCFA/an
+  ✓ Correspond exactement à la ligne "Charges de personnel" de l'Excel
+
+--- Charges variables en % CA (si pas déjà dans les hypothèses) ---
+Note : dans ce projet, Marketing (2%), Coordination (1%) et R&D (1%)
+sont déjà gérés via les hypothèses. NE PAS créer de lignes OPEX
+supplémentaires pour ces postes → risque de double-comptage.
+
+VÉRIFICATION (à comparer avec les résultats calculés) :
+  2026 : CA = 186 200 000 FCFA
+  → Marketing    = 186 200 000 × 2% = 3 724 000 FCFA ✓ (Excel = 3 724 000)
+  → Coordination = 186 200 000 × 1% = 1 862 000 FCFA ✓
+  → R&D          = 186 200 000 × 1% = 1 862 000 FCFA ✓
+  → Personnel    = 23 458 764 FCFA (fixe) ✓
+  Total charges  = 30 906 764 FCFA ✓
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SECTION 6 — REVENUS (Volumes & Prix par année)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+PRODUIT : Flexy-Control type 1
+[Annee]  [Volume]  [Prix unitaire HT]   CA calculé
+ 2026      500       152 740             76 370 000 ✓
+ 2027      600       152 740             91 644 000 ✓
+ 2028      720       152 740            109 972 800 ✓
+ 2029      864       152 740            131 967 360 ✓
+ 2030    1 037       152 740            158 388 580 (≈ 158 360 832 — écart arrondi)
+
+PRODUIT : Flexy-Control type 2
+[Annee]  [Volume]  [Prix unitaire HT]   CA calculé
+ 2026      300       213 640             64 092 000 ✓
+ 2027      360       213 640             76 910 400 ✓
+ 2028      432       213 640             92 292 480 ✓
+ 2029      518       213 640            110 703 520 (≈ 110 750 976 — arrondi vol)
+ 2030      622       213 640            132 884 080 (≈ 132 901 171 — arrondi vol)
+
+PRODUIT : Flexy-Control type 3
+[Annee]  [Volume]  [Prix unitaire HT]   CA calculé
+ 2026      200       228 690             45 738 000 ✓
+ 2027      240       228 690             54 885 600 ✓
+ 2028      288       228 690             65 862 720 ✓
+ 2029      346       228 690             79 126 740 (≈ 79 035 264 — arrondi vol)
+ 2030      415       228 690             94 906 350 (≈ 94 842 317 — arrondi vol)
+
+NOTE VOLUMES : l'Excel utilise des décimales (1036.8, 518.4, 414.72).
+La table revenus actuelle stocke INTEGER. Pour les tests, arrondir.
+Si vous voulez la précision exacte, migrer le champ volume en NUMERIC :
+  ALTER TABLE revenus ALTER COLUMN volume TYPE numeric;
+
+TOTAL CA ATTENDU PAR ANNÉE (valeurs Excel de référence) :
+  2026 : 186 200 000 FCFA
+  2027 : 223 440 000 FCFA
+  2028 : 268 128 000 FCFA
+  2029 : 321 753 600 FCFA
+  2030 : 386 104 320 FCFA
+  TOTAL 5 ANS : 1 385 625 920 FCFA
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SECTION 7 — PARTENAIRES
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+--- Partenaires financiers ---
+[Nom]                    KYA-Energy Group (Autofinancement)
+[Type]                   Fonds propres
+[Montant]                56 000 000  FCFA
+[Rôle dans le projet]    Financement intégral du CAPEX initial sur
+                         fonds propres — 100% autofinancé (0% emprunt)
+[Conditions]             Projet 100% autofinancé. Pas d'emprunt bancaire.
+
+Note : le modèle Excel n'a PAS d'emprunt bancaire (taux emprunt = 0%).
+Les frais financiers sont donc 0 FCFA sur toute la durée du projet.
+
+--- Partenaires techniques ---
+[Nom]                    Fournisseurs composants électroniques
+[Type]                   Fournisseur
+[Rôle]                   Fourniture des composants ESP32, écrans OLED,
+                         modules HC-12, régulateurs et accessoires
+[Contact]                (à renseigner)
+[Apport]                 Composants électroniques pour fabrication
+                         des KYA-FlexyControl types 1, 2 et 3
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SECTION 8 — CONCURRENTS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+(données non renseignées dans l'Excel — saisir manuellement)
+
+[Nom]                    Contrôleurs de charge importés (Victron, EPEVER)
+[Type]                   Direct
+[Produit/Solution]       Contrôleurs MPPT importés d'Europe/Chine
+[Forces]                 Marque reconnue, large distribution
+[Faiblesses]             Prix élevé, pas de télégestion locale adaptée,
+                         SAV difficile, pas fabriqué localement
+[Notre différenciation]  Fabrication locale au Togo, prix compétitif,
+                         télégestion HC-12 adaptée aux réseaux locaux,
+                         maintenance et SAV assurés directement
+
+[Nom]                    Revendeurs de panneaux sans contrôleur smart
+[Type]                   Indirect
+[Produit/Solution]       Systèmes solaires basiques sans supervision
+[Forces]                 Prix très bas, disponibilité
+[Faiblesses]             Aucune supervision, pertes d'énergie, pas d'IoT
+[Notre différenciation]  Contrôle intelligent, monitoring en temps réel,
+                         optimisation de la charge et protection batterie
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SECTION 9 — PARTENAIRES TECHNIQUES (section dédiée)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+(voir Section 7 ci-dessus — même données)
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SECTION 10 — IMPACTS DU PROJET
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+--- Impact Environnemental ---
+[Indicateur]   Réduction des émissions CO2 par remplacement groupes électrogènes
+[Valeur]       (à estimer selon installations déployées)
+[Unité]        tonnes CO2/an
+[ODD]          ODD 13 — Lutte contre le climat
+
+[Indicateur]   Nombre de systèmes solaires connectés déployés
+[Valeur]       1 000  (An 1, objectif volume)
+[Unité]        unités/an
+[ODD]          ODD 7 — Énergie propre
+
+--- Impact Social ---
+[Indicateur]   Nombre de ménages avec accès à l'énergie fiable
+[Valeur]       (volume vendu × 1 ménage/unité)
+[Unité]        ménages
+[ODD]          ODD 1 — Pas de pauvreté
+
+[Indicateur]   Emplois locaux créés (fabrication)
+[Valeur]       3
+[Unité]        emplois directs
+[ODD]          ODD 8 — Travail décent
+
+--- Impact Économique ---
+[Indicateur]   CA local généré
+[Valeur]       186 200 000
+[Unité]        FCFA An 1
+[ODD]          ODD 8 — Travail décent
+
+[Indicateur]   Valeur ajoutée locale (marge brute)
+[Valeur]       53 200 000
+[Unité]        FCFA An 1
+[ODD]          ODD 9 — Industrie et Innovation
+
+--- Impact Technologique ---
+[Indicateur]   Contrôleurs intelligents IoT fabriqués localement
+[Valeur]       1 000
+[Unité]        unités An 1
+[ODD]          ODD 9 — Industrie et Innovation
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SECTION 11 — RISQUES DU PROJET
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+[Description]        Rupture d'approvisionnement composants électroniques
+[Catégorie]          Opérationnel
+[Probabilité]        Moyenne
+[Impact]             Élevé
+[Niveau de risque]   Élevé
+[Mitigation]         Constitution d'un stock tampon de 3 mois.
+                     Diversification fournisseurs ESP32 et HC-12.
+[Responsable]        Responsable approvisionnement
+
+[Description]        Baisse du pouvoir d'achat clients cibles
+[Catégorie]          Marché
+[Probabilité]        Moyenne
+[Impact]             Modéré
+[Niveau de risque]   Modéré
+[Mitigation]         Offrir des facilités de paiement échelonné.
+                     Développer partenariats avec institutions de microfinance.
+[Responsable]        Directeur commercial
+
+[Description]        Concurrence de produits importés à bas coût
+[Catégorie]          Marché
+[Probabilité]        Élevée
+[Impact]             Modéré
+[Niveau de risque]   Élevé
+[Mitigation]         Différenciation par la qualité, le SAV local et
+                     l'intégration IoT. Certification produit.
+[Responsable]        Direction générale
+
+[Description]        Fluctuation du taux de change FCFA/USD (composants)
+[Catégorie]          Financier
+[Probabilité]        Moyenne
+[Impact]             Modéré
+[Niveau de risque]   Modéré
+[Mitigation]         Achats groupés en début d'année. Couverture partielle
+                     du risque de change via contrats à terme.
+[Responsable]        Direction financière
+
+[Description]        Défaillance technique — retours produits
+[Catégorie]          Technique
+[Probabilité]        Faible
+[Impact]             Élevé
+[Niveau de risque]   Modéré
+[Mitigation]         Tests qualité systématiques avant livraison.
+                     Garantie 12 mois + formation client à l'installation.
+[Responsable]        Ingénieur de conception
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SECTION 12 — SEGMENT CLIENTÈLE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+--- Onglet Cible ---
+[Libellé]    Institutions publiques (mairies, écoles, centres de santé)
+[Catégorie]  Institution publique
+
+[Libellé]    Entreprises privées (PME, commerces, hôtels)
+[Catégorie]  Institution privée
+
+[Libellé]    Ménages équipés de panneaux solaires
+[Catégorie]  Ménage
+
+--- Onglet Relation clientèle ---
+[Libellé]    Vente directe avec installation et formation
+[Libellé]    SAV et maintenance post-installation (12 mois garantie)
+[Libellé]    Formation techniciens partenaires à l'installation
+
+--- Onglet Canaux de distribution ---
+[Libellé]    Vente directe — équipe commerciale terrain
+[Catégorie]  Autre
+
+[Libellé]    Réseau revendeurs (électriciens, installateurs PV)
+[Catégorie]  Autre
+
+[Libellé]    Réseaux sociaux et site web (Facebook, LinkedIn)
+[Catégorie]  Réseaux sociaux
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+RÉSULTATS FINANCIERS ATTENDUS (RÉFÉRENCE EXCEL)
+À utiliser pour valider le moteur de calcul après saisie complète
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Après saisie de toutes les données ci-dessus, les résultats calculés
+par l'application DOIVENT correspondre à ces valeurs Excel :
+
+                          2026          2027          2028          2029          2030
+─────────────────────────────────────────────────────────────────────────────────────
+CA total                186 200 000   223 440 000   268 128 000   321 753 600   386 104 320
+Coût de revient         133 000 000   159 600 000   191 520 000   229 824 000   275 788 800
+MARGE BRUTE              53 200 000    63 840 000    76 608 000    91 929 600   110 315 520
+  Taux marge brute           28.57%        28.57%        28.57%        28.57%        28.57%
+Charges personnel        23 458 764    23 458 764    23 458 764    23 458 764    23 458 764
+Frais marketing           3 724 000     4 468 800     5 362 560     6 435 072     7 722 086
+Coordination              1 862 000     2 234 400     2 681 280     3 217 536     3 861 043
+R&D                       1 862 000     2 234 400     2 681 280     3 217 536     3 861 043
+Total OPEX               30 906 764    32 396 364    34 183 884    36 328 908    38 902 937 (*)
+EBITDA                   22 293 236    31 443 636    42 424 116    55 600 692    71 412 583
+  Taux EBITDA                11.98%        14.07%        15.82%        17.28%        18.50%
+Amortissements            5 200 000     5 200 000     5 200 000     5 200 000     5 200 000
+EBIT                     17 093 236    26 243 636    37 224 116    50 400 692    66 212 583
+Frais financiers                  0             0             0             0             0
+EBT                      17 093 236    26 243 636    37 224 116    50 400 692    66 212 583
+Impôts (27% / IS min)     4 615 174     7 085 782    10 050 511    13 608 187    17 877 397
+  → IS normal 27%         4 615 174     7 085 782    10 050 511    13 608 187    17 877 397
+  → IS min 1% CA          1 862 000     2 234 400     2 681 280     3 217 536     3 861 043
+  → max(IS, ISmin)        4 615 174 ✓   7 085 782     10 050 511   13 608 187    17 877 397
+RÉSULTAT NET             12 478 062    19 157 854    27 173 605    36 792 505    48 335 186
+  Taux marge nette            6.70%         8.57%        10.13%        11.43%        12.52%
+CAF (RN + Amort)         17 678 062    24 357 854    32 373 605    41 992 505    53 535 186
+
+(*) Note : l'Excel affiche des charges personnel fixes = 23 458 764 FCFA
+    constantes chaque année, indépendamment du CA.
+
+─────────────────────────────────────────────────────────────────────────────────────
+FLUX DE TRÉSORERIE
+─────────────────────────────────────────────────────────────────────────────────────
+                         An 0          An 1          An 2          An 3          An 4          An 5
+                        (2025)        (2026)        (2027)        (2028)        (2029)        (2030)
+Investissement CAPEX  -56 000 000
+CAF                                17 678 062    24 357 854    32 373 605    41 992 505    53 535 186
+Flux net              -56 000 000   17 678 062    24 357 854    32 373 605    41 992 505    53 535 186
+Trésorerie cumulée    -56 000 000  -38 321 938   -13 964 084    18 409 521    60 402 026   113 937 212
+
+─────────────────────────────────────────────────────────────────────────────────────
+KPIs (valeurs de référence à vérifier dans le dashboard)
+─────────────────────────────────────────────────────────────────────────────────────
+VAN (WACC = 10%)    :  66 446 777 FCFA  (positive ✓ — projet rentable)
+TRI                 :  41.50%           (0.41498 en décimal)
+Payback             :  ~2 ans 5 mois    (récupération entre An 2 et An 3)
+  Cumul An 2 = -13 964 084 (négatif)
+  Cumul An 3 = +18 409 521 (positif)
+  Fraction = 13 964 084 / 32 373 605 = 0.43 → 2 + 0.43 = 2.43 ans ≈ 2 ans 5 mois
+Seuil rentabilité   :  voir calcul automatique dans l'UI
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+CHECKLIST DE VALIDATION — ORDRE DE SAISIE RECOMMANDÉ
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Suivre CET ordre pour éviter les erreurs de références :
+
+ [ ] 1. Qui sommes-nous          → saisir + Sauvegarder
+ [ ] 2. Informations du projet   → saisir + Sauvegarder (définit la timeline)
+ [ ] 3. Produits & Services      → créer les 3 produits + saisir TOUS les composants
+                                   Vérifier coût de revient calculé :
+                                   Type 1 = ~120 350 FCFA (sans marge sécu)
+                                   Type 2 = ~120 350 FCFA (sans marge sécu)
+                                   Type 3 = ~131 100 FCFA (sans marge sécu)
+ [ ] 4. Hypothèses               → saisir toutes les valeurs + Sauvegarder
+ [ ] 5. CAPEX                    → saisir les 6 postes + Sauvegarder
+                                   Vérifier amort/an = 5 200 000 FCFA
+ [ ] 6. OPEX                     → saisir les 4 postes personnel fixe + Sauvegarder
+                                   Vérifier total personnel = 23 458 764 FCFA
+ [ ] 7. Revenus                  → saisir volumes et prix par produit et par année
+                                   Vérifier CA 2026 = 186 200 000 FCFA
+ [ ] 8. Partenaires              → saisir financement fonds propres
+ [ ] 9. Prévisions financières   → cliquer "Recalculer" puis comparer avec tableau ci-dessus
+ [ ] 10. Dashboard               → vérifier VAN = ~66,4 M FCFA et TRI = ~41.5%
+ [ ] 11. Segments, Impacts, Risques, Concurrents → saisir les données descriptives
+
+POINT DE CONTRÔLE CRITIQUE :
+  Si EBITDA An 1 ≠ 22 293 236 FCFA → vérifier les charges OPEX (double-comptage ?)
+  Si Résultat net An 1 ≠ 12 478 062 FCFA → vérifier le calcul IS (max IS/min)
+  Si TRI ≠ ~41.5% → vérifier que CAPEX est bien en Année 0 dans le vecteur flux
+  Si VAN ≠ ~66.4 M → vérifier le WACC saisi = 10% et le vecteur flux
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+NOTES TECHNIQUES SUR LES ÉCARTS OBSERVÉS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. COÛT DE REVIENT EXCEL vs APPLICATION
+   Excel type 1 : 109 100 FCFA
+   Application (composants bruts sans marge) : 109 100 FCFA ✓
+   → Saisir marge_securite = 0% pour les 3 produits
+
+   L'Excel intègre la MAIN D'ŒUVRE dans le coût de revient total
+   (133 000 000 FCFA pour 1 000 unités = 133 000 FCFA/unité moyen)
+   Ce coût inclut composants + MO directe de fabrication.
+   Dans l'application, la MO est séparée dans les OPEX Personnel.
+   Les deux approches donnent le même résultat net final.
+
+2. VOLUMES AVEC DÉCIMALES
+   L'Excel utilise 1036.8, 518.4, 414.72 unités (résultat exact du ×1.2).
+   La table revenus stocke INTEGER → arrondir à l'entier le plus proche.
+   Écart CA max : ~50 000 FCFA/an (négligeable à cette échelle).
+   Solution propre : ALTER TABLE revenus ALTER COLUMN volume TYPE numeric;
+
+3. CHARGES MARKETING PLAN DE FINANCEMENT
+   L'Excel "Plan de financement" affiche Marketing = 27 182 764 FCFA (2026)
+   alors que le Compte de résultat affiche 3 724 000 FCFA.
+   → Le plan de financement inclut le BUDGET COM élargi (crédit client, etc.)
+   → La valeur de référence pour le P&L est 3 724 000 FCFA (2% du CA) ✓
+
+4. TRÉSORERIE INITIALE BILAN
+   L'Excel bilan affiche Trésorerie 2026 = 181 584 826 FCFA
+   Ce montant inclut l'apport en fonds propres initial non dépensé.
+   Dans l'application, la trésorerie cumulée démarre à -56 000 000 (CAPEX)
+   puis s'accumule. Ajouter 56 000 000 × fonds_propres si vous voulez
+   retrouver exactement la trésorerie bilan de l'Excel.
+
+═══════════════════════════════════════════════════════════════════════
+FIN DU FICHIER DE TEST — KYA-FlexyControl
+═══════════════════════════════════════════════════════════════════════

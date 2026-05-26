@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KYA-FlexyControl | 2 Charges</title>
+    <title>KYA-FlexyControl | 4 Charges</title>
     <style>
         /* ════════════════════════════════
            VARIABLES — THÈME SOMBRE (défaut)
@@ -1087,6 +1087,14 @@
                     <div class="topbar-relay-dot"></div>
                     <span id="topbarRelayLabel2">R2 ON</span>
                 </div>
+                <div class="topbar-relay tr-on" id="topbarRelay3">
+                    <div class="topbar-relay-dot"></div>
+                    <span id="topbarRelayLabel3">R3 ON</span>
+                </div>
+                <div class="topbar-relay tr-on" id="topbarRelay4">
+                    <div class="topbar-relay-dot"></div>
+                    <span id="topbarRelayLabel4">R4 ON</span>
+                </div>
             </div>
         </div>
         <!-- fin topbar -->
@@ -1100,7 +1108,7 @@
                 ════════════════ -->
                 <div id="view-dashboard">
 
-                    <!-- Onglets Charge 1 / Charge 2 -->
+                    <!-- Onglets Charge 1 / 2 / 3 / 4 -->
                     <div style="display:flex; gap:0; margin-bottom:18px; background:var(--bg-metric); border:1px solid var(--border-color); border-radius:var(--radius-md); overflow:hidden; width:fit-content;">
                         <button id="tabBtn1" onclick="switchDashTab(1)"
                                 style="padding:8px 24px; font-size:13px; font-weight:600; border:none; cursor:pointer;
@@ -1111,6 +1119,16 @@
                                 style="padding:8px 24px; font-size:13px; font-weight:600; border:none; cursor:pointer;
                                    background:transparent; color:var(--text-muted); transition:all 0.2s;">
                              Charge 2
+                        </button>
+                        <button id="tabBtn3" onclick="switchDashTab(3)"
+                                style="padding:8px 24px; font-size:13px; font-weight:600; border:none; cursor:pointer;
+                                   background:transparent; color:var(--text-muted); transition:all 0.2s;">
+                             Charge 3
+                        </button>
+                        <button id="tabBtn4" onclick="switchDashTab(4)"
+                                style="padding:8px 24px; font-size:13px; font-weight:600; border:none; cursor:pointer;
+                                   background:transparent; color:var(--text-muted); transition:all 0.2s;">
+                             Charge 4
                         </button>
                     </div>
 
@@ -1358,6 +1376,238 @@
                     </div>
                     <!-- fin dashTab2 -->
 
+                    <!-- ── TAB CHARGE 3 ── -->
+                    <div id="dashTab3" style="display:none;">
+                        <div class="section-heading">Mesures électriques — Charge 3</div>
+                        <div class="metrics-grid">
+
+                            <div class="metric-card" style="border-top-color:#4499ff;">
+                                <div class="metric-card-top">
+                                    <div class="metric-card-icon">
+                                        <svg viewBox="0 0 24 24"><path d="M11 15H6l7-14v8h5l-7 14v-8z"/></svg>
+                                    </div>
+                                    <span class="metric-card-lbl">Tension</span>
+                                </div>
+                                <div class="metric-card-val"><span id="v3">--</span></div>
+                                <div class="metric-card-unit">V</div>
+                            </div>
+
+                            <div class="metric-card" style="border-top-color:#00d4aa;">
+                                <div class="metric-card-top">
+                                    <div class="metric-card-icon" style="background:rgba(0,212,170,0.10)">
+                                        <svg viewBox="0 0 24 24" style="fill:var(--secondary)">
+                                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm.5 13H11v-6h1.5v5.2l4.5 2.7-.8 1.3L12.5 15z"/>
+                                        </svg>
+                                    </div>
+                                    <span class="metric-card-lbl">Courant</span>
+                                </div>
+                                <div class="metric-card-val"><span id="i3">--</span></div>
+                                <div class="metric-card-unit">A</div>
+                            </div>
+
+                            <div class="metric-card" style="border-top-color:#ffa502;">
+                                <div class="metric-card-top">
+                                    <div class="metric-card-icon" style="background:rgba(255,165,2,0.10)">
+                                        <svg viewBox="0 0 24 24" style="fill:#ffa502">
+                                            <path d="M3.5 18.49l6-6.01 4 4L22 6.92l-1.41-1.41-7.09 7.97-4-4L2 16.99z"/>
+                                        </svg>
+                                    </div>
+                                    <span class="metric-card-lbl">Puissance</span>
+                                </div>
+                                <div class="metric-card-val"><span id="p3">--</span></div>
+                                <div class="metric-card-unit">W</div>
+                            </div>
+
+                            <div class="metric-card" style="border-top-color:#2ed573;">
+                                <div class="metric-card-top">
+                                    <div class="metric-card-icon" style="background:rgba(46,213,115,0.10)">
+                                        <svg viewBox="0 0 24 24" style="fill:#2ed573">
+                                            <path d="M12 5c-3.87 0-7 3.13-7 7h2c0-2.76 2.24-5 5-5s5 2.24 5 5h2c0-3.87-3.13-7-7-7zm1 9.29c.88-.39 1.5-1.26 1.5-2.29 0-1.38-1.12-2.5-2.5-2.5S9.5 10.62 9.5 12c0 1.02.62 1.9 1.5 2.29v3.3L7.59 21 9 22.41l3-3 3 3L16.41 21 13 17.59v-3.3z"/>
+                                        </svg>
+                                    </div>
+                                    <span class="metric-card-lbl">Fréquence</span>
+                                </div>
+                                <div class="metric-card-val"><span id="f3">--</span></div>
+                                <div class="metric-card-unit">Hz</div>
+                            </div>
+
+                            <div class="metric-card" style="border-top-color:#7b9cc4;">
+                                <div class="metric-card-top">
+                                    <div class="metric-card-icon" style="background:rgba(123,156,196,0.10)">
+                                        <svg viewBox="0 0 24 24" style="fill:#7b9cc4">
+                                            <path d="M13 3h-2v10h2V3zm4.83 2.17l-1.42 1.42C17.99 7.86 19 9.81 19 12c0 3.87-3.13 7-7 7s-7-3.13-7-7c0-2.19 1.01-4.14 2.58-5.42L6.17 5.17C4.23 6.82 3 9.26 3 12c0 4.97 4.03 9 9 9s9-4.03 9-9c0-2.74-1.23-5.18-3.17-6.83z"/>
+                                        </svg>
+                                    </div>
+                                    <span class="metric-card-lbl">Facteur P.</span>
+                                </div>
+                                <div class="metric-card-val"><span id="pf3">--</span></div>
+                                <div class="metric-card-unit">φ</div>
+                            </div>
+
+                        </div>
+
+                        <div class="section-heading">Énergie &amp; puissance — Charge 3</div>
+                        <div class="bottom-row">
+                            <div class="energy-card">
+                                <div class="energy-card-header">
+                                    <div class="energy-card-title">
+                                        <svg viewBox="0 0 24 24"><path d="M5 9.2h3V19H5zM10.6 5h2.8v14h-2.8zm5.6 8H19v6h-2.8z"/></svg>
+                                        Énergie journalière
+                                    </div>
+                                </div>
+                                <div class="energy-sub">Consommation du jour en cours</div>
+                                <div class="progress-header">
+                                    <span class="progress-label">Utilisation journalière</span>
+                                    <span class="progress-value"><span id="progressPercent1_3">0</span>%</span>
+                                </div>
+                                <div class="progress-bar-container">
+                                    <div class="progress-fill" id="progressBar1_3" style="width:0%;background:var(--success)"></div>
+                                </div>
+                                <div class="progress-ends">
+                                    <span id="energyConsumed3">0 kWh</span>
+                                    <span id="energyText3">0 / <span id="energyLimitDisp3">5</span> kWh</span>
+                                </div>
+                            </div>
+                            <div class="energy-card">
+                                <div class="energy-card-header">
+                                    <div class="energy-card-title">
+                                        <svg viewBox="0 0 24 24"><path d="M13 3h-2v10h2V3zm4.83 2.17l-1.42 1.42C17.99 7.86 19 9.81 19 12c0 3.87-3.13 7-7 7s-7-3.13-7-7c0-2.19 1.01-4.14 2.58-5.42L6.17 5.17C4.23 6.82 3 9.26 3 12c0 4.97 4.03 9 9 9s9-4.03 9-9c0-2.74-1.23-5.18-3.17-6.83z"/></svg>
+                                        Puissance journalière
+                                    </div>
+                                </div>
+                                <div class="energy-sub">Consommation du jour en cours</div>
+                                <div class="progress-header">
+                                    <span class="progress-label">Utilisation journalière</span>
+                                    <span class="progress-value"><span id="progressPercent2_3">0</span>%</span>
+                                </div>
+                                <div class="progress-bar-container">
+                                    <div class="progress-fill" id="progressBar2_3" style="width:0%;background:var(--success)"></div>
+                                </div>
+                                <div class="progress-ends">
+                                    <span id="powerConsumed3">0 W</span>
+                                    <span id="powerText3">0 / <span id="powerLimitDisp3">1000</span> W</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- fin dashTab3 -->
+
+                    <!-- ── TAB CHARGE 4 ── -->
+                    <div id="dashTab4" style="display:none;">
+                        <div class="section-heading">Mesures électriques — Charge 4</div>
+                        <div class="metrics-grid">
+
+                            <div class="metric-card" style="border-top-color:#4499ff;">
+                                <div class="metric-card-top">
+                                    <div class="metric-card-icon">
+                                        <svg viewBox="0 0 24 24"><path d="M11 15H6l7-14v8h5l-7 14v-8z"/></svg>
+                                    </div>
+                                    <span class="metric-card-lbl">Tension</span>
+                                </div>
+                                <div class="metric-card-val"><span id="v4">--</span></div>
+                                <div class="metric-card-unit">V</div>
+                            </div>
+
+                            <div class="metric-card" style="border-top-color:#00d4aa;">
+                                <div class="metric-card-top">
+                                    <div class="metric-card-icon" style="background:rgba(0,212,170,0.10)">
+                                        <svg viewBox="0 0 24 24" style="fill:var(--secondary)">
+                                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm.5 13H11v-6h1.5v5.2l4.5 2.7-.8 1.3L12.5 15z"/>
+                                        </svg>
+                                    </div>
+                                    <span class="metric-card-lbl">Courant</span>
+                                </div>
+                                <div class="metric-card-val"><span id="i4">--</span></div>
+                                <div class="metric-card-unit">A</div>
+                            </div>
+
+                            <div class="metric-card" style="border-top-color:#ffa502;">
+                                <div class="metric-card-top">
+                                    <div class="metric-card-icon" style="background:rgba(255,165,2,0.10)">
+                                        <svg viewBox="0 0 24 24" style="fill:#ffa502">
+                                            <path d="M3.5 18.49l6-6.01 4 4L22 6.92l-1.41-1.41-7.09 7.97-4-4L2 16.99z"/>
+                                        </svg>
+                                    </div>
+                                    <span class="metric-card-lbl">Puissance</span>
+                                </div>
+                                <div class="metric-card-val"><span id="p4">--</span></div>
+                                <div class="metric-card-unit">W</div>
+                            </div>
+
+                            <div class="metric-card" style="border-top-color:#2ed573;">
+                                <div class="metric-card-top">
+                                    <div class="metric-card-icon" style="background:rgba(46,213,115,0.10)">
+                                        <svg viewBox="0 0 24 24" style="fill:#2ed573">
+                                            <path d="M12 5c-3.87 0-7 3.13-7 7h2c0-2.76 2.24-5 5-5s5 2.24 5 5h2c0-3.87-3.13-7-7-7zm1 9.29c.88-.39 1.5-1.26 1.5-2.29 0-1.38-1.12-2.5-2.5-2.5S9.5 10.62 9.5 12c0 1.02.62 1.9 1.5 2.29v3.3L7.59 21 9 22.41l3-3 3 3L16.41 21 13 17.59v-3.3z"/>
+                                        </svg>
+                                    </div>
+                                    <span class="metric-card-lbl">Fréquence</span>
+                                </div>
+                                <div class="metric-card-val"><span id="f4">--</span></div>
+                                <div class="metric-card-unit">Hz</div>
+                            </div>
+
+                            <div class="metric-card" style="border-top-color:#7b9cc4;">
+                                <div class="metric-card-top">
+                                    <div class="metric-card-icon" style="background:rgba(123,156,196,0.10)">
+                                        <svg viewBox="0 0 24 24" style="fill:#7b9cc4">
+                                            <path d="M13 3h-2v10h2V3zm4.83 2.17l-1.42 1.42C17.99 7.86 19 9.81 19 12c0 3.87-3.13 7-7 7s-7-3.13-7-7c0-2.19 1.01-4.14 2.58-5.42L6.17 5.17C4.23 6.82 3 9.26 3 12c0 4.97 4.03 9 9 9s9-4.03 9-9c0-2.74-1.23-5.18-3.17-6.83z"/>
+                                        </svg>
+                                    </div>
+                                    <span class="metric-card-lbl">Facteur P.</span>
+                                </div>
+                                <div class="metric-card-val"><span id="pf4">--</span></div>
+                                <div class="metric-card-unit">φ</div>
+                            </div>
+
+                        </div>
+
+                        <div class="section-heading">Énergie &amp; puissance — Charge 4</div>
+                        <div class="bottom-row">
+                            <div class="energy-card">
+                                <div class="energy-card-header">
+                                    <div class="energy-card-title">
+                                        <svg viewBox="0 0 24 24"><path d="M5 9.2h3V19H5zM10.6 5h2.8v14h-2.8zm5.6 8H19v6h-2.8z"/></svg>
+                                        Énergie journalière
+                                    </div>
+                                </div>
+                                <div class="energy-sub">Consommation du jour en cours</div>
+                                <div class="progress-header">
+                                    <span class="progress-label">Utilisation journalière</span>
+                                    <span class="progress-value"><span id="progressPercent1_4">0</span>%</span>
+                                </div>
+                                <div class="progress-bar-container">
+                                    <div class="progress-fill" id="progressBar1_4" style="width:0%;background:var(--success)"></div>
+                                </div>
+                                <div class="progress-ends">
+                                    <span id="energyConsumed4">0 kWh</span>
+                                    <span id="energyText4">0 / <span id="energyLimitDisp4">5</span> kWh</span>
+                                </div>
+                            </div>
+                            <div class="energy-card">
+                                <div class="energy-card-header">
+                                    <div class="energy-card-title">
+                                        <svg viewBox="0 0 24 24"><path d="M13 3h-2v10h2V3zm4.83 2.17l-1.42 1.42C17.99 7.86 19 9.81 19 12c0 3.87-3.13 7-7 7s-7-3.13-7-7c0-2.19 1.01-4.14 2.58-5.42L6.17 5.17C4.23 6.82 3 9.26 3 12c0 4.97 4.03 9 9 9s9-4.03 9-9c0-2.74-1.23-5.18-3.17-6.83z"/></svg>
+                                        Puissance journalière
+                                    </div>
+                                </div>
+                                <div class="energy-sub">Consommation du jour en cours</div>
+                                <div class="progress-header">
+                                    <span class="progress-label">Utilisation journalière</span>
+                                    <span class="progress-value"><span id="progressPercent2_4">0</span>%</span>
+                                </div>
+                                <div class="progress-bar-container">
+                                    <div class="progress-fill" id="progressBar2_4" style="width:0%;background:var(--success)"></div>
+                                </div>
+                                <div class="progress-ends">
+                                    <span id="powerConsumed4">0 W</span>
+                                    <span id="powerText4">0 / <span id="powerLimitDisp4">1000</span> W</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- fin dashTab4 -->
+
                 </div>
                 <!-- fin view-dashboard -->
 
@@ -1485,7 +1735,7 @@
 <script>
 
     /* ── Configuration générale ── */
-    const NB_PZEMS = 2;
+    const NB_PZEMS = 4;
     let refreshInterval   = null;
     let autoRefresh       = true;
     let isRefreshing      = false;
@@ -1553,8 +1803,8 @@
            </svg>`
     };
 
-    const pzemNames = ['Charge 1', 'Charge 2'];
-    const pzemIcons = ['bolt', 'bolt'];
+    const pzemNames = ['Charge 1', 'Charge 2', 'Charge 3', 'Charge 4'];
+    const pzemIcons = ['bolt', 'bolt', 'bolt', 'bolt'];
 
     /* ════════════════════════════════
        SIDEBAR MOBILE
